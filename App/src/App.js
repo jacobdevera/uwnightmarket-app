@@ -9,6 +9,12 @@ import commonColor from './native-base-theme/variables/commonColor';
 import { AppHeader, Sidebar, LandingPage } from './components';
 
 export default class App extends Component {
+   constructor() {
+      super();
+      this.state = {
+         view: 0 // 0 = neither, 1 = attendee, 2 = vendor
+      };
+   }
    closeDrawer = () => {
       this.drawer._root.close();
       StatusBar.setHidden(false);
@@ -16,6 +22,10 @@ export default class App extends Component {
    openDrawer = () => {
       this.drawer._root.open();
       StatusBar.setHidden(true);
+   };
+   setView = (index) => {
+      this.setState({ view: index });
+      console.log("Set view to" + index);
    };
    render() {
       return (
@@ -27,7 +37,7 @@ export default class App extends Component {
                <AppHeader openDrawer={this.openDrawer.bind(this)}>
                   UW Night Market
                </AppHeader>
-               <LandingPage />
+               <LandingPage setView={this.setView}/>
             </Drawer>
          </StyleProvider>
       );

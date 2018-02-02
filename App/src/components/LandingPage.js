@@ -3,7 +3,7 @@ import { Image, View } from 'react-native';
 import { Button, Content, H1, H2, H3, Text } from 'native-base';
 import styles from '../styles';
 
-const LandingPage = () => {
+const LandingPage = (props) => {
    return (
       <View style={styles.column}>
          <Image
@@ -24,10 +24,10 @@ const LandingPage = () => {
          />
          <Text style={{ alignSelf: 'flex-start', paddingLeft: 25 }}> I am a...</Text>
          <View style={styles.row}>
-            <Button>
+            <Button onPress={() => props.setView(1)}>
                <Text>Attendee</Text>
             </Button>
-            <Button>
+            <Button onPress={() => props.setView(2)}>
                <Text>Vendor</Text>
             </Button>
          </View>
