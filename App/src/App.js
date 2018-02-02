@@ -6,7 +6,7 @@ import {
 import { Drawer, StyleProvider } from 'native-base';
 import getTheme from './native-base-theme/components';
 import commonColor from './native-base-theme/variables/commonColor';
-import { AppHeader, Sidebar } from './components';
+import { AppHeader, Sidebar, LandingPage } from './components';
 
 export default class App extends Component {
    closeDrawer = () => {
@@ -19,17 +19,17 @@ export default class App extends Component {
    };
    render() {
       return (
-      <StyleProvider style={getTheme(commonColor)}>
-         <Drawer
-            ref={(ref) => { this.drawer = ref; }}
-            content={<Sidebar />}
-            onClose={() => this.closeDrawer()} >
-
-            <AppHeader
-               openDrawer={this.openDrawer.bind(this)}
-            />
-         </Drawer>
-      </StyleProvider>
+         <StyleProvider style={getTheme(commonColor)}>
+            <Drawer
+               ref={(ref) => { this.drawer = ref; }}
+               content={<Sidebar />}
+               onClose={() => this.closeDrawer()} >
+               <AppHeader openDrawer={this.openDrawer.bind(this)}>
+                  UW Night Market
+               </AppHeader>
+               <LandingPage />
+            </Drawer>
+         </StyleProvider>
       );
    }
 }

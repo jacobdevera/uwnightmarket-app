@@ -13,7 +13,7 @@ const AppHeader = (props) => {
             </Button>
          </Left>
          <Body>
-            <Title>Night Market</Title>
+            <Title>{props.children}</Title>
          </Body>
          <Right />
       </Header>
