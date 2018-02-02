@@ -34,7 +34,7 @@ export default class App extends Component {
                ref={(ref) => { this.drawer = ref; }}
                content={<Sidebar />}
                onClose={() => this.closeDrawer()} >
-               <AppHeader openDrawer={this.openDrawer.bind(this)}>
+               <AppHeader openDrawer={() => this.openDrawer()}>
                   UW Night Market
                </AppHeader>
                <LandingPage setView={this.setView}/>
