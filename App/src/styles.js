@@ -14,6 +14,9 @@ export default styles = StyleSheet.create({
     light: {
         color: '#fff'
     },
+    list: {
+        padding: 10
+    },
     column: {
         flex: 1,
         flexDirection: 'column',
@@ -26,5 +29,8 @@ export default styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         padding: 20
+    },
+    cardHeader: {
+        fontWeight: 'bold'
     }
 });
