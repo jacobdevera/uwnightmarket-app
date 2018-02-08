@@ -13,7 +13,7 @@ const MyOrders = (props) => {
             </AppHeader>
             <View style={styles.column}>
                 <Text>You have no active orders right now.</Text>
-                <Button style={{ alignSelf: 'center' }}>
+                <Button style={{ alignSelf: 'center' }} onPress={() => props.navigation.navigate('VendorsFood')}>
                     <Text>Order Now</Text>
                 </Button>
             </View>

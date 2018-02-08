@@ -5,11 +5,11 @@ import { MyOrders, VendorsFood } from "./attendee-pages";
 import { Sidebar } from "./components";
 
 export default DrawerNavigator(
-  {
-    MyOrders: { screen: MyOrders },
-    VendorsFood: { screen: VendorsFood }
-  },
-  {
-    contentComponent: props => <Sidebar {...props} />
-  }
+    {
+        MyOrders: { screen: MyOrders },
+        VendorsFood: { screen: VendorsFood }
+    },
+    {
+        contentComponent: props => <Sidebar {...props} />
+    }
 );

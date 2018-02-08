@@ -5,7 +5,7 @@ import { Container, Drawer, StyleProvider } from 'native-base';
 import getTheme from './native-base-theme/components';
 import commonColor from './native-base-theme/variables/commonColor';
 
-import Router from './routes';
+import DrawerNav from './routes';
 import { AppHeader, Sidebar } from './components';
 import { LandingPage } from './LandingPage';
 
@@ -29,7 +29,7 @@ export default class App extends Component {
             <Container>
                {this.state.view === 0 ?
                <LandingPage setView={this.setView}/> :
-               <Router />}
+               <DrawerNav screenProps={this.state}/>}
             </Container>
          </StyleProvider>
       );
