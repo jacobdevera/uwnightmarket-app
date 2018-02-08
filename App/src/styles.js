@@ -8,6 +8,7 @@ export default styles = StyleSheet.create({
         height: 75
     },
     sideBar: {
+        paddingTop: 20,
         backgroundColor: "#d94d5d"
     },
     light: {
@@ -18,7 +19,7 @@ export default styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'space-around',
         alignItems: 'center',
-        padding: 20
+        padding: 40
     },
     row: {
         width: '100%',

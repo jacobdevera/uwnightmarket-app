@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Image, View } from 'react-native';
-import { Button, Content, H1, H2, H3, Text } from 'native-base';
-import styles from '../styles';
+import { Button, Container, Content, H1, H2, H3, Text } from 'native-base';
+import styles from './styles';
 
 const LandingPage = (props) => {
    return (
@@ -9,7 +9,7 @@ const LandingPage = (props) => {
          <Image
             style={styles.logo}
             resizeMode="contain"
-            source={require('../../img/NMlogoblackfont.png')}
+            source={require('../img/NMlogoblackfont.png')}
          />
          <H3>SAT, MAY 12, 2018 5:30 PM</H3>
          <H3>RED SQUARE + QUAD</H3>
@@ -20,7 +20,7 @@ const LandingPage = (props) => {
          <Image
             style={styles.logoSmall}
             resizeMode="contain"
-            source={require('../../img/tsa-logo.png')}
+            source={require('../img/tsa-logo.png')}
          />
          <Text style={{ alignSelf: 'flex-start', paddingLeft: 25 }}> I am a...</Text>
          <View style={styles.row}>

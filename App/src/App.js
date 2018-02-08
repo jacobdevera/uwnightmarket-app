@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import {
-   StatusBar
-} from 'react-native';
-
-import { Drawer, StyleProvider } from 'native-base';
+import { StatusBar } from 'react-native';
+import { DrawerNavigator } from "react-navigation";
+import { Container, Drawer, StyleProvider } from 'native-base';
 import getTheme from './native-base-theme/components';
 import commonColor from './native-base-theme/variables/commonColor';
-import { AppHeader, Sidebar, LandingPage } from './components';
+
+import Router from './routes';
+import { AppHeader, Sidebar } from './components';
+import { LandingPage } from './LandingPage';
 
 export default class App extends Component {
    constructor() {
@@ -15,14 +16,9 @@ export default class App extends Component {
          view: 0 // 0 = neither, 1 = attendee, 2 = vendor
       };
    }
-   closeDrawer = () => {
-      this.drawer._root.close();
-      StatusBar.setHidden(false);
-   };
-   openDrawer = () => {
-      this.drawer._root.open();
-      StatusBar.setHidden(true);
-   };
+   componentDidMount() {
+       console.log(this.props.navigation);
+   }
    setView = (index) => {
       this.setState({ view: index });
       console.log("Set view to" + index);
@@ -30,15 +26,11 @@ export default class App extends Component {
    render() {
       return (
          <StyleProvider style={getTheme(commonColor)}>
-            <Drawer
-               ref={(ref) => { this.drawer = ref; }}
-               content={<Sidebar />}
-               onClose={() => this.closeDrawer()} >
-               <AppHeader openDrawer={() => this.openDrawer()}>
-                  UW Night Market
-               </AppHeader>
-               <LandingPage setView={this.setView}/>
-            </Drawer>
+            <Container>
+               {this.state.view === 0 ?
+               <LandingPage setView={this.setView}/> :
+               <Router />}
+            </Container>
          </StyleProvider>
       );
    }

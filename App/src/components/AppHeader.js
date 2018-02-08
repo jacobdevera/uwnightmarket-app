@@ -7,7 +7,7 @@ const AppHeader = (props) => {
       <Header>
          <Left>
             <Button transparent
-               onPress={() => props.openDrawer()}
+               onPress={() => props.navigation.navigate("DrawerOpen")}
             >
                <Icon name='menu' />
             </Button>
