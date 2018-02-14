@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Image, View } from 'react-native';
-import { Button, Container, Content, Card, CardItem, Body, Text, Icon, Left, Right } from 'native-base';
+import { Button, Container, Content, Card, CardItem, Body, Text, Icon, Left, Right, Thumbnail } from 'native-base';
 
 import { AppHeader } from '../components';
 import styles from '../styles';
@@ -15,12 +15,18 @@ const VendorsFood = (props) => {
                 <Card>
                     <CardItem>
                         <Left>
-                            <Icon name='cart' />
-                            
+                            <Thumbnail
+                                square
+                                style={styles.listImage}
+                                source={require('../../img/bubble-tea.jpg')}
+                            />
                         </Left>
                         <Body>
                             <Text style={styles.cardHeader}>Bubble Tea</Text>
                             <Text>$3.49</Text>
+                            <Button>
+                                <Text>Add to Order</Text>
+                            </Button>
                         </Body>
                     </CardItem>
                 </Card>
