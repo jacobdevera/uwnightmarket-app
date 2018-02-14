@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Content, List, ListItem, Text } from 'native-base';
+import { Content, List, ListItem, Text, Icon } from 'native-base';
 import styles from '../styles';
 
 const Sidebar = (props) => {
@@ -46,6 +46,9 @@ const Sidebar = (props) => {
                     );
                 }}
             />
+            <Icon name='logo-facebook' />
+            <Icon name='logo-instagram' />
+            <Icon name='logo-twitter' />
         </Content>
     );
 }

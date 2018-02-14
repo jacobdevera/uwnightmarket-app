@@ -6,30 +6,43 @@ import { AppHeader } from '../components';
 import styles from '../styles';
 
 const VendorsFood = (props) => {
+    let items = [
+        {
+            name: 'Bubble Tea',
+            price: '$3.49',
+            img: require('../../img/bubble-tea.jpg')
+        }
+    ];
+    
     return (
         <Container>
             <AppHeader navigation={props.navigation}>
                 Vendors / Food
             </AppHeader>
             <Content style={styles.list}>
-                <Card>
-                    <CardItem>
-                        <Left>
-                            <Thumbnail
-                                square
-                                style={styles.listImage}
-                                source={require('../../img/bubble-tea.jpg')}
-                            />
-                        </Left>
-                        <Body>
-                            <Text style={styles.cardHeader}>Bubble Tea</Text>
-                            <Text>$3.49</Text>
-                            <Button>
-                                <Text>Add to Order</Text>
-                            </Button>
-                        </Body>
-                    </CardItem>
-                </Card>
+                <Card
+                    dataArray={items}
+                    renderRow={(data, index) => {
+                        return (
+                            <CardItem>
+                                <Left>
+                                    <Thumbnail
+                                        square
+                                        style={styles.listImage}
+                                        source={data.img}
+                                    />
+                                </Left>
+                                <Body>
+                                    <Text style={styles.cardHeader}>{data.name}</Text>
+                                    <Text>{data.price}</Text>
+                                    <Button>
+                                        <Text>Add to Order</Text>
+                                    </Button>
+                                </Body>
+                            </CardItem>
+                        )
+                    }}
+                />
             </Content>
         </Container>);
 }
