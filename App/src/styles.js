@@ -14,8 +14,8 @@ export default styles = StyleSheet.create({
     light: {
         color: '#fff'
     },
-    list: {
-        padding: 10
+    paddedContainer: {
+        padding: 16
     },
     listImage: {
         height: 100,
@@ -26,7 +26,7 @@ export default styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'space-around',
         alignItems: 'center',
-        padding: 40
+        padding: 32
     },
     row: {
         width: '100%',
@@ -34,7 +34,29 @@ export default styles = StyleSheet.create({
         justifyContent: 'space-around',
         padding: 20
     },
-    cardHeader: {
-        fontWeight: 'bold'
+    header: {
+        fontWeight: 'bold',
+        paddingBottom: 8
+    },
+    cardH1: {
+        fontSize: 18
+    },
+    cardH2: {
+        fontSize: 14
+    },
+    h1: {
+        fontSize: 24 
+    },
+    h2: {
+        fontSize: 20
+    },
+    h3: {
+        fontSize: 16
+    },
+    center: {
+        textAlign: 'center'
+    },
+    iconWhite: {
+        color: 'white'
     }
 });

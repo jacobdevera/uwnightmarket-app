@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import { Image, View } from 'react-native';
-import { Button, Container, Content, H1, H2, H3, Text } from 'native-base';
+import { Button, Container, Content, Text } from 'native-base';
 import styles from './styles';
 
 const LandingPage = (props) => {
    return (
-      <View style={styles.column}>
+      <Content contentContainerStyle={styles.column}>
          <Image
-            style={styles.logo}
+            style={[styles.logo]}
             resizeMode="contain"
             source={require('../img/NMlogoblackfont.png')}
          />
-         <H3>SAT, MAY 12, 2018 5:30 PM</H3>
-         <H3>RED SQUARE + QUAD</H3>
+         <Text style={[styles.header,styles.h2]}>SAT, MAY 12, 2018 5:30 PM</Text>
+         <Text style={[styles.header,styles.h2]}>RED SQUARE + QUAD</Text>
          <Text style={{ textAlign: 'center' }}>
             An annual celebration of Taiwan's rich culture through delicious food, activities, and entertainment!
          </Text>
@@ -31,7 +31,7 @@ const LandingPage = (props) => {
                <Text>Vendor</Text>
             </Button>
          </View>
-      </View>
+      </Content>
    );
 }
 
