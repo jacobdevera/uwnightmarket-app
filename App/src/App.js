@@ -27,8 +27,8 @@ export default class App extends Component {
             <Container>
                {this.state.view === 0 ?
                <LandingPage setView={this.setView} /> : this.state.view === 1 ?
-               <AttendeeDrawerNav screenProps={this.state} /> :
-               <VendorDrawerNav screenProps={this.state} />}
+               <AttendeeDrawerNav screenProps={{ state: this.state, setView: this.setView }} /> :
+               <VendorDrawerNav screenProps={{ state: this.state, setView: this.setView }} />}
             </Container>
          </StyleProvider>
       );
