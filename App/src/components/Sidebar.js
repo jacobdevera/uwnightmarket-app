@@ -5,7 +5,8 @@ import styles from '../styles';
 
 const Sidebar = (props) => {
     let routes = [];
-    switch (props.screenProps.view) {
+    console.log(props.screenProps);
+    switch (props.screenProps.state.view) {
         case 1:
         routes = [
             { 
@@ -83,6 +84,9 @@ const Sidebar = (props) => {
                     );
                 }}
             />
+            <ListItem key={routes.length} noBorder button onPress={() => props.screenProps.setView(0)}>
+                <Text style={styles.light}>Log Out</Text>
+            </ListItem>
             <View style={styles.row}>
                 <Icon name='logo-facebook' onPress={ ()=>{ Linking.openURL('https://www.facebook.com/TheUWNightMarket')}} style={styles.iconWhite}/>
                 <Icon name='logo-instagram' onPress={ ()=>{ Linking.openURL('https://www.instagram.com/uwnightmarket/')} } style={styles.iconWhite}/>
