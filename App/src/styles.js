@@ -34,6 +34,17 @@ export default styles = StyleSheet.create({
         justifyContent: 'space-around',
         padding: 20
     },
+    desc: {
+        fontStyle: 'italic',
+        paddingBottom: 8
+    },
+    menuItem: {
+        fontWeight: 'normal',
+        fontStyle: 'italic'
+    },
+    bold: {
+        fontWeight: 'bold'
+    },
     header: {
         fontWeight: 'bold',
         paddingBottom: 8
