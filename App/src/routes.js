@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { DrawerNavigator } from "react-navigation";
 
 import { MyOrders, VendorsFood, Map, Games, Merchandise, EventInfo, Donate } from "./attendee-pages";

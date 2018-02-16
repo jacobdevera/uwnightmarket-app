@@ -9,8 +9,8 @@ const Games = (props) => {
     let items = [
         {
             name: 'Fish Scoop',
-            price: '$1 for 1 net',
             desc: 'Test your fishing skills with paper nets!',
+            price: '$1 for 1 net',
             img: require('../../img/fish-scoop.jpg')
         },
         {
@@ -43,20 +43,20 @@ const Games = (props) => {
                         renderRow={(data, index) => {
                             return (
                                 <Card>
-                                <CardItem>
-                                    <Left>
-                                        <Thumbnail
-                                            square
-                                            style={styles.listImage}
-                                            source={data.img}
-                                        />
-                                    </Left>
-                                    <Body>
-                                        <Text style={ [styles.header, styles.cardH1] }>{data.name}</Text>
-                                        <Text style={ [styles.header, styles.cardH2] }>{data.price}</Text>
-                                        <Text>{data.desc}</Text>
-                                    </Body>
-                                </CardItem>
+                                    <CardItem>
+                                        <Left>
+                                            <Thumbnail
+                                                square
+                                                style={styles.listImage}
+                                                source={data.img}
+                                            />
+                                        </Left>
+                                        <Body>
+                                            <Text style={ [styles.header, styles.cardH1] }>{data.name}</Text>
+                                            <Text style={ [styles.header, styles.cardH2] }>{data.price}</Text>
+                                            <Text>{data.desc}</Text>
+                                        </Body>
+                                    </CardItem>
                                 </Card>
                             )
                         }}
