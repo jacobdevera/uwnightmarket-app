@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { View, Linking } from 'react-native';
 import { Content, List, ListItem, Text, Icon } from 'native-base';
 import styles from '../styles';

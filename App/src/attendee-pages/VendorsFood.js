@@ -8,19 +8,22 @@ import styles from '../styles';
 const VendorsFood = (props) => {
     let items = [
         {
-            name: 'Bubble Tea',
-            price: '$5',
-            img: require('../../img/bubble-tea.jpg')
+            name: 'Baguette Box',
+            desc: 'Specializing in western Chinese fare',
+            img: require('../../img/bubble-tea.jpg'),
+            menu: ['Cumin Beef Sandwich', 'Cold Rice Noodles', 'Grilled Squid']
         },
         {
-            name: 'Fish Tofu',
-            price: '$5',
-            img: require('../../img/fish-tofu.jpg')
+            name: 'BeanFish',
+            desc: "Seattle's only mobile taiyaki (鯛焼き) artisans",
+            img: require('../../img/fish-tofu.jpg'),
+            menu: ['Cumin Beef SandWich', 'Cold Rice Noodles', 'Grilled Squid']
         },
         {
-            name: 'BBQ Pork Buns',
-            price: '$7',
-            img: require('../../img/bbq-pork-buns.jpg')
+            name: 'Capuli Club Sips & Treats',
+            desc: 'Artisanal fruit snacks made in Seattle',
+            img: require('../../img/bbq-pork-buns.jpg'),
+            menu: ['Cumin Beef SandWich', 'Cold Rice Noodles', 'Grilled Squid']
         }
     ];
 
@@ -32,7 +35,7 @@ const VendorsFood = (props) => {
             <Content style={styles.paddedContainer}>
                 <List
                     dataArray={items}
-                    renderRow={(data, index) => {
+                    renderRow={(data) => {
                         return (
                             <Card>
                             <CardItem>
@@ -45,10 +48,8 @@ const VendorsFood = (props) => {
                                 </Left>
                                 <Body>
                                     <Text style={ [styles.header, styles.cardH1] }>{data.name}</Text>
-                                    <Text style={ [styles.header, styles.cardH2] }>{data.price}</Text>
-                                    <Button>
-                                        <Text>Add to Order</Text>
-                                    </Button>
+                                    <Text style={ [styles.desc] }>{data.desc}</Text>
+                                    <Text style={styles.bold}>Menu: <Text style={styles.menuItem}>{data.menu.join(', ')}</Text></Text>
                                 </Body>
                             </CardItem>
                             </Card>
