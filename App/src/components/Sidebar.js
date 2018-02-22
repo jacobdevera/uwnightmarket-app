@@ -5,7 +5,6 @@ import styles from '../styles';
 
 const Sidebar = (props) => {
     let routes = [];
-    console.log(props.screenProps);
     switch (props.screenProps.state.view) {
         case 1:
         routes = [
