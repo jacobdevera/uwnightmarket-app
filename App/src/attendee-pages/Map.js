@@ -4,6 +4,7 @@ import { Button, Container, Content, H1, H2, H3, Text } from 'native-base';
 
 import { AppHeader } from '../components';
 import styles from '../styles';
+import MapScreen from "./MapScreen";
 
 const Map = (props) => {
     return (
@@ -11,9 +12,7 @@ const Map = (props) => {
             <AppHeader navigation={props.navigation}>
                 Map
             </AppHeader>
-            <Content>
-                
-            </Content>
+            <MapScreen />
         </Container>);
 }
 
