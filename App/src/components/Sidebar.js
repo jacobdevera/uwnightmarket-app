@@ -14,7 +14,7 @@ const Sidebar = (props) => {
                 title: 'My Orders'
             },
             { 
-                route: 'VendorsFood',
+                route: 'VendorNavigator',
                 title: 'Vendors / Food'
             },
             { 

@@ -1,5 +1,5 @@
 export * from './MyOrders';
-export * from './VendorsFood';
+export * from './VendorNavigator';
 export * from './Map';
 export * from './Games';
 export * from './Merchandise';
