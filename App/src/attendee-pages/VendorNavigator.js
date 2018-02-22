@@ -125,7 +125,11 @@ class VendorFood extends Component {
 
     updateQuantity(index, add) {
         let order = this.state.order.slice();
-        order[index].quantity += add ? 1 : -1;
+        if (add && order[index].quantity < 7) {
+            order[index].quantity++;
+        } else if (!add && order[index].quantity > 0){
+            order[index].quantity--;
+        }
         this.setState({ order: order })
     }
     
