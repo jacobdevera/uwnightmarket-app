@@ -1,11 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Image, View } from 'react-native';
 import { Button, Container, Content, Card, CardItem, Body, Text, Icon, Left, Right, Thumbnail, List } from 'native-base';
+import { StackNavigator } from "react-navigation";
 
-import { AppHeader } from '../components';
+
+import { AppHeader, StackHeader } from '../components';
 import styles from '../styles';
 
-const VendorsFood = (props) => {
+const VendorList = (props) => {
     let items = [
         {
             name: 'Baguette Box',
@@ -38,7 +40,7 @@ const VendorsFood = (props) => {
                     renderRow={(data) => {
                         return (
                             <Card>
-                            <CardItem>
+                            <CardItem button onPress={() => { props.navigation.navigate('VendorFood'); }}>
                                 <Left>
                                     <Thumbnail
                                         square
@@ -60,4 +62,26 @@ const VendorsFood = (props) => {
         </Container>);
 }
 
-export { VendorsFood }
+const VendorFood = (props) => {
+    return (
+        <Container>
+            <StackHeader navigation={props.navigation}>
+                Vendors / Food
+            </StackHeader>
+            <Content style={styles.paddedContainer}>
+            </Content>
+        </Container>
+    );
+}
+
+const VendorNavigator = StackNavigator(
+    {
+        VendorList: { screen: VendorList },
+        VendorFood: { screen: VendorFood }
+    }, 
+    {
+        headerMode: 'none'
+    }
+);
+
+export { VendorNavigator, VendorFood }
