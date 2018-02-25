@@ -5,10 +5,30 @@ import { StackNavigator } from "react-navigation";
 
 
 import { AppHeader, StackHeader } from '../components';
+import { Spinner } from '../components/common';
 import styles from '../styles';
+import firebase from 'firebase'
 
-const VendorList = (props) => {
-    let items = [
+class VendorList extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            vendors: []
+        }
+    }
+    
+    componentDidMount() {
+        let vendorRef = firebase.database().ref('/users').orderByKey();
+        vendorRef.once('value').then((snapshot) => {
+            let vendorList = [];
+            snapshot.forEach((vendorSnapshot) => {
+                let vendorObj = vendorSnapshot.val();
+                vendorList.push(vendorObj);
+            });
+            this.setState({ vendors: vendorList });
+        });
+    }
+    /*let items = [
         {
             name: 'Baguette Box',
             desc: 'Specializing in western Chinese fare',
@@ -62,46 +82,50 @@ const VendorList = (props) => {
                 }
             ]
         }
-    ];
-
-    return (
-        <Container>
-            <AppHeader navigation={props.navigation}>
-                Vendors / Food
-            </AppHeader>
-            <Content style={styles.paddedContainer}>
-                <List
-                    dataArray={items}
-                    renderRow={(data) => {
-                        let itemNames = [];
-                        data.menu.forEach((item) => itemNames.push(item.name));
-                        return (
-                            <Card>
-                            <CardItem 
-                                button onPress={() => { props.navigation.navigate('VendorFood', {
-                                        vendor: data
-                                    }); 
-                                }}
-                            >
-                                <Left>
-                                    <Thumbnail
-                                        square
-                                        style={styles.listImage}
-                                        source={data.img}
-                                    />
-                                </Left>
-                                <Body>
-                                    <Text style={ [styles.header, styles.cardH1] }>{data.name}</Text>
-                                    <Text style={ [styles.desc] }>{data.desc}</Text>
-                                    <Text style={styles.bold}>Menu: <Text style={styles.menuItem}>{itemNames.join(', ')}</Text></Text>
-                                </Body>
-                            </CardItem>
-                            </Card>
-                        )
-                    }}
-                />
-            </Content>
-        </Container>);
+    ];*/
+    render() {
+        return (
+            <Container>
+                <AppHeader navigation={this.props.navigation}>
+                    Vendors / Food
+                </AppHeader>
+                <Content style={styles.paddedContainer}>
+                    {this.state.vendors ?
+                        <List
+                            dataArray={this.state.vendors}
+                            renderRow={(data) => {
+                                let itemNames = [];
+                                data.menu.forEach((item) => itemNames.push(item.name));
+                                return (
+                                    <Card>
+                                    <CardItem 
+                                        button onPress={() => { this.props.navigation.navigate('VendorFood', {
+                                                vendor: data
+                                            }); 
+                                        }}
+                                    >
+                                        <Left>
+                                            <Thumbnail
+                                                square
+                                                style={styles.listImage}
+                                                source={{ uri: data.img }}
+                                            />
+                                        </Left>
+                                        <Body>
+                                            <Text style={ [styles.header, styles.cardH1] }>{data.name}</Text>
+                                            <Text style={ [styles.desc] }>{data.desc}</Text>
+                                            <Text style={styles.bold}>Menu: <Text style={styles.menuItem}>{itemNames.join(', ')}</Text></Text>
+                                        </Body>
+                                    </CardItem>
+                                    </Card>
+                                )
+                            }}
+                        />
+                        : <Spinner size='small' />}
+                </Content>
+            </Container>
+        );
+    }
 }
 
 class VendorFood extends Component {
@@ -123,15 +147,31 @@ class VendorFood extends Component {
         this.setState({ vendor: vendor, order: order });
     }
 
-    updateQuantity(index, add) {
+    updateQuantity = (index, add) => {
         let order = this.state.order.slice();
         if (add && order[index].quantity < 7) {
             order[index].quantity++;
-        } else if (!add && order[index].quantity > 0){
+        } else if (!add && order[index].quantity > 0) {
             order[index].quantity--;
         }
         this.setState({ order: order })
     }
+
+    submitOrder = () => {
+        let orderData = {
+            userId: firebase.auth().currentUser.uid,
+            time: firebase.database.ServerValue.TIMESTAMP,
+            items: this.state.order
+        }
+
+        let orderRef = firebase.database().ref('orders/' + this.state.vendor.userId);
+        orderRef.push(orderData)
+            .then((response) => {
+                this.props.navigation.goBack();
+            })
+
+    }
+
     
     render() {
         let { vendor, order } = this.state;
@@ -170,6 +210,9 @@ class VendorFood extends Component {
                             }}
                         />}
                     <Text style={[styles.center, styles.bold]}>Total Due: {totalPrice}</Text>
+                    <View style={styles.row}>
+                        <Button onPress={() => this.submitOrder()}><Text>Submit Order</Text></Button>
+                    </View>
                 </Content>
             </Container>
         );

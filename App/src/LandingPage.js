@@ -9,7 +9,7 @@ import { Spinner } from './components/common';
 
 class LandingPage extends Component {
     constructor(props) {
-        super();
+        super(props);
         this.state = {
             loading: false,
             error: ''
@@ -20,12 +20,13 @@ class LandingPage extends Component {
         this.setState({ error: '', loading: true });
     
         firebase.auth().signInAnonymously()
-        .then(this.onLoginSuccess.bind(this))
-        .catch( err =>{
-            console.log(error.code);
-            console.log(error.message);
-            this.onLoginFail.bind(this);
-        });
+            .then(this.onLoginSuccess.bind(this))
+            .catch( err =>{
+                console.log(error.code);
+                console.log(error.message);
+                this.onLoginFail.bind(this);
+            }
+        );
     }
     
     onLoginFail(){

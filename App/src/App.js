@@ -13,58 +13,84 @@ import LoginForm from './vendor-pages/LoginForm';
 import firebase from 'firebase';
 
 export const Views = {
-  INITIAL: 0,
-  LOGIN: 1,
-  ATTENDEE: 2,
-  VENDOR: 3
+    INITIAL: 0,
+    LOGIN: 1,
+    ATTENDEE: 2,
+    VENDOR: 3
 }
 
 export default class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-        view: 0, // 0 = neither, 1 = login, 2 = attendee, 3 = vendor
-        loggedIn: null
-    };
-  }
-
-  componentWillMount() {
-  if (!firebase.apps.length) {
-    firebase.initializeApp({
-      apiKey: "AIzaSyD9oIu2WqxmvQOrIlPQ-7GQRKZJgKamSk4",
-      authDomain: "uwnightmarket-90946.firebaseapp.com",
-      databaseURL: "https://uwnightmarket-90946.firebaseio.com",
-      storageBucket: "uwnightmarket-90946.appspot.com",
-      messagingSenderId: "119944110578"
-    });
-  }
-
-  firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-      let newView = user.isAnonymous ? Views.ATTENDEE : Views.VENDOR;
-      this.setState({ view: newView, loggedIn: true });
-    } else {
-      this.setState({ view: Views.INITIAL, loggedIn: false });
+    constructor(props) {
+        super(props);
+        this.state = {
+            view: 0, // 0 = neither, 1 = login, 2 = attendee, 3 = vendor
+            loggedIn: null
+        };
     }
-  });
-}
 
-  setView = (index) => {
-    this.setState({ view: index });
-    console.log("Set view to" + index);
-  };
+    componentWillMount() {
+        if (!firebase.apps.length) {
+            firebase.initializeApp({
+                apiKey: "AIzaSyD9oIu2WqxmvQOrIlPQ-7GQRKZJgKamSk4",
+                authDomain: "uwnightmarket-90946.firebaseapp.com",
+                databaseURL: "https://uwnightmarket-90946.firebaseio.com",
+                storageBucket: "uwnightmarket-90946.appspot.com",
+                messagingSenderId: "119944110578"
+            });
+        }
 
-  render() {
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                let newView = user.isAnonymous ? Views.ATTENDEE : Views.VENDOR;
+                this.setState({ view: newView, loggedIn: true });
+            } else {
+                this.setState({ view: Views.INITIAL, loggedIn: false });
+            }
+        });
+    }
+
+    addUserToDatabase = (user) => {
+        let userData = {
+            userId: user.uid,
+            name: '',
+            desc: '',
+            img: '',
+            menu: [
+                { 
+                    name: '',
+                    price: 0
+                },
+                { 
+                    name: '',
+                    price: 0
+                },
+                { 
+                    name: '',
+                    price: 7
+                }
+            ]
+        }
+
+        let newUserRef = firebase.database().ref('users/' + user.uid);
+        newUserRef.set(userData);
+    }
+
+    setView = (index) => {
+        this.setState({ view: index });
+        console.log("Set view to" + index);
+    };
+
+    render() {
     return (
-        <StyleProvider style={getTheme(commonColor)}>
-          <Container>
-            {this.state.view === 0 ?
-            <LandingPage setView={this.setView} /> : this.state.view === Views.ATTENDEE ?
-            <AttendeeDrawerNav screenProps={{ state: this.state, setView: this.setView }} /> : this.state.view === Views.LOGIN ?
-            <LoginForm /> :
-            <VendorDrawerNav screenProps={{ state: this.state, setView: this.setView }} />}
-          </Container>
-        </StyleProvider>
-    );
-  }
+            <StyleProvider style={getTheme(commonColor)}>
+            <Container>
+                {this.state.view === 0 ?
+                <LandingPage setView={this.setView} /> : this.state.view === Views.ATTENDEE ?
+                <AttendeeDrawerNav screenProps={{ state: this.state, setView: this.setView }} /> : this.state.view === Views.LOGIN ?
+                <LoginForm addUserToDatabase={this.addUserToDatabase}/> :
+                <VendorDrawerNav screenProps={{ state: this.state, setView: this.setView }} />}
+            </Container>
+            </StyleProvider>
+        );
+    }
 }
