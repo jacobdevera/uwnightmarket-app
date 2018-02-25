@@ -4,8 +4,11 @@ import { Button, Container, Content, Text } from 'native-base';
 import firebase from 'firebase';
 import styles from './styles';
 
-class LandingPage  {
-    constructor(props){
+import { Views } from './App';
+import { Spinner } from './components/common';
+
+class LandingPage extends Component {
+    constructor(props) {
         super();
         this.state = {
             loading: false,
@@ -14,8 +17,6 @@ class LandingPage  {
     }
 
     onButtonPress() {
-        const { email, password } = this.state;
-    
         this.setState({ error: '', loading: true });
     
         firebase.auth().signInAnonymously()
@@ -36,44 +37,41 @@ class LandingPage  {
 
     onLoginSuccess() {
         this.setState({
-            loading:false,
             error : '',
-
+            loading: false
         });
     };
 
     render(){
         return (
+            this.state.loading ? <Spinner size='small' /> :
             <Content contentContainerStyle={styles.column}>
-               <Image
-                  style={[styles.logo]}
-                  resizeMode="contain"
-                  source={require('../img/NMlogoblackfont.png')}
-               />
-               <Text style={[styles.header,styles.h2]}>SAT, MAY 12, 2018 5:30 PM</Text>
-               <Text style={[styles.header,styles.h2]}>RED SQUARE + QUAD</Text>
-               <Text style={{ textAlign: 'center' }}>
-                  An annual celebration of Taiwan's rich culture through delicious food, activities, and entertainment!
-               </Text>
-               <Text>Proudly presented by</Text>
-               <Image
-                  style={styles.logoSmall}
-                  resizeMode="contain"
-                  source={require('../img/tsa-logo.png')}
-               />
-               <Text style={{ alignSelf: 'flex-start', paddingLeft: 25 }}> I am a...</Text>
-               <View style={styles.row}>
-                  <Button onPress={() => 
-                    {props.setView(1);
-                    this.onButtonPress();
-                    }
-                    }>
-                     <Text>Attendee</Text>
-                  </Button>
-                  <Button onPress={() => props.setView(2)}>
-                     <Text>Vendor</Text>
-                  </Button>
-               </View>
+                
+                <Image
+                    style={[styles.logo]}
+                    resizeMode='contain'
+                    source={require('../img/NMlogoblackfont.png')}
+                />
+                <Text style={[styles.header,styles.h2]}>SAT, MAY 12, 2018 5:30 PM</Text>
+                <Text style={[styles.header,styles.h2]}>RED SQUARE + QUAD</Text>
+                <Text style={{ textAlign: 'center' }}>
+                    An annual celebration of Taiwan's rich culture through delicious food, activities, and entertainment!
+                </Text>
+                <Text>Proudly presented by</Text>
+                <Image
+                    style={styles.logoSmall}
+                    resizeMode='contain'
+                    source={require('../img/tsa-logo.png')}
+                />
+                <Text style={{ alignSelf: 'flex-start', paddingLeft: 25 }}> I am a...</Text>
+                <View style={styles.row}>
+                    <Button onPress={() => { this.onButtonPress(); }}>
+                        <Text>Attendee</Text>
+                    </Button>
+                    <Button onPress={() => this.props.setView(Views.LOGIN)}>
+                        <Text>Vendor</Text>
+                    </Button>
+                </View>
             </Content>
          );
     }
