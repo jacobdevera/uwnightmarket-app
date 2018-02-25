@@ -8,19 +8,28 @@ import commonColor from './native-base-theme/variables/commonColor';
 import { AttendeeDrawerNav, VendorDrawerNav } from './routes';
 import { AppHeader, Sidebar } from './components';
 import { LandingPage } from './LandingPage';
+import LoginForm from './vendor-pages/LoginForm';
+
 import firebase from 'firebase';
 
+export const Views = {
+  INITIAL: 0,
+  LOGIN: 1,
+  ATTENDEE: 2,
+  VENDOR: 3
+}
 
 export default class App extends Component {
-   constructor() {
-      super();
-      this.state = {
-         view: 0, // 0 = neither, 1 = attendee, 2 = vendor
-         loggedIn: null
-      };
-   }
+  constructor() {
+    super();
+    this.state = {
+        view: 0, // 0 = neither, 1 = login, 2 = attendee, 3 = vendor
+        loggedIn: null
+    };
+  }
 
-   componentWillMount() {
+  componentWillMount() {
+  if (!firebase.apps.length) {
     firebase.initializeApp({
       apiKey: "AIzaSyD9oIu2WqxmvQOrIlPQ-7GQRKZJgKamSk4",
       authDomain: "uwnightmarket-90946.firebaseapp.com",
@@ -28,30 +37,34 @@ export default class App extends Component {
       storageBucket: "uwnightmarket-90946.appspot.com",
       messagingSenderId: "119944110578"
     });
-
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.setState({ loggedIn: true });
-      } else {
-        this.setState({ loggedIn: false });
-      }
-    });
   }
 
-   setView = (index) => {
-      this.setState({ view: index });
-      console.log("Set view to" + index);
-   };
-   render() {
-      return (
-         <StyleProvider style={getTheme(commonColor)}>
-            <Container>
-               {this.state.view === 0 ?
-               <LandingPage setView={this.setView} /> : this.state.view === 1 ?
-               <AttendeeDrawerNav screenProps={{ state: this.state, setView: this.setView }} /> :
-               <VendorDrawerNav screenProps={{ state: this.state, setView: this.setView }} />}
-            </Container>
-         </StyleProvider>
-      );
-   }
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      let newView = user.isAnonymous ? Views.ATTENDEE : Views.VENDOR;
+      this.setState({ view: newView, loggedIn: true });
+    } else {
+      this.setState({ view: Views.INITIAL, loggedIn: false });
+    }
+  });
+}
+
+  setView = (index) => {
+    this.setState({ view: index });
+    console.log("Set view to" + index);
+  };
+
+  render() {
+    return (
+        <StyleProvider style={getTheme(commonColor)}>
+          <Container>
+            {this.state.view === 0 ?
+            <LandingPage setView={this.setView} /> : this.state.view === Views.ATTENDEE ?
+            <AttendeeDrawerNav screenProps={{ state: this.state, setView: this.setView }} /> : this.state.view === Views.LOGIN ?
+            <LoginForm /> :
+            <VendorDrawerNav screenProps={{ state: this.state, setView: this.setView }} />}
+          </Container>
+        </StyleProvider>
+    );
+  }
 }
