@@ -19,7 +19,6 @@ export default class App extends Component {
 
    setView = (index) => {
       this.setState({ view: index });
-      console.log("Set view to" + index);
    };
    render() {
       return (
