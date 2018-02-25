@@ -5,7 +5,6 @@ import styles from '../styles';
 
 const Sidebar = (props) => {
     let routes = [];
-    console.log(props.screenProps);
     switch (props.screenProps.state.view) {
         case 1:
         routes = [
@@ -14,7 +13,7 @@ const Sidebar = (props) => {
                 title: 'My Orders'
             },
             { 
-                route: 'VendorsFood',
+                route: 'VendorNavigator',
                 title: 'Vendors / Food'
             },
             { 

@@ -1,13 +1,13 @@
 import React from "react";
 import { DrawerNavigator } from "react-navigation";
 
-import { MyOrders, VendorsFood, Map, Games, Merchandise, EventInfo, Donate } from "./attendee-pages";
+import { MyOrders, VendorNavigator, Map, Games, Merchandise, EventInfo, Donate } from "./attendee-pages";
 import { Sidebar } from "./components";
 
 const AttendeeDrawerNav = DrawerNavigator(
     {
         MyOrders: { screen: MyOrders },
-        VendorsFood: { screen: VendorsFood },
+        VendorNavigator: { screen: VendorNavigator },
         Map: { screen: Map },
         Games: { screen: Games },
         Merchandise: { screen: Merchandise },
@@ -20,9 +20,9 @@ const AttendeeDrawerNav = DrawerNavigator(
 );
 
 const VendorDrawerNav = DrawerNavigator(
-    {
+    { // TODO: Make vendor routes
         MyOrders: { screen: MyOrders },
-        VendorsFood: { screen: VendorsFood },
+        VendorsFood: { screen: VendorNavigator },
         Map: { screen: Map },
         Games: { screen: Games },
         Merchandise: { screen: Merchandise },
