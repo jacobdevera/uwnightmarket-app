@@ -3,10 +3,13 @@ import { View, Linking } from 'react-native';
 import { Content, List, ListItem, Text, Icon } from 'native-base';
 import styles from '../styles';
 
+import firebase from 'firebase';
+import { Views } from '../App';
+
 const Sidebar = (props) => {
     let routes = [];
     switch (props.screenProps.state.view) {
-        case 1:
+        case Views.ATTENDEE:
         routes = [
             { 
                 route: 'MyOrders',
@@ -39,7 +42,7 @@ const Sidebar = (props) => {
         ];
         break;
 
-        case 2:
+        case Views.VENDOR:
         routes = [
             { 
                 route: 'VendorHome',
@@ -83,7 +86,7 @@ const Sidebar = (props) => {
                     );
                 }}
             />
-            <ListItem key={routes.length} noBorder button onPress={() => props.screenProps.setView(0)}>
+            <ListItem key={routes.length} noBorder button onPress={() => firebase.auth().signOut()}>
                 <Text style={styles.light}>Log Out</Text>
             </ListItem>
             <View style={styles.row}>
