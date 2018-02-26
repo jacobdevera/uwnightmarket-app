@@ -30,40 +30,6 @@ class VendorList extends Component {
     }
     /*let items = [
         {
-            name: 'Baguette Box',
-            desc: 'Specializing in western Chinese fare',
-            img: require('../../img/bubble-tea.jpg'),
-            menu: [
-                { 
-                    name: 'Cumin Beef Sandwich',
-                    price: 3
-                },
-                { 
-                    name: 'Cold Rice Noodles',
-                    price: 5
-                },
-                { 
-                    name: 'Grilled Squid',
-                    price: 7
-                }
-            ]
-        },
-        {
-            name: 'BeanFish',
-            desc: "Seattle's only mobile taiyaki (鯛焼き) artisans",
-            img: require('../../img/fish-tofu.jpg'),
-            menu: [
-                { 
-                    name: 'Jiro Taiyaki',
-                    price: 6
-                },
-                { 
-                    name: 'Kpop Taiyaki',
-                    price: 7
-                }
-            ]
-        },
-        {
             name: 'Capuli Club Sips & Treats',
             desc: 'Artisanal fruit snacks made in Seattle',
             img: require('../../img/bbq-pork-buns.jpg'),
@@ -86,7 +52,7 @@ class VendorList extends Component {
     render() {
         return (
             <Container>
-                <AppHeader navigation={this.props.navigation}>
+                <AppHeader navigation={this.props.navigation} right={<Button transparent><Icon name='funnel' /></Button>}>
                     Vendors / Food
                 </AppHeader>
                 <Content style={styles.paddedContainer}>
