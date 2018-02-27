@@ -1,19 +1,61 @@
 import React, { Component } from 'react';
-import { Image, View } from 'react-native';
-import { Button, Container, Content, Card, CardItem, Body, Text, Icon, Left, Right, Thumbnail, List, ListItem } from 'native-base';
+import { Image, View, Modal, StyleSheet, FlatList } from 'react-native';
+import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon, Left, Right, Thumbnail, List, ListItem } from 'native-base';
 import { StackNavigator } from "react-navigation";
-
 
 import { AppHeader, StackHeader } from '../components';
 import { Spinner } from '../components/common';
 import styles from '../styles';
 import firebase from 'firebase'
 
+const modalStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0,0,0,0.3)'
+    },
+    innerContainer: {
+        margin: 16,
+        padding: 16,
+        backgroundColor: 'white'
+    },
+});
+
 class VendorList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            vendors: []
+            vendors: [],
+            filters: [{
+                name: 'food',
+                active: false
+            },{
+                name: 'beverage',
+                active: false
+            },{
+                name: 'hot',
+                active: false
+            },{
+                name: 'cold',
+                active: false
+            },{
+                name: 'savory',
+                active: false
+            },{
+                name: 'sweet',
+                active: false
+            },{
+                name: 'spicy',
+                active: false
+            },{
+                name: 'available',
+                active: false
+            }],
+            modalVisible: false
         }
     }
     
@@ -28,34 +70,63 @@ class VendorList extends Component {
             this.setState({ vendors: vendorList });
         });
     }
-    /*let items = [
-        {
-            name: 'Capuli Club Sips & Treats',
-            desc: 'Artisanal fruit snacks made in Seattle',
-            img: require('../../img/bbq-pork-buns.jpg'),
-            menu: [
-                { 
-                    name: 'BBQ Pork Buns',
-                    price: 5
-                },
-                { 
-                    name: 'Fish Tofu',
-                    price: 4
-                },
-                { 
-                    name: 'Taiwanese Sausage',
-                    price: 3
-                }
-            ]
-        }
-    ];*/
+
+    modalOpen() { this.setState({ modalVisible: true }); }
+    modalClose() { this.setState({ modalVisible: false }); }
+
+    toggleFilter = (index) => {
+        let newFilters = this.state.filters.slice();
+        newFilters[index].active = !newFilters[index].active;
+        this.setState({ filters: newFilters });
+    }
+
     render() {
         return (
             <Container>
-                <AppHeader navigation={this.props.navigation} right={<Button transparent><Icon name='funnel' /></Button>}>
+                <AppHeader 
+                    navigation={this.props.navigation} 
+                    right={<Button transparent onPress={() => this.modalOpen()}><Icon name='funnel' /></Button>}
+                >
                     Vendors / Food
                 </AppHeader>
+                
                 <Content style={styles.paddedContainer}>
+                    <Modal
+                        transparent={true}
+                        visible={this.state.modalVisible}
+                        animationType={'fade'}
+                        onRequestClose={() => this.modalClose()}
+                    >
+                        <View style={modalStyles.modalContainer}>
+                            <View style={modalStyles.innerContainer}>
+                                <Text style={[styles.bold, styles.cardH1]}>Filters</Text>
+                                <FlatList
+                                    data={this.state.filters}
+                                    extraData={this.state}
+                                    keyExtractor={ item => item.name }
+                                    renderItem={({ item, index }) => {
+                                        return (
+                                            <ListItem>
+                                                <CheckBox 
+                                                    checked={item.active} 
+                                                    onPress={() => this.toggleFilter(index)} />
+                                                <Body>
+                                                    <Text>{item.name}</Text>
+                                                </Body>
+                                            </ListItem>
+                                        );
+                                    }}
+                                />
+                                <View style={styles.row}>
+                                    <Button
+                                        onPress={() => this.modalClose()}
+                                    >
+                                        <Text>Close</Text>
+                                    </Button>
+                                </View>
+                            </View>
+                        </View>
+                    </Modal>
                     {this.state.vendors ?
                         <List
                             dataArray={this.state.vendors}
