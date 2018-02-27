@@ -18,8 +18,8 @@ export default styles = StyleSheet.create({
         padding: 16
     },
     listImage: {
-        height: 100,
-        width: 100
+        height: 125,
+        width: 125
     },
     column: {
         flex: 1,
