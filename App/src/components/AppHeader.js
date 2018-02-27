@@ -5,6 +5,7 @@ import { Header, Left, Button, Icon, Right, Body, Text, Title } from 'native-bas
 const AppHeader = (props) => {
     return (
         <Header>
+            {props.left ? props.left :
             <Left>
                 <Button transparent
                     onPress={() => props.navigation.navigate("DrawerOpen")}
@@ -12,6 +13,7 @@ const AppHeader = (props) => {
                     <Icon name='menu' />
                 </Button>
             </Left>
+            }
             <Body>
                 <Title>{props.children}</Title>
             </Body>

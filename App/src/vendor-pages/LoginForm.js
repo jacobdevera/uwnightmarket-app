@@ -1,19 +1,26 @@
 import React, { Component } from 'react';
-import { Text } from 'react-native';
+import { View } from 'react-native';
 import firebase from 'firebase';
 
-import { Button, Card, CardSection, Input, Spinner } from '../components/common';
+import { Container, Content, Left, Icon, Button, Text } from 'native-base';
+import { Card, CardSection, Input, Spinner } from '../components/common';
+import { AppHeader } from '../components';
+import { Views } from '../App';
+import styles from '../styles';
 
 class LoginForm extends Component {
-  state = { email: '', password: '', error: '', loading: false };
+  constructor(props) {
+    super(props);
+    this.state = { email: '', password: '', error: '', loading: false };
+  }
 
-  onButtonPress() {
+  onButtonPress = () => {
     const { email, password } = this.state;
 
     this.setState({ error: '', loading: true });
 
     firebase.auth().signInWithEmailAndPassword(email, password)
-      .then(this.onLoginSuccess.bind(this))
+      .then()//this.onLoginSuccess.bind(this))
       .catch(() => {
         firebase.auth().createUserWithEmailAndPassword(email, password)
           .then((user) => this.props.addUserToDatabase(user))
@@ -41,52 +48,57 @@ class LoginForm extends Component {
     }
 
     return (
-      <Button onPress={this.onButtonPress.bind(this)}>
-        Log in
-      </Button>
+      <View style={styles.row}>
+        <Button onPress={() => this.onButtonPress()}>
+          <Text>Log in</Text>
+        </Button>
+      </View>
     );
   }
 
   render() {
     return (
-      <Card>
-        <CardSection>
-          <Input
-            placeholder="user@gmail.com"
-            label="Email"
-            value={this.state.email}
-            onChangeText={email => this.setState({ email })}
-          />
-        </CardSection>
+      <Container>
+        <AppHeader 
+          left={<Left>
+              <Button transparent
+                onPress={() => this.props.setView(Views.INITIAL)}
+              >
+                <Icon name='arrow-back' />
+              </Button>
+          </Left>}
+        > 
+          Log In
+        </AppHeader>
+        <Content>
+          <Card>
+            <CardSection>
+              <Input
+                placeholder="user@gmail.com"
+                label="Email"
+                value={this.state.email}
+                onChangeText={email => this.setState({ email })}
+              />
+            </CardSection>
 
-        <CardSection>
-          <Input
-            secureTextEntry
-            placeholder="password"
-            label="Password"
-            value={this.state.password}
-            onChangeText={password => this.setState({ password })}
-          />
-        </CardSection>
-
-        <Text style={styles.errorTextStyle}>
-          {this.state.error}
-        </Text>
-
-        <CardSection>
+            <CardSection>
+              <Input
+                secureTextEntry
+                placeholder="password"
+                label="Password"
+                value={this.state.password}
+                onChangeText={password => this.setState({ password })}
+              />
+            </CardSection>
+          </Card>
+          <Text style={styles.errorTextStyle}>
+              {this.state.error}
+          </Text>
           {this.renderButton()}
-        </CardSection>
-      </Card>
+        </Content>
+      </Container>
     );
   }
 }
-
-const styles = {
-  errorTextStyle: {
-    fontSize: 20,
-    alignSelf: 'center',
-    color: 'red'
-  }
-};
 
 export default LoginForm;

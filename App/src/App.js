@@ -58,15 +58,18 @@ export default class App extends Component {
             menu: [
                 { 
                     name: '',
-                    price: 0
+                    price: 0,
+                    traits: ['food']
                 },
                 { 
                     name: '',
-                    price: 0
+                    price: 0,
+                    traits: ['food']
                 },
                 { 
                     name: '',
-                    price: 7
+                    price: 7,
+                    traits: ['food']
                 }
             ]
         }
@@ -87,7 +90,7 @@ export default class App extends Component {
                 {this.state.view === 0 ?
                 <LandingPage setView={this.setView} /> : this.state.view === Views.ATTENDEE ?
                 <AttendeeDrawerNav screenProps={{ state: this.state, setView: this.setView }} /> : this.state.view === Views.LOGIN ?
-                <LoginForm addUserToDatabase={this.addUserToDatabase}/> :
+                <LoginForm setView={this.setView} addUserToDatabase={this.addUserToDatabase}/> :
                 <VendorDrawerNav screenProps={{ state: this.state, setView: this.setView }} />}
             </Container>
             </StyleProvider>
