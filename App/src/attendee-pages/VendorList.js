@@ -100,34 +100,39 @@ export default class VendorList extends Component {
         this.setState({ filteredVendors: newVendors, filters: newFilters });
     }
 
-    sortByBoothNumber = () => {
-        let sortedVendors = this.state.filteredVendors.sort((a, b) => {
-            let boothA = a.boothNumber;
-            let boothB = b.boothNumber;
-            if (boothA < boothB) {
-                return -1;
+    sort = (type) => {
+        let sortToPerform;
+        switch (type) {
+            case 'number': 
+            sortToPerform = (a, b) => {
+                let boothA = a.boothNumber;
+                let boothB = b.boothNumber;
+                if (boothA < boothB) {
+                    return -1;
+                }
+                if (boothA > boothB) {
+                    return 1;
+                }
+                return 0;
             }
-            if (boothA > boothB) {
-                return 1;
-            }
-            return 0;
-        });
-        this.setState({ filteredVendors: sortedVendors, sort: 'number' });
-    }
+            break;
 
-    sortByName = () => {
-        let sortedVendors = this.state.filteredVendors.sort((a, b) => {
-            let nameA = a.name.toLowerCase();
-            let nameB = b.name.toLowerCase();
-            if (nameA < nameB) {
-                return -1;
+            case 'name':
+            sortToPerform = (a, b) => {
+                let nameA = a.name.toLowerCase();
+                let nameB = b.name.toLowerCase();
+                if (nameA < nameB) {
+                    return -1;
+                }
+                if (nameA > nameB) {
+                    return 1;
+                }
+                return 0;
             }
-            if (nameA > nameB) {
-                return 1;
-            }
-            return 0;
-        });
-        this.setState({ filteredVendors: sortedVendors, sort: 'name' });
+            break;
+        }
+        let sortedVendors = this.state.filteredVendors.sort(sortToPerform);
+        this.setState({ filteredVendors: sortedVendors, sort: type });
     }
 
     render() {
@@ -152,13 +157,13 @@ export default class VendorList extends Component {
                                 <ListItem itemDivider>
                                     <Text style={[styles.bold, styles.cardH1]}>Sort</Text>
                                 </ListItem>
-                                    <ListItem onPress={() => this.sortByBoothNumber()}>
+                                    <ListItem onPress={() => this.sort('number')}>
                                         <Text>Booth Number</Text>
                                         <Right>
                                         <Radio selected={this.state.sort === 'number'} />
                                         </Right>
                                     </ListItem>
-                                    <ListItem onPress={() => this.sortByName()}>
+                                    <ListItem onPress={() => this.sort('name')}>
                                         <Text>Name</Text>
                                         <Right>
                                         <Radio selected={this.state.sort === 'name'} />
