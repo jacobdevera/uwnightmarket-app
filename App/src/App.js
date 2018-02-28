@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StatusBar } from 'react-native';
 import { DrawerNavigator } from "react-navigation";
-import { Container, Drawer, StyleProvider } from 'native-base';
+import { Container, Drawer, StyleProvider, Root } from 'native-base';
 import getTheme from './native-base-theme/components';
 import commonColor from './native-base-theme/variables/commonColor';
 
@@ -86,13 +86,15 @@ export default class App extends Component {
     render() {
     return (
             <StyleProvider style={getTheme(commonColor)}>
-            <Container>
-                {this.state.view === 0 ?
-                <LandingPage setView={this.setView} /> : this.state.view === Views.ATTENDEE ?
-                <AttendeeDrawerNav screenProps={{ state: this.state, setView: this.setView }} /> : this.state.view === Views.LOGIN ?
-                <LoginForm setView={this.setView} addUserToDatabase={this.addUserToDatabase}/> :
-                <VendorDrawerNav screenProps={{ state: this.state, setView: this.setView }} />}
-            </Container>
+                <Root>
+                    <Container>
+                        {this.state.view === 0 ?
+                        <LandingPage setView={this.setView} /> : this.state.view === Views.ATTENDEE ?
+                        <AttendeeDrawerNav screenProps={{ state: this.state, setView: this.setView }} /> : this.state.view === Views.LOGIN ?
+                        <LoginForm setView={this.setView} addUserToDatabase={this.addUserToDatabase}/> :
+                        <VendorDrawerNav screenProps={{ state: this.state, setView: this.setView }} />}
+                    </Container>
+                </Root>
             </StyleProvider>
         );
     }
