@@ -37,13 +37,12 @@ export default class VendorFood extends Component {
     }
 
     submitOrder = () => {
+        let orderRef = firebase.database().ref('orders/' + this.state.vendor.userId);
         let orderData = {
             userId: firebase.auth().currentUser.uid,
             time: firebase.database.ServerValue.TIMESTAMP,
             items: this.state.order
         }
-
-        let orderRef = firebase.database().ref('orders/' + this.state.vendor.userId);
         orderRef.push(orderData)
             .then((response) => {
                 this.props.navigation.goBack();
@@ -67,16 +66,17 @@ export default class VendorFood extends Component {
                 </StackHeader>
                 <Content style={styles.paddedContainer}>
                     {vendor &&
-                        <List
-                            key={'quantity ' + totalQuantity}
-                            dataArray={vendor.menu}
-                            renderRow={(item, sectionID, rowID) => {
+                        <FlatList
+                            data={vendor.menu}
+                            extraData={this.state}
+                            keyExtractor={ item => item.name }
+                            renderItem={({item, index}) => {
                                 return (
                                         <ListItem>
                                             <Left>
-                                                <Button onPress={() => this.updateQuantity(rowID, false)}><Text>-</Text></Button>
-                                                <Text>{order[rowID].quantity}</Text>
-                                                <Button onPress={() => this.updateQuantity(rowID, true)}><Text>+</Text></Button>
+                                                <Button onPress={() => this.updateQuantity(index, false)}><Text>-</Text></Button>
+                                                <Text>{order[index].quantity}</Text>
+                                                <Button onPress={() => this.updateQuantity(index, true)}><Text>+</Text></Button>
                                             </Left>
                                             <Body>
                                                 <Text>{item.name}</Text>

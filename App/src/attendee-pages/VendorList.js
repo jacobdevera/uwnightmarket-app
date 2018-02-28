@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Image, View, Modal, StyleSheet, FlatList } from 'react-native';
-import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon, Left, Right, Thumbnail, List, ListItem } from 'native-base';
+import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon, Left, Right, Thumbnail, List, ListItem, Radio } from 'native-base';
 import { StackNavigator } from "react-navigation";
 import firebase from 'firebase'
 
@@ -20,7 +20,6 @@ const modalStyles = StyleSheet.create({
     },
     innerContainer: {
         margin: 16,
-        padding: 16,
         backgroundColor: 'white'
     },
 });
@@ -56,7 +55,8 @@ export default class VendorList extends Component {
                 name: 'available',
                 active: false
             }],
-            modalVisible: false
+            modalVisible: false,
+            sort: 'number'
         }
     }
     
@@ -96,8 +96,38 @@ export default class VendorList extends Component {
                 return satisfiesFilters;
             });
         }
-        
+
         this.setState({ filteredVendors: newVendors, filters: newFilters });
+    }
+
+    sortByBoothNumber = () => {
+        let sortedVendors = this.state.filteredVendors.sort((a, b) => {
+            let boothA = a.boothNumber;
+            let boothB = b.boothNumber;
+            if (boothA < boothB) {
+                return -1;
+            }
+            if (boothA > boothB) {
+                return 1;
+            }
+            return 0;
+        });
+        this.setState({ filteredVendors: sortedVendors, sort: 'number' });
+    }
+
+    sortByName = () => {
+        let sortedVendors = this.state.filteredVendors.sort((a, b) => {
+            let nameA = a.name.toLowerCase();
+            let nameB = b.name.toLowerCase();
+            if (nameA < nameB) {
+                return -1;
+            }
+            if (nameA > nameB) {
+                return 1;
+            }
+            return 0;
+        });
+        this.setState({ filteredVendors: sortedVendors, sort: 'name' });
     }
 
     render() {
@@ -119,7 +149,24 @@ export default class VendorList extends Component {
                     >
                         <View style={modalStyles.modalContainer}>
                             <View style={modalStyles.innerContainer}>
-                                <Text style={[styles.bold, styles.cardH1]}>Filters</Text>
+                                <ListItem itemDivider>
+                                    <Text style={[styles.bold, styles.cardH1]}>Sort</Text>
+                                </ListItem>
+                                    <ListItem onPress={() => this.sortByBoothNumber()}>
+                                        <Text>Booth Number</Text>
+                                        <Right>
+                                        <Radio selected={this.state.sort === 'number'} />
+                                        </Right>
+                                    </ListItem>
+                                    <ListItem onPress={() => this.sortByName()}>
+                                        <Text>Name</Text>
+                                        <Right>
+                                        <Radio selected={this.state.sort === 'name'} />
+                                        </Right>
+                                    </ListItem>
+                                <ListItem itemDivider>
+                                    <Text style={[styles.bold, styles.cardH1]}>Filter</Text>
+                                </ListItem>
                                 <FlatList
                                     data={this.state.filters}
                                     extraData={this.state}
@@ -158,25 +205,25 @@ export default class VendorList extends Component {
                                 item.menu.forEach((food) => foodNames.push(food.name));
                                 return (
                                     <Card>
-                                    <CardItem 
-                                        button onPress={() => { this.props.navigation.navigate('VendorFood', {
-                                                vendor: item
-                                            }); 
-                                        }}
-                                    >
-                                        <Left>
-                                            <Thumbnail
-                                                square
-                                                style={styles.listImage}
-                                                source={{ uri: item.img }}
-                                            />
-                                        </Left>
-                                        <Body>
-                                            <Text style={ [styles.header, styles.cardH1] }>{item.name}</Text>
-                                            <Text style={ [styles.desc] }>{item.desc}</Text>
-                                            <Text style={styles.bold}>Menu: <Text style={styles.menuItem}>{foodNames.join(', ')}</Text></Text>
-                                        </Body>
-                                    </CardItem>
+                                        <CardItem 
+                                            button onPress={() => { this.props.navigation.navigate('VendorFood', {
+                                                    vendor: item
+                                                }); 
+                                            }}
+                                        >
+                                            <Left>
+                                                <Thumbnail
+                                                    square
+                                                    style={styles.listImage}
+                                                    source={{ uri: item.img }}
+                                                />
+                                            </Left>
+                                            <Body>
+                                                <Text style={ [styles.header, styles.cardH1] }>{item.name}</Text>
+                                                <Text style={ [styles.desc] }>{item.desc}</Text>
+                                                <Text style={styles.bold}>Menu: <Text style={styles.menuItem}>{foodNames.join(', ')}</Text></Text>
+                                            </Body>
+                                        </CardItem>
                                     </Card>
                                 )
                             }}
