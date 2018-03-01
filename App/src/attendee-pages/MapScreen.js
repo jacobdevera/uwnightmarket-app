@@ -173,8 +173,8 @@ export default class MapScreen extends Component {
               <MapView.Marker key={index} coordinate={marker.coordinate} 
               onPress={e => {
                   console.log(e.nativeEvent);
-                  this.centerMarker(index);
-            }
+                  // breaks tapping header -> this.centerMarker(index);
+                }
               }>
               
                 {/* <Animated.View style={[styles.markerWrap, opacityStyle]}> */}
@@ -236,7 +236,7 @@ export default class MapScreen extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
   scrollView: {
     position: "absolute",
