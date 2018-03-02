@@ -20,7 +20,9 @@ export default styles = StyleSheet.create({
         color: '#fff'
     },
     paddedContainer: {
-        padding: 16
+        paddingLeft: 16,
+        paddingRight: 16,
+        backgroundColor: 'white'
     },
     listImage: {
         height: 125,
@@ -37,6 +39,12 @@ export default styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-around',
+        padding: 20
+    },
+    rowSpaceBetween: {
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         padding: 20
     },
     desc: {
@@ -74,5 +82,12 @@ export default styles = StyleSheet.create({
     },
     iconWhite: {
         color: 'white'
+    },
+    fullWidth: {
+        width: '100%'
+    },
+    section: {
+        marginTop: 8,
+        marginBottom: 8
     }
 });

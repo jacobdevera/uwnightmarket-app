@@ -54,17 +54,17 @@ const Merchandise = (props) => {
             <AppHeader navigation={props.navigation}>
                 Merchandise
             </AppHeader>
-            <Content>
-                <View style={styles.paddedContainer}>
+            <Content contentContainerStyle={styles.paddedContainer}>
+                <View style={styles.section}>
                     <Text>Night Market T-shirts and pins are exclusively sold at the info booth
                         (next to Odegaard Library)! Come while supplies last!
                     </Text>
                 </View>
-                <View style={styles.paddedContainer}>
+                <View style={styles.section}>
                     <Text style={ [styles.header, styles.h1] }>T-Shirts</Text>
                     {list(shirts)}
                 </View>
-                <View style={styles.paddedContainer}>
+                <View style={styles.section}>
                     <Text style={ [styles.header, styles.h1] }>Pins</Text>
                     {list(pins)}
                 </View>
