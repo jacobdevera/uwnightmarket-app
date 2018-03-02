@@ -8,7 +8,7 @@ import commonColor from './native-base-theme/variables/commonColor';
 import { AttendeeDrawerNav, VendorDrawerNav } from './routes';
 import { AppHeader, Sidebar } from './components';
 import { LandingPage } from './LandingPage';
-import LoginForm from './vendor-pages/LoginForm';
+import { LoginForm } from './vendor-pages';
 
 import firebase from 'firebase';
 

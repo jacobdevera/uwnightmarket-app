@@ -48,7 +48,14 @@ class Sidebar extends Component {
                     text: 'Could not sign out',
                     position: 'bottom'
                 });
-            })
+            });
+        } else {
+            firebase.auth().signOut().catch((error) => {
+                Toast.show({
+                    text: 'Could not sign out',
+                    position: 'bottom'
+                });
+            });
         }
     }
 

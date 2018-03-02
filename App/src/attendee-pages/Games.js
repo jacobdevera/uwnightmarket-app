@@ -32,11 +32,11 @@ const Games = (props) => {
             <AppHeader navigation={props.navigation}>
                 Games
             </AppHeader>
-            <Content>
-                <View style={styles.paddedContainer}>
+            <Content contentContainerStyle={styles.paddedContainer}>
+                <View style={styles.section}>
                     <Text>Visit the Quad to play some traditional Taiwanese night market games!</Text>
                 </View>
-                <View style={styles.paddedContainer}>
+                <View style={styles.section}>
                     <Text style={ [styles.header, styles.h1] }>Games Available</Text>
                     <List
                         dataArray={items}

@@ -2,6 +2,7 @@ import React from "react";
 import { DrawerNavigator } from "react-navigation";
 
 import { MyOrders, VendorNavigator, Map, Games, Merchandise, EventInfo, Donate } from "./attendee-pages";
+import { VendorHome } from "./vendor-pages";
 import { Sidebar } from "./components";
 
 const AttendeeDrawerNav = DrawerNavigator(
@@ -21,7 +22,7 @@ const AttendeeDrawerNav = DrawerNavigator(
 
 const VendorDrawerNav = DrawerNavigator(
     { // TODO: Make vendor routes
-        MyOrders: { screen: MyOrders },
+        VendorHome: { screen: VendorHome },
         VendorsFood: { screen: VendorNavigator },
         Map: { screen: Map },
         Games: { screen: Games },
