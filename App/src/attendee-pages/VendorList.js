@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
 import { Image, View, Modal, StyleSheet, FlatList } from 'react-native';
-import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon, Left, Right, Thumbnail, List, ListItem, Radio } from 'native-base';
+import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon, Left, Right, Thumbnail, List, ListItem, Radio, Badge } from 'native-base';
 import { StackNavigator } from "react-navigation";
 import firebase from 'firebase'
 
 import { AppHeader, StackHeader } from '../components';
 import { Spinner } from '../components/common';
-import styles from '../styles';
+import styles, { config } from '../styles';
 
 const modalStyles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-    },
     modalContainer: {
         flex: 1,
         justifyContent: 'center',
@@ -224,7 +220,12 @@ export default class VendorList extends Component {
                                                 />
                                             </Left>
                                             <Body>
-                                                <Text style={ [styles.header, styles.cardH1] }>{item.name}</Text>
+                                                <View style={styles.rowSmall}>
+                                                    <Badge style={{ backgroundColor: config.colorPrimary, marginRight: 8}}>
+                                                        <Text>{item.boothNumber}</Text>
+                                                    </Badge>
+                                                    <Text style={ [styles.header, styles.cardH1] }>{item.name}</Text>
+                                                </View>
                                                 <Text style={ [styles.desc] }>{item.desc}</Text>
                                                 <Text style={styles.bold}>Menu: <Text style={styles.menuItem}>{foodNames.join(', ')}</Text></Text>
                                             </Body>
