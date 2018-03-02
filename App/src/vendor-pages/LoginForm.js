@@ -77,6 +77,7 @@ class LoginForm extends Component {
                 placeholder="user@gmail.com"
                 label="Email"
                 value={this.state.email}
+                autoCapitalize='none'
                 onChangeText={email => this.setState({ email })}
               />
             </CardSection>
