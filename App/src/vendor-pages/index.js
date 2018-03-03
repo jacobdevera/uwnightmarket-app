@@ -1,4 +1,4 @@
 export * from './LoginForm';
 export * from './VendorHome';
 
-console.disableYellowBox = true;
+// console.disableYellowBox = true;
