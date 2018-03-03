@@ -37,7 +37,7 @@ export default styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'space-around',
         alignItems: 'center',
-        padding: 32
+        padding: 16
     },
     row: {
         width: '100%',
