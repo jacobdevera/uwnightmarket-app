@@ -21,9 +21,9 @@ class MyOrders extends Component {
                     'Authorization': 'Bearer ' + token
                 }
             }).then((response) => {
-                    return response.json();
+                return response.json();
             }).then((data) => {
-                    console.log(data);
+                this.setState({ orders: data})
             });
         }).catch(function (err) {
             console.error(err);
@@ -32,17 +32,24 @@ class MyOrders extends Component {
     }
 
     render() {
+        orderlist = this.state.orders.map((order) => {
+
+        });
         return (
             <Container>
                 <AppHeader navigation={this.props.navigation}>
                     My Orders
                 </AppHeader>
-                <View style={styles.column}>
-                    <Text>You have no active orders right now.</Text>
-                    <Button style={{ alignSelf: 'center' }} onPress={() => this.props.navigation.navigate('VendorNavigator')}>
-                        <Text>Order Now</Text>
-                    </Button>
-                </View>
+                <Content>
+                    {//this.state.orders ? orderList : 
+                    <View style={[styles.column]}> 
+                        <Text style={styles.section}>You have no active orders right now.</Text>
+                        <Button style={[{ alignSelf: 'center' }, styles.section]} onPress={() => this.props.navigation.navigate('VendorNavigator')}>
+                            <Text>Order Now</Text>
+                        </Button>
+                    </View>
+                    }
+                </Content>
             </Container>);
     }
 }
