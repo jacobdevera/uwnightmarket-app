@@ -57,7 +57,7 @@ export default class VendorList extends Component {
     }
     
     componentDidMount() {
-        let vendorRef = firebase.database().ref('/users').orderByKey();
+        let vendorRef = firebase.database().ref('/vendors/').orderByKey();
         vendorRef.once('value').then((snapshot) => {
             let vendorList = [];
             snapshot.forEach((vendorSnapshot) => {
