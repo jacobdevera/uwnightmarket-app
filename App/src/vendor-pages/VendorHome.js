@@ -13,7 +13,7 @@ class VendorHome extends Component {
     }
 
     componentDidMount() {
-        let vendorRef = firebase.database().ref('users/' + firebase.auth().currentUser.uid);
+        let vendorRef = firebase.database().ref('/vendors/' + firebase.auth().currentUser.uid);
         vendorRef.once('value').then((snapshot) => {
             let vendorObj = snapshot.val();
             this.setState({ vendor: vendorObj });
