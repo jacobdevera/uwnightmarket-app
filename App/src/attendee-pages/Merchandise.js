@@ -27,28 +27,22 @@ const Merchandise = (props) => {
         }
     ];
 
-    const list = (items) => {
+    let listItems = (items) => { return items.map((data, index) => {
         return (
-            <List
-                dataArray={items}
-                renderRow={(data) => {
-                    return (
-                        <Card>
-                            <CardItem>
-                                <Thumbnail
-                                    square
-                                    style={styles.listImage}
-                                    source={data.img}
-                                />
-                            </CardItem>
-                            <CardItem><Text style={ [styles.menuItem] }>Color: {data.color}</Text></CardItem>
-                            <CardItem><Text style={ [styles.menuItem] }>Price: {data.price.join(', ')}</Text></CardItem>
-                        </Card>
-                    )
-                }}
-            />
-        );
+            <Card key={index}>
+                <CardItem>
+                    <Thumbnail
+                        square
+                        style={styles.listImage}
+                        source={data.img}
+                    />
+                </CardItem>
+                <CardItem><Text style={ [styles.menuItem] }>Color: {data.color}</Text></CardItem>
+                <CardItem><Text style={ [styles.menuItem] }>Price: {data.price.join(', ')}</Text></CardItem>
+            </Card>)
+        })
     }
+    
     return (
         <Container>
             <AppHeader navigation={props.navigation}>
@@ -62,11 +56,11 @@ const Merchandise = (props) => {
                 </View>
                 <View style={styles.section}>
                     <Text style={ [styles.header, styles.h1] }>T-Shirts</Text>
-                    {list(shirts)}
+                    <View style={styles.row}>{listItems(shirts)}</View>
                 </View>
                 <View style={styles.section}>
                     <Text style={ [styles.header, styles.h1] }>Pins</Text>
-                    {list(pins)}
+                    <View style={styles.row}>{listItems(pins)}</View>
                 </View>
             </Content>
         </Container>);

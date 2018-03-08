@@ -1,5 +1,9 @@
 import { StyleSheet } from "react-native";
 
+export const config = {
+    colorPrimary: '#d94d5d'
+}
+
 export default styles = StyleSheet.create({
     errorTextStyle: {
         fontSize: 20,
@@ -14,7 +18,7 @@ export default styles = StyleSheet.create({
     },
     sideBar: {
         paddingTop: 20,
-        backgroundColor: "#d94d5d"
+        backgroundColor: config.colorPrimary
     },
     light: {
         color: '#fff'
@@ -33,7 +37,7 @@ export default styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'space-around',
         alignItems: 'center',
-        padding: 32
+        padding: 16
     },
     row: {
         width: '100%',
@@ -46,6 +50,12 @@ export default styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         padding: 20
+    },
+    rowSmall: {
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center'
     },
     desc: {
         fontStyle: 'italic',
