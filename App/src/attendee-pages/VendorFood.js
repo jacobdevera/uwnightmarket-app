@@ -49,16 +49,24 @@ export default class VendorFood extends Component {
     }
 
     submitOrder = () => {
-        let orderRef = firebase.database().ref('orders/' + this.state.vendor.userId);
+        let newOrderKey = firebase.database().ref().child('orders').push().key;
+        let userId = firebase.auth().currentUser.uid;
         let orderData = {
-            userId: firebase.auth().currentUser.uid,
+            vendorId: this.state.vendor.userId,
+            userId: userId,
             time: firebase.database.ServerValue.TIMESTAMP,
             items: this.state.order
         }
-        orderRef.push(orderData)
-            .then((response) => {
-                this.props.navigation.goBack();
-            })
+
+        let updates = {};
+        updates['/orders/' + newOrderKey] = orderData;
+        updates['/user-orders/' + userId + '/' + newOrderKey] = true; 
+        updates['/vendor-orders/' + this.state.vendor.userId + '/' + newOrderKey] = true;
+        
+        firebase.database().ref().update(updates).then((response) => {
+            this.props.navigation.goBack();
+        });
+
     }
 
     

@@ -23,7 +23,7 @@ export default class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            view: 0, // 0 = neither, 1 = login, 2 = attendee, 3 = vendor
+            view: 0,
             loggedIn: null
         };
     }
@@ -74,7 +74,7 @@ export default class App extends Component {
             ]
         }
 
-        let newUserRef = firebase.database().ref('users/' + user.uid);
+        let newUserRef = firebase.database().ref('/vendors/' + user.uid);
         newUserRef.set(userData);
     }
 
