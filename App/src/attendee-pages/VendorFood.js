@@ -26,6 +26,7 @@ export default class VendorFood extends Component {
         vendor.menu.forEach((item, index) => {
             order[index] = { name: item.name, price: item.price, quantity: 0};
         })
+
         this.setState({ vendor: vendor, order: order });
     }
 
@@ -58,7 +59,6 @@ export default class VendorFood extends Component {
             .then((response) => {
                 this.props.navigation.goBack();
             })
-
     }
 
     
