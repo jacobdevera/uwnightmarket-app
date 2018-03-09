@@ -38,10 +38,12 @@ class Sidebar extends Component {
         this.setState({ routes: routes });
     }
 
-    handleSignOut = () => {
+    handleSignOut = async () => {
         let user = firebase.auth().currentUser;
         if (user.isAnonymous) {
-            this.deleteUserOrders(user);
+            if (await this.deleteUserOrders(user)) {
+                user.delete();
+            }
         } else {
             firebase.auth().signOut().catch((error) => {
                 this.signOutError(error);
@@ -52,25 +54,29 @@ class Sidebar extends Component {
     deleteUserOrders = (user) => {
         let updates = {};
         let orderRef = firebase.database().ref(`/user-orders/${user.uid}`).orderByKey();
-        orderRef.once('value').then((snapshot) => {
-            if (snapshot.val()) {
-                let promises = [];
-                Object.keys(snapshot.val()).forEach((key) => {
-                    promises.push(firebase.database().ref(`/orders/${key}`).once('value').then((orderSnapshot) => {
-                        let order = orderSnapshot.val();
-                        updates[`/user-orders/${order.userId}/${key}`] = null;
-                        updates[`/vendor-orders/${order.vendorId}/${key}`] = null;
-                        updates[`/orders/${key}`] = null;
-                    }))
-                })
-                Promise.all(promises).then((responses) => {
-                    firebase.database().ref().update(updates).then((response) => {
-                        user.delete();
-                    }).catch((error) => this.signOutError(error))
-                })
-            }
-        }).catch((error) => {
-            this.signOutError(error);
+        return new Promise((resolve) => {
+            orderRef.once('value').then((snapshot) => {
+                if (snapshot.val()) {
+                    let promises = [];
+                    Object.keys(snapshot.val()).forEach((key) => {
+                        promises.push(firebase.database().ref(`/orders/${key}`).once('value').then((orderSnapshot) => {
+                            let order = orderSnapshot.val();
+                            updates[`/user-orders/${order.userId}/${key}`] = null;
+                            updates[`/vendor-orders/${order.vendorId}/${key}`] = null;
+                            updates[`/orders/${key}`] = null;
+                        }))
+                    })
+                    Promise.all(promises).then((responses) => {
+                        firebase.database().ref().update(updates).then((response) => {
+                            resolve(true);
+                        }).catch((error) => this.signOutError(error))
+                    })
+                } else { 
+                    resolve(true);
+                }
+            }).catch((error) => {
+                this.signOutError(error);
+            });
         });
     }
 
@@ -79,6 +85,7 @@ class Sidebar extends Component {
             text: `Could not sign out: ${error}`,
             position: 'bottom'
         });
+        throw new Error(error);
     }
 
     render() {
