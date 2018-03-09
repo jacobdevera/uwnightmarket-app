@@ -13,32 +13,31 @@ class MyOrders extends Component {
     }
 
     componentDidMount() {
-        let orderRef = firebase.database().ref('/user-orders/' + firebase.auth().currentUser.uid).orderByKey();
+        let orderRef = firebase.database().ref(`/user-orders/${firebase.auth().currentUser.uid}`).orderByKey();
         orderRef.once('value').then((snapshot) => {
-            let orderList = [];
-            let promises = [];
-            Object.keys(snapshot.val()).forEach((key) => {
-                promises.push(firebase.database().ref('/orders/' + key).once('value').then((orderSnapshot) => {
-                    orderList.push(orderSnapshot.val());
-                }));
-            });
-            Promise.all(promises).then((responses) => {
-                this.setState({ orders: orderList });
-            });
+            if (snapshot.val()) {
+                let orderList = [];
+                let promises = [];
+                Object.keys(snapshot.val()).forEach((key) => {
+                    promises.push(firebase.database().ref(`/orders/${key}`).once('value').then((orderSnapshot) => {
+                        orderList.push(orderSnapshot.val());
+                    }))
+                })
+                Promise.all(promises).then((responses) => {
+                    this.setState({ orders: orderList });
+                }).catch((error) => console.log(error))
+            }
         });
-        
     }
 
     render() {
-        console.log(this.state.orders);
-        console.log(this.state.orders ? this.state.orders.length : null);
         return (
             <Container>
                 <AppHeader navigation={this.props.navigation}>
                     My Orders
                 </AppHeader>
                 <Content>
-                    {this.state.orders ? <Text>{this.state.orders.length}</Text> : 
+                    {//this.state.orders ? <Text>{this.state.orders.length}</Text> : 
                     <View style={[styles.column]}> 
                         <Text style={styles.section}>You have no active orders right now.</Text>
                         <Button style={[{ alignSelf: 'center' }, styles.section]} onPress={() => this.props.navigation.navigate('VendorNavigator')}>
