@@ -42,6 +42,10 @@ export class OrderList extends Component {
                     renderItem={({ item }) => {
                         return (
                             <Card>
+                                {!this.props.vendor ? 
+                                    <Text style={[styles.row, styles.header, styles.cardH2]}>
+                                        Vendor: {item.vendorName}
+                                    </Text> : null}
                                 <View style={styles.row}>
                                     <View style={{ flex: 20 }}>
                                         <Text style={[styles.center, styles.header, styles.cardH2]}>Order #</Text>
