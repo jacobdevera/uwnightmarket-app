@@ -19,6 +19,12 @@ export const Views = {
     VENDOR: 3
 }
 
+export const Status = {
+    READY: "READY",
+    NOT_READY: "NOT READY",
+    PICKED_UP: "PICKED UP"
+}
+
 export default class App extends Component {
     constructor(props) {
         super(props);
@@ -49,6 +55,7 @@ export default class App extends Component {
         });
     }
 
+    // will remove later
     addUserToDatabase = (user) => {
         let userData = {
             userId: user.uid,

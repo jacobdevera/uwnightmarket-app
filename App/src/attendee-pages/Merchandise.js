@@ -56,11 +56,11 @@ const Merchandise = (props) => {
                 </View>
                 <View style={styles.section}>
                     <Text style={ [styles.header, styles.h1] }>T-Shirts</Text>
-                    <View style={styles.row}>{listItems(shirts)}</View>
+                    <View style={styles.rowSmall}>{listItems(shirts)}</View>
                 </View>
                 <View style={styles.section}>
                     <Text style={ [styles.header, styles.h1] }>Pins</Text>
-                    <View style={styles.row}>{listItems(pins)}</View>
+                    <View>{listItems(pins)}</View>
                 </View>
             </Content>
         </Container>);

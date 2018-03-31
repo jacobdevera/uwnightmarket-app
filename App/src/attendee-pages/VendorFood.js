@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Image, View, Modal, StyleSheet, FlatList } from 'react-native';
 import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon, Left, Right, Thumbnail, List, ListItem, Toast } from 'native-base';
-import firebase from 'firebase'
+import firebase from 'firebase';
 
+import { Status } from '../App';
 import { AppHeader } from '../components';
 import { Spinner } from '../components/common';
 import styles from '../styles';
@@ -24,7 +25,7 @@ export default class VendorFood extends Component {
         const vendor = params ? params.vendor : null;
         let order = new Array(vendor.menu.length);
         vendor.menu.forEach((item, index) => {
-            order[index] = { name: item.name, price: item.price, quantity: 0};
+            order[index] = { name: item.name, price: item.price, quantity: 0 };
         })
 
         this.setState({ vendor: vendor, order: order });
@@ -55,7 +56,8 @@ export default class VendorFood extends Component {
             vendorId: this.state.vendor.userId,
             userId: userId,
             time: firebase.database.ServerValue.TIMESTAMP,
-            items: this.state.order
+            items: this.state.order,
+            status: Status.NOT_READY
         }
 
         let updates = {};

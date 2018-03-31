@@ -101,15 +101,7 @@ export default class VendorList extends Component {
         switch (type) {
             case 'number': 
             sortToPerform = (a, b) => {
-                let boothA = a.boothNumber;
-                let boothB = b.boothNumber;
-                if (boothA < boothB) {
-                    return -1;
-                }
-                if (boothA > boothB) {
-                    return 1;
-                }
-                return 0;
+                return a.boothNumber - b.boothNumber;
             }
             break;
 

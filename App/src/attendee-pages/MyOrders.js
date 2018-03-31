@@ -3,7 +3,7 @@ import { Image, View } from 'react-native';
 import { Button, Container, Content, H1, H2, H3, Text, FlatList, Card, CardItem, Body } from 'native-base';
 import firebase from 'firebase';
 
-import { AppHeader } from '../components';
+import { AppHeader, OrderList } from '../components';
 import styles from '../styles';
 
 class MyOrders extends Component {
@@ -36,9 +36,9 @@ class MyOrders extends Component {
                 <AppHeader navigation={this.props.navigation}>
                     My Orders
                 </AppHeader>
-                <Content>
-                    {//this.state.orders ? <Text>{this.state.orders.length}</Text> : 
-                    <View style={[styles.column]}> 
+                <Content contentContainerStyle={styles.paddedContainer}>
+                    {this.state.orders ? <OrderList orders={this.state.orders} vendor={false} /> : 
+                    <View style={[styles.column]}>
                         <Text style={styles.section}>You have no active orders right now.</Text>
                         <Button style={[{ alignSelf: 'center' }, styles.section]} onPress={() => this.props.navigation.navigate('VendorNavigator')}>
                             <Text>Order Now</Text>
