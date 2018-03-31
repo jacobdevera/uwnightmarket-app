@@ -37,7 +37,7 @@ class MyOrders extends Component {
                     My Orders
                 </AppHeader>
                 <Content contentContainerStyle={styles.paddedContainer}>
-                    {this.state.orders ? <OrderList orders={this.state.orders} vendor={false} /> : 
+                    {this.state.orders && this.state.orders.length > 0 ? <OrderList orders={this.state.orders} vendor={false} /> : 
                     <View style={[styles.column]}>
                         <Text style={styles.section}>You have no active orders right now.</Text>
                         <Button style={[{ alignSelf: 'center' }, styles.section]} onPress={() => this.props.navigation.navigate('VendorNavigator')}>
