@@ -24,7 +24,7 @@ import firebase from 'firebase';
 export class OrderList extends Component {
     constructor(props) {
         super(props);
-        const pickedid = '';
+        this.state = {selectedItem : null}
     }
 
     getTotalPrice = (order) => {
@@ -67,16 +67,16 @@ export class OrderList extends Component {
         this.ActionSheet.show();
     }
 
-    handleStatusChange = (index) => {
-        let orderId = this.state.selectedItem.id;
-        let orderId = this.pickedid;
-        console.log(orderId)
-        let status = ['NOT READY', 'READY', 'PICKED UP'];
-        let updates = {status : status[index]};
-        firebase.database().ref(`/orders/${orderId}`).update(updates);
+    // handleStatusChange = (index) => {
+    //     // let orderId = this.state.selectedItem.id;
+    //     // // let orderId = this.pickedid;
+    //     // console.log(orderId)
+    //     // let status = ['NOT READY', 'READY', 'PICKED UP'];
+    //     // let updates = {status : status[index]};
+    //     // firebase.database().ref(`/orders/${orderId}`).update(updates);
 
-        // this.props.handleStatusChange(index);
-    }
+    //     this.props.handleStatusChange(index);
+    // }
 
     render() {
         return (
@@ -149,7 +149,7 @@ export class OrderList extends Component {
                                         <Button onPress={() => {
                                             if(this.props.vendor)
                                             {
-                                                this.pickedid = item.id;
+                                                // this.pickedid = item.id;
                                                 this.showActionSheet();
                                                 this.setState({selectedItem: item});
                                                  }}}
@@ -178,7 +178,8 @@ export class OrderList extends Component {
                     cancelButtonIndex={3}
                     destructiveButtonIndex={3}
                     onPress={(index) => {
-                    this.handleStatusChange(index);
+                    var handleToUpdate  =   this.props.handleStatusChange;
+                    handleToUpdate(index,this.state.selectedItem);
                 }}/>
             </View>
         );

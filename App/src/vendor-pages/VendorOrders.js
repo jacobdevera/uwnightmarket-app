@@ -28,6 +28,7 @@ class VendorOrders extends Component {
         super(props);
         this.state = {
             orders: [],
+            update: false
         }
     }
     
@@ -53,15 +54,17 @@ class VendorOrders extends Component {
 
     }
 
-    // handleStatusChange = (index) => {
-    //     // let orderId = this.state.selectedItem.id;
-    //     let orderId = this.pickedid;
-    //     console.log(orderId)
-    //     let status = ['NOT READY', 'READY', 'PICKED UP'];
-    //     let updates = {status : status[index]};
-    //     firebase.database().ref(`/orders/${orderId}`).update(updates);
-    //     this.setState();
-    // }
+    handleStatusChange = (index,selectedItem) => {
+        let orderId = selectedItem.id;
+        // let orderId = this.pickedid;
+        // console.log(orderId)
+        if(index <= 2){
+            let status = ['NOT READY', 'READY', 'PICKED UP'];
+            let updates = {status : status[index]};
+            firebase.database().ref(`/orders/${orderId}`).update(updates);
+            this.componentDidMount();
+        }
+    }
 
     render() {
         return (
@@ -74,12 +77,12 @@ class VendorOrders extends Component {
                         <FlatList
                             data={this.state.orders}
                             extraData={this.state}
-                            // keyExtractor={ item => item.name }
+                            keyExtractor={ item => item.name }
                             renderItem={({ item }) => {
                                 let foodNames = [];
                                 item.items.forEach((food) => foodNames.push(food.name));
                                 return (
-                                    <OrderList  orders = {this.state.orders} vendor = {true} ></ OrderList>
+                                    <OrderList  orders = {this.state.orders} vendor = {true} handleStatusChange = {this.handleStatusChange} ></ OrderList>
                                 )
                             }}
                         />

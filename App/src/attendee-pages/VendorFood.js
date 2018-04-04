@@ -58,7 +58,8 @@ export default class VendorFood extends Component {
             let quan = item.quantity;
             console.log(quan);
             return (quan > 0)});
-        console.log(filtered)
+        
+        // ????
         // this.setState({
         //     order : filtered
         // })
@@ -69,7 +70,8 @@ export default class VendorFood extends Component {
             vendorId: this.state.vendor.userId,
             userId: userId,
             time: firebase.database.ServerValue.TIMESTAMP,
-            items: this.state.order,
+            // items: this.state.order,
+            items: filtered,
             status: Status.NOT_READY
         }
 
