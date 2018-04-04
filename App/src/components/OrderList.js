@@ -82,10 +82,11 @@ export class OrderList extends Component {
         return (
             <View>
                 <FlatList
+                    
                     data={this.props.orders}
                     extraData={this.props}
                     keyExtractor={item => `${item.time}`}
-                    renderItem={({item}) => {
+                    renderItem={({item,index}) => {
                     return (
                         <Card>
                             {!this.props.vendor
@@ -104,6 +105,7 @@ export class OrderList extends Component {
                                         style={{
                                         backgroundColor: config.colorPrimary
                                     }}>
+                                        {/* <Text>{index + 1}</Text> */}
                                         <Text>1</Text>
                                     </Badge>
                                 </View>
