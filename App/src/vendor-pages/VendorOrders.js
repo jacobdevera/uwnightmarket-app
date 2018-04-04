@@ -4,7 +4,7 @@ import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon,
 import { StackNavigator } from "react-navigation";
 import firebase from 'firebase'
 
-import { AppHeader, StackHeader } from '../components';
+import { AppHeader, StackHeader, OrderList } from '../components';
 import { Spinner } from '../components/common';
 import styles, { config } from '../styles';
 
@@ -42,14 +42,26 @@ class VendorOrders extends Component {
             let orderList = [];
             let promises = [];
             Object.keys(orders).forEach((key) => {
+                orders[key].id = key;
                 if (orders[key].vendorId == vendorID) {
                     orderList.push(orders[key]);
                 } 
             });
             this.setState({orders : orderList})
         });
+
+
     }
 
+    // handleStatusChange = (index) => {
+    //     // let orderId = this.state.selectedItem.id;
+    //     let orderId = this.pickedid;
+    //     console.log(orderId)
+    //     let status = ['NOT READY', 'READY', 'PICKED UP'];
+    //     let updates = {status : status[index]};
+    //     firebase.database().ref(`/orders/${orderId}`).update(updates);
+    //     this.setState();
+    // }
 
     render() {
         return (
@@ -67,28 +79,7 @@ class VendorOrders extends Component {
                                 let foodNames = [];
                                 item.items.forEach((food) => foodNames.push(food.name));
                                 return (
-                                    <Card>
-                                        <CardItem
-                                        >
-                                            <Left>
-                                                {/* <Thumbnail
-                                                    square
-                                                    style={styles.listImage}
-                                                    source={{ uri: item.img }}
-                                                /> */}
-                                            </Left>
-                                            <Body>
-                                                <View style={styles.rowSmall}>
-                                                    {/* <Badge style={{ backgroundColor: config.colorPrimary, marginRight: 8}}>
-                                                        <Text>{item.boothNumber}</Text>
-                                                    </Badge>
-                                                    <Text style={ [styles.header, styles.cardH1] }>{item.name}</Text> */}
-                                                </View>
-                                                {/* <Text style={ [styles.desc] }>{item.desc}</Text> */}
-                                                <Text style={styles.bold}>Items: <Text style={styles.menuItem}>{foodNames.join(', ')}</Text></Text>
-                                            </Body>
-                                        </CardItem>
-                                    </Card>
+                                    <OrderList  orders = {this.state.orders} vendor = {true} ></ OrderList>
                                 )
                             }}
                         />
