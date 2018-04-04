@@ -67,6 +67,23 @@ export class OrderList extends Component {
         this.ActionSheet.show();
     }
 
+
+    hash = (input) =>{
+        let count = 4;
+        let res = "";
+        let index = 6;
+        let alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        while (count > 0){
+            let c = input[index]
+            console.log("c:    " + c);
+            if(alphabet.indexOf(c) != -1){
+                res += c;
+                count--;
+            }
+            index ++;
+        }
+        return res;
+    }
     // handleStatusChange = (index) => {
     //     // let orderId = this.state.selectedItem.id;
     //     // // let orderId = this.pickedid;
@@ -106,7 +123,7 @@ export class OrderList extends Component {
                                         backgroundColor: config.colorPrimary
                                     }}>
                                         {/* <Text>{index + 1}</Text> */}
-                                        <Text>1</Text>
+                                        <Text>{this.hash(item.id)}</Text>
                                     </Badge>
                                 </View>
                                 <View

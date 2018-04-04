@@ -20,7 +20,9 @@ class MyOrders extends Component {
                 let promises = [];
                 Object.keys(snapshot.val()).forEach((key) => {
                     promises.push(firebase.database().ref(`/orders/${key}`).once('value').then((orderSnapshot) => {
-                        orderList.push(orderSnapshot.val());
+                        order = orderSnapshot.val();
+                        order.id = key;
+                        orderList.push(order);
                     }))
                 })
                 Promise.all(promises).then((responses) => {
