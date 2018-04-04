@@ -52,6 +52,18 @@ export default class VendorFood extends Component {
     submitOrder = () => {
         let newOrderKey = firebase.database().ref().child('orders').push().key;
         let userId = firebase.auth().currentUser.uid;
+        // must > 0
+        // console.log(this.state.order[0].quantity)
+        let filtered = this.state.order.slice().filter((item) => {
+            let quan = item.quantity;
+            console.log(quan);
+            return (quan > 0)});
+        console.log(filtered)
+        // this.setState({
+        //     order : filtered
+        // })
+
+
         let orderData = {
             vendorName: this.state.vendor.name,
             vendorId: this.state.vendor.userId,
@@ -71,7 +83,6 @@ export default class VendorFood extends Component {
         });
 
     }
-
     
     render() {
         let { vendor, order } = this.state;
