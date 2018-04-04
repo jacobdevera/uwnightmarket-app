@@ -42,9 +42,9 @@ class Sidebar extends Component {
         let user = firebase.auth().currentUser;
         // for attendee
         if (user.isAnonymous) {
-            user.delete();
-            // if (await this.deleteUserOrders(user)) {
-            // }
+            if (await this.deleteUserOrders(user)) {
+                user.delete();
+            }
         } else {
             firebase.auth().signOut().catch((error) => {
                 this.signOutError(error);

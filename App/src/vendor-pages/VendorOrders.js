@@ -68,7 +68,7 @@ class VendorOrders extends Component {
                     .keys(orders)
                     .forEach((key) => {
                         orders[key].id = key;
-                        if (orders[key].vendorId == vendorID) {
+                        if (orders[key].vendorId == vendorID ) {
                             orderList.push(orders[key]);
                         }
                     });
