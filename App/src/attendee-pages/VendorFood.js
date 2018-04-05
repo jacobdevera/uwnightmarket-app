@@ -80,8 +80,8 @@ export default class VendorFood extends Component {
 
         let updates = {};
         updates['/orders/' + newOrderKey] = orderData;
-        updates['/user-orders/' + userId + '/' + newOrderKey] = true; 
-        updates['/vendor-orders/' + this.state.vendor.userId + '/' + newOrderKey] = true;
+        updates['/user-orders/' + userId + '/' + newOrderKey] = Status.NOT_READY; 
+        updates['/vendor-orders/' + this.state.vendor.userId + '/' + newOrderKey] = Status.NOT_READY;
         
         firebase.database().ref().update(updates).then((response) => {
             this.props.navigation.goBack();

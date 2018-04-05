@@ -12,7 +12,7 @@ import {
     Left,
     List,
     ListItem,
-    Badge
+    Badge,
 } from 'native-base';
 import styles, {config} from '../styles';
 import StatusPicker from './StatusPicker';
@@ -84,22 +84,11 @@ export class OrderList extends Component {
         }
         return res;
     }
-    // handleStatusChange = (index) => {
-    //     // let orderId = this.state.selectedItem.id;
-    //     // // let orderId = this.pickedid;
-    //     // console.log(orderId)
-    //     // let status = ['NOT READY', 'READY', 'PICKED UP'];
-    //     // let updates = {status : status[index]};
-    //     // firebase.database().ref(`/orders/${orderId}`).update(updates);
-
-    //     this.props.handleStatusChange(index);
-    // }
 
     render() {
         return (
             <View>
                 <FlatList
-                    
                     data={this.props.orders}
                     extraData={this.props}
                     keyExtractor={item => `${item.time}`}
@@ -174,6 +163,8 @@ export class OrderList extends Component {
                                                  }}}
                                             small
                                             style={{
+                                            height: 35,
+                                            width: 70,
                                             backgroundColor: this.getStatusButtonColor(item)
                                         }}>
                                             <Text
