@@ -4,6 +4,7 @@ import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon,
 import { StackNavigator } from "react-navigation";
 import firebase from 'firebase'
 
+import { filters } from '../App';
 import { AppHeader, StackHeader } from '../components';
 import { Spinner } from '../components/common';
 import styles, { config } from '../styles';
@@ -26,34 +27,13 @@ export default class VendorList extends Component {
         this.state = {
             vendors: [],
             filteredVendors: [],
-            filters: [{
-                name: 'food',
-                active: false
-            },{
-                name: 'beverage',
-                active: false
-            },{
-                name: 'hot',
-                active: false
-            },{
-                name: 'cold',
-                active: false
-            },{
-                name: 'savory',
-                active: false
-            },{
-                name: 'sweet',
-                active: false
-            },{
-                name: 'spicy',
-                active: false
-            },{
-                name: 'available',
-                active: false
-            }],
+            filters: filters.map((filter) => { 
+                return { name: filter, active: false }
+            }),
             modalVisible: false,
             sort: 'number'
         }
+        console.log(this.state.filters);
     }
     
     componentDidMount() {
@@ -61,8 +41,7 @@ export default class VendorList extends Component {
         vendorRef.once('value').then((snapshot) => {
             let vendorList = [];
             snapshot.forEach((vendorSnapshot) => {
-                let vendorObj = vendorSnapshot.val();
-                vendorList.push(vendorObj);
+                vendorList.push(vendorSnapshot.val());
             });
             this.setState({ vendors: vendorList, filteredVendors: vendorList });
         });
@@ -82,7 +61,6 @@ export default class VendorList extends Component {
             newVendors = newVendors.filter((vendor) => {
                 let satisfiesFilters = false;
                 vendor.menu.forEach((item) => {
-                    
                     activeFilters.forEach((filter) => {
                         if (item.traits.includes(filter.name)) {
                             satisfiesFilters = true;
