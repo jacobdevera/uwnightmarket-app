@@ -49,31 +49,41 @@ class VendorOrders extends Component {
     }
 
     componentDidMount() {
-        console.log("hello")
-        // let orderRef = firebase.database().ref('/orders/' +
-        // firebase.auth().currentUser.uid).orderByKey();
+        // console.log("hello") // let orderRef = firebase.database().ref('/orders/' +
+        // // firebase.auth().currentUser.uid).orderByKey(); let orderRef = firebase
+        // .database()     .ref('/orders/')     .orderByKey(); orderRef     .on('value')
+        //     .then((snapshot) => {         console.log(snapshot.val());         let
+        // orders = snapshot.val();         let orderList = [];         let promises =
+        // [];         Object             .keys(orders)             .forEach((key) => {
+        //                orders[key].id = key;                 if (orders[key].vendorId
+        // == vendorID ) {                     orderList.push(orders[key]);
+        //    }             });         this.setState({orders: orderList})     });
+        console.log(firebase.auth().currentUser.uid);
         let orderRef = firebase
             .database()
-            .ref('/orders/')
+            .ref(`/vendor-orders/${firebase.auth().currentUser.uid}`)
             .orderByKey();
-
-        orderRef
-            .once('value')
-            .then((snapshot) => {
-                console.log(snapshot.val());
-                let orders = snapshot.val();
+        orderRef.on('value', (snapshot) => {
+            if (snapshot.val()) {
                 let orderList = [];
                 let promises = [];
                 Object
-                    .keys(orders)
+                    .keys(snapshot.val())
                     .forEach((key) => {
-                        orders[key].id = key;
-                        if (orders[key].vendorId == vendorID ) {
-                            orderList.push(orders[key]);
-                        }
-                    });
-                this.setState({orders: orderList})
-            });
+                        promises.push(firebase.database().ref(`/orders/${key}`).once('value').then((orderSnapshot) => {
+                            order = orderSnapshot.val();
+                            order.id = key;
+                            orderList.push(order);
+                        }))
+                    })
+                Promise
+                    .all(promises)
+                    .then((responses) => {
+                        this.setState({orders: orderList});
+                    })
+                    .catch((error) => console.log(error))
+            }
+        });
 
     }
 
@@ -89,6 +99,10 @@ class VendorOrders extends Component {
                 .database()
                 .ref(`/orders/${orderId}`)
                 .update(updates);
+            let updates2 = {};
+            updates2['/user-orders/' + selectedItem.userId + '/' + orderId] = status[index];
+            updates2['/vendor-orders/' + selectedItem.vendorId + '/' + orderId] = status[index];
+            firebase.database().ref().update(updates2);
             this.componentDidMount();
         }
     }
