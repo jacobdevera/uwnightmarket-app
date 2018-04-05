@@ -15,7 +15,7 @@ class MyOrders extends Component {
 
     componentDidMount() {
         let orderRef = firebase.database().ref(`/user-orders/${firebase.auth().currentUser.uid}`).orderByKey();
-        orderRef.once('value').then((snapshot) => {
+        orderRef.on('value', (snapshot) => {
             if (snapshot.val()) {
                 let orderList = [];
                 let promises = [];
