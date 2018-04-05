@@ -24,6 +24,8 @@ export default class VendorFood extends Component {
         const { params } = this.props.navigation.state;
         const vendor = params ? params.vendor : null;
         let order = new Array(vendor.menu.length);
+        // TODO: unhardcode availability checking
+        vendor.menu = vendor.menu.filter((item) => item.traits.includes('available'));
         vendor.menu.forEach((item, index) => {
             order[index] = { name: item.name, price: item.price, quantity: 0 };
         })
