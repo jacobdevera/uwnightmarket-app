@@ -4,6 +4,7 @@ import { Button, Container, Content, H1, H2, H3, Text, FlatList, Card, CardItem,
 import firebase from 'firebase';
 
 import { AppHeader, OrderList } from '../components';
+import { Status } from '../App';
 import styles from '../styles';
 
 class MyOrders extends Component {
@@ -40,7 +41,16 @@ class MyOrders extends Component {
                 </AppHeader>
                 <Content contentContainerStyle={styles.paddedContainer}>
                     {this.state.orders && this.state.orders.length > 0 ? 
-                    <OrderList orders={this.state.orders} vendor={false} /> 
+                    <View>
+                        <View style={styles.section}>
+                            <Text style={ [styles.header, styles.h1] }>Active Orders</Text>
+                            <OrderList orders={this.state.orders.filter((order) => order.status !== Status.PICKED_UP)} vendor={false} /> 
+                        </View>
+                        <View style={styles.section}>
+                            <Text style={ [styles.header, styles.h1] }>Past Orders</Text>
+                            <OrderList orders={this.state.orders.filter((order) => order.status == Status.PICKED_UP)} vendor={false} />
+                        </View>
+                    </View>
                     : <View style={[styles.column]}>
                         <Text style={styles.section}>You have no active orders right now.</Text>
                         <Button style={[{ alignSelf: 'center' }, styles.section]} onPress={() => this.props.navigation.navigate('VendorNavigator')}>
