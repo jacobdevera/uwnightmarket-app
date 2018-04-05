@@ -46,12 +46,11 @@ class VendorMenu extends Component {
             newItem.traits = newItem.traits.filter((filter) => !statusLower.includes(filter));
             newItem.traits.push(statusLower[index]);
             this.setState({ menu: newMenu });
-            let update = {};
-            update[`/vendors/${firebase.auth().currentUser.uid}/menu/`] = newMenu;
-            firebase.database().ref().update(update);
+
+            firebase.database().ref(`/vendors/${firebase.auth().currentUser.uid}/menu/`).set(newMenu);
         }
     }
-    
+
     render() {
         return (
             <Container>
