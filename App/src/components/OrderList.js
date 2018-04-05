@@ -160,10 +160,10 @@ export class OrderList extends Component {
                                                     this.setState({selectedItem: item});
                                                 }
                                             }}
+                                            full
                                             small
                                             style={{
                                             height: 35,
-                                            width: 70,
                                             backgroundColor: this.getStatusButtonColor(item)
                                         }}>
                                             <Text
