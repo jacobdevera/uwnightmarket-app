@@ -25,6 +25,8 @@ export const Status = {
     PICKED_UP: "PICKED UP"
 }
 
+export const filters = ['food','beverage','hot','cold','savory','sweet','spicy','available'];
+
 export default class App extends Component {
     constructor(props) {
         super(props);

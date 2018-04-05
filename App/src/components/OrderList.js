@@ -24,7 +24,7 @@ import firebase from 'firebase';
 export class OrderList extends Component {
     constructor(props) {
         super(props);
-        this.state = {selectedItem : null}
+        this.state = { selectedItem : null }
     }
 
     getTotalPrice = (order) => {
@@ -68,19 +68,18 @@ export class OrderList extends Component {
     }
 
 
-    hash = (input) =>{
+    hash = (input) => {
         let count = 4;
         let res = "";
         let index = 6;
         let alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        while (count > 0){
-            let c = input[index]
-            console.log("c:    " + c);
-            if(alphabet.indexOf(c) != -1){
+        while (count > 0) {
+            let c = input[index];
+            if (alphabet.indexOf(c) != -1) {
                 res += c;
                 count--;
             }
-            index ++;
+            index++;
         }
         return res;
     }
@@ -92,14 +91,15 @@ export class OrderList extends Component {
                     data={this.props.orders}
                     extraData={this.props}
                     keyExtractor={item => `${item.time}`}
-                    renderItem={({item,index}) => {
+                    renderItem={({ item }) => {
                     return (
                         <Card>
-                            {!this.props.vendor
-                                ? <Text style={[styles.row, styles.header, styles.cardH2]}>
-                                        Vendor: {item.vendorName}
-                                    </Text>
-                                : null}
+                            {
+                                this.props.vendor && 
+                                <Text style={[styles.row, styles.header, styles.cardH2]}>
+                                    Vendor: {item.vendorName}
+                                </Text>
+                            }
                             <View style={styles.row}>
                                 <View
                                     style={{
@@ -111,7 +111,6 @@ export class OrderList extends Component {
                                         style={{
                                         backgroundColor: config.colorPrimary
                                     }}>
-                                        {/* <Text>{index + 1}</Text> */}
                                         <Text>{this.hash(item.id)}</Text>
                                     </Badge>
                                 </View>
@@ -154,13 +153,13 @@ export class OrderList extends Component {
                                 }}>
                                     <Text style={[styles.header, styles.cardH2]}>Status</Text>
                                     <View>
-                                        <Button onPress={() => {
-                                            if(this.props.vendor)
-                                            {
-                                                // this.pickedid = item.id;
-                                                this.showActionSheet();
-                                                this.setState({selectedItem: item});
-                                                 }}}
+                                        <Button 
+                                            onPress={() => {
+                                                if (this.props.vendor) {
+                                                    this.showActionSheet();
+                                                    this.setState({selectedItem: item});
+                                                }
+                                            }}
                                             small
                                             style={{
                                             height: 35,
@@ -188,8 +187,8 @@ export class OrderList extends Component {
                     cancelButtonIndex={3}
                     destructiveButtonIndex={3}
                     onPress={(index) => {
-                    var handleToUpdate  =   this.props.handleStatusChange;
-                    handleToUpdate(index,this.state.selectedItem);
+                    var handleToUpdate = this.props.handleStatusChange;
+                    handleToUpdate(index, this.state.selectedItem);
                 }}/>
             </View>
         );

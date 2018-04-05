@@ -58,7 +58,7 @@ class VendorOrders extends Component {
         //                orders[key].id = key;                 if (orders[key].vendorId
         // == vendorID ) {                     orderList.push(orders[key]);
         //    }             });         this.setState({orders: orderList})     });
-        console.log(firebase.auth().currentUser.uid);
+        // console.log(firebase.auth().currentUser.uid);
         let orderRef = firebase
             .database()
             .ref(`/vendor-orders/${firebase.auth().currentUser.uid}`)
@@ -103,7 +103,7 @@ class VendorOrders extends Component {
             updates2['/user-orders/' + selectedItem.userId + '/' + orderId] = status[index];
             updates2['/vendor-orders/' + selectedItem.vendorId + '/' + orderId] = status[index];
             firebase.database().ref().update(updates2);
-            this.componentDidMount();
+            // this.componentDidMount();
         }
     }
 
@@ -126,4 +126,4 @@ class VendorOrders extends Component {
     }
 }
 
-export {VendorOrders}
+export { VendorOrders }
