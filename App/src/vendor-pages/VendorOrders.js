@@ -38,8 +38,6 @@ const modalStyles = StyleSheet.create({
     }
 });
 
-const vendorID = "9O2WgapdDsbo6t0vy2nHSXIsj072";
-
 class VendorOrders extends Component {
     constructor(props) {
         super(props);
@@ -90,7 +88,6 @@ class VendorOrders extends Component {
 
     // determine which orders to display whether on active or completed screen
     getFilteredOrders = (orders, active) => {
-        console.log(active)
         return orders.filter((order) => {
             return ((active && order.status !== Status.PICKED_UP) 
                 || (!active && order.status === Status.PICKED_UP))
@@ -112,12 +109,7 @@ class VendorOrders extends Component {
             updates2['/user-orders/' + selectedItem.userId + '/' + orderId] = status[index];
             updates2['/vendor-orders/' + selectedItem.vendorId + '/' + orderId] = status[index];
             firebase.database().ref().update(updates2);
-            // this.componentDidMount();
         }
-    }
-
-    componentDidUpdate() {
-        const { params } = this.props.navigation.state;
     }
 
     render() {
