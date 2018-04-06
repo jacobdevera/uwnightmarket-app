@@ -149,8 +149,9 @@ export default class VendorFood extends Component {
                         />}
                     <Text style={[styles.center, styles.bold, styles.row]}>Total Due: ${totalPrice}</Text>
                     <View style={styles.row}>
-                        <Button onPress={() => this.submitOrder(totalQuantity)}><Text>Submit Order</Text></Button>
+                        <Button disabled={!vendor.canOrder} onPress={() => this.submitOrder(totalQuantity)}><Text>Submit Order</Text></Button>
                     </View>
+                    {!vendor.canOrder && <Text style={styles.center}>This vendor does not support mobile ordering.</Text>}
                 </Content>
             </Container>
         );
