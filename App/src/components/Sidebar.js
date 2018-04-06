@@ -27,9 +27,9 @@ class Sidebar extends Component {
             case Views.VENDOR:
             routes = [
                 { route: 'VendorHome', title: 'Home' },
-                { route: 'VendorOrders', title: 'Orders' },
-                { route: 'VendorOrders', title: '\tActive' },
-                { route: 'VendorOrders', title: '\tCompleted'},
+                { route: 'VendorOrders', title: 'Orders', props: { active: true } },
+                { route: 'VendorOrders', title: '\tActive', props: { active: true } },
+                { route: 'VendorOrders', title: '\tCompleted', props: { active: false } },
                 { route: 'VendorMenu', title: 'Menu' },
                 { route: 'VendorSalesSummary', title: 'Sales Summary' },
                 { route: 'Map', title: 'Map' },
@@ -40,8 +40,7 @@ class Sidebar extends Component {
 
     handleSignOut = async () => {
         let user = firebase.auth().currentUser;
-        // for attendee
-        if (user.isAnonymous) {
+        if (user.isAnonymous) { // is attendee
             if (await this.deleteUserOrders(user)) {
                 user.delete();
             }
@@ -96,7 +95,10 @@ class Sidebar extends Component {
                     dataArray={this.state.routes}
                     renderRow={(data, index) => {
                         return (
-                            <ListItem key={index} noBorder button onPress={() => this.props.navigation.navigate(data.route)}>
+                            <ListItem key={index} noBorder button onPress={() => {
+                                this.props.navigation.navigate(data.route, data.props);
+                                this.props.navigation.setParams(data.props);
+                            }}>
                                 <Text style={styles.light}>{data.title}</Text>
                             </ListItem>
                         );

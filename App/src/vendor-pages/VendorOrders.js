@@ -21,6 +21,7 @@ import {
 import {StackNavigator} from "react-navigation";
 import firebase from 'firebase'
 
+import { Status } from '../App';
 import {AppHeader, StackHeader, OrderList} from '../components';
 import {Spinner} from '../components/common';
 import styles, {config} from '../styles';
@@ -59,6 +60,7 @@ class VendorOrders extends Component {
         // == vendorID ) {                     orderList.push(orders[key]);
         //    }             });         this.setState({orders: orderList})     });
         // console.log(firebase.auth().currentUser.uid);
+        const { params } = this.props.navigation.state;
         let orderRef = firebase
             .database()
             .ref(`/vendor-orders/${firebase.auth().currentUser.uid}`)
@@ -71,7 +73,7 @@ class VendorOrders extends Component {
                     .keys(snapshot.val())
                     .forEach((key) => {
                         promises.push(firebase.database().ref(`/orders/${key}`).once('value').then((orderSnapshot) => {
-                            order = orderSnapshot.val();
+                            let order = orderSnapshot.val();
                             order.id = key;
                             orderList.push(order);
                         }))
@@ -79,17 +81,24 @@ class VendorOrders extends Component {
                 Promise
                     .all(promises)
                     .then((responses) => {
-                        this.setState({orders: orderList});
+                        this.setState({ orders: orderList });
                     })
                     .catch((error) => console.log(error))
             }
         });
+    }
 
+    // determine which orders to display whether on active or completed screen
+    getFilteredOrders = (orders, active) => {
+        console.log(active)
+        return orders.filter((order) => {
+            return ((active && order.status !== Status.PICKED_UP) 
+                || (!active && order.status === Status.PICKED_UP))
+        });
     }
 
     handleStatusChange = (index, selectedItem) => {
         let orderId = selectedItem.id;
-        // let orderId = this.pickedid; console.log(orderId)
         if (index <= 2) {
             let status = ['NOT READY', 'READY', 'PICKED UP'];
             let updates = {
@@ -107,7 +116,12 @@ class VendorOrders extends Component {
         }
     }
 
+    componentDidUpdate() {
+        const { params } = this.props.navigation.state;
+    }
+
     render() {
+        const { params } = this.props.navigation.state;
         return (
             <Container>
                 <AppHeader navigation={this.props.navigation}>
@@ -116,7 +130,7 @@ class VendorOrders extends Component {
                 <Content style={styles.paddedContainer}>
                     {this.state.orders
                         ? <OrderList
-                                orders={this.state.orders}
+                                orders={this.getFilteredOrders(this.state.orders, params && params.active)}
                                 vendor={true}
                                 handleStatusChange={this.handleStatusChange}></ OrderList>
                         : <Spinner size='small'/>}
