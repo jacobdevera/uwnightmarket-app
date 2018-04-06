@@ -55,7 +55,6 @@ class MyOrders extends Component {
                     </View>}
                     {pastOrders.length > 0 &&
                     <View style={styles.section}>
-                        
                         <Text style={ [styles.header, styles.h1] }>Past Orders</Text>
                         <OrderList orders={pastOrders} vendor={false} />
                     </View>}
