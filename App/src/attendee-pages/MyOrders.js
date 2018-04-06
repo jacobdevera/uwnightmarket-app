@@ -34,30 +34,31 @@ class MyOrders extends Component {
     }
 
     render() {
+        let activeOrders = this.state.orders.filter((order) => order.status !== Status.PICKED_UP);
+        let pastOrders = this.state.orders.filter((order) => order.status == Status.PICKED_UP);
         return (
             <Container>
                 <AppHeader navigation={this.props.navigation}>
                     My Orders
                 </AppHeader>
                 <Content contentContainerStyle={styles.paddedContainer}>
-                    {this.state.orders && this.state.orders.length > 0 ? 
-                    <View>
-                        <View style={styles.section}>
-                            <Text style={ [styles.header, styles.h1] }>Active Orders</Text>
-                            <OrderList orders={this.state.orders.filter((order) => order.status !== Status.PICKED_UP)} vendor={false} /> 
-                        </View>
-                        <View style={styles.section}>
-                            <Text style={ [styles.header, styles.h1] }>Past Orders</Text>
-                            <OrderList orders={this.state.orders.filter((order) => order.status == Status.PICKED_UP)} vendor={false} />
-                        </View>
+                    {activeOrders.length > 0 ?
+                    <View style={styles.section}>
+                        <Text style={ [styles.header, styles.h1] }>Active Orders</Text>
+                        <OrderList orders={this.state.orders.filter((order) => order.status !== Status.PICKED_UP)} vendor={false} /> 
                     </View>
                     : <View style={[styles.column]}>
                         <Text style={styles.section}>You have no active orders right now.</Text>
                         <Button style={[{ alignSelf: 'center' }, styles.section]} onPress={() => this.props.navigation.navigate('VendorNavigator')}>
                             <Text>Order Now</Text>
                         </Button>
-                    </View>
-                    }
+                    </View>}
+                    {pastOrders.length > 0 &&
+                    <View style={styles.section}>
+                        
+                        <Text style={ [styles.header, styles.h1] }>Past Orders</Text>
+                        <OrderList orders={pastOrders} vendor={false} />
+                    </View>}
                 </Content>
             </Container>);
     }

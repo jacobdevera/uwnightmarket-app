@@ -30,6 +30,8 @@ export const filters = ['food','beverage','hot','cold','savory','sweet','spicy',
 export default class App extends Component {
     constructor(props) {
         super(props);
+        // improper timer handling on Android
+        console.ignoredYellowBox = ['Setting a timer'];
         this.state = {
             view: 0,
             loggedIn: null

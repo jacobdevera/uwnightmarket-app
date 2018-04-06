@@ -33,7 +33,6 @@ export default class VendorList extends Component {
             modalVisible: false,
             sort: 'number'
         }
-        console.log(this.state.filters);
     }
     
     componentDidMount() {
