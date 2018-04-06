@@ -72,7 +72,7 @@ export class OrderList extends Component {
         let count = 4;
         let res = "";
         let index = 6;
-        let alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        let alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         while (count > 0) {
             let c = input[index];
             if (alphabet.indexOf(c) != -1) {
@@ -109,9 +109,17 @@ export class OrderList extends Component {
                                     <Badge
                                         width={64}
                                         style={{
+
                                         backgroundColor: config.colorPrimary
                                     }}>
-                                        <Text>{this.hash(item.id)}</Text>
+                                        <Text
+                                          style={{
+                                            // fontSize: 12,
+                                            // paddingLeft: 4,
+                                            
+                                            textAlign:'center'
+                                        }}
+                                        >{this.hash(item.id)}</Text>
                                     </Badge>
                                 </View>
                                 <View
@@ -127,7 +135,8 @@ export class OrderList extends Component {
                                             <Text
                                                 style={{
                                                 fontSize: 12,
-                                                paddingLeft: 4
+                                                paddingLeft: 4,
+                                                textAlign:'center'
                                             }}>{item.quantity} {item.name}</Text>
                                         )
                                     }}/>
@@ -140,6 +149,7 @@ export class OrderList extends Component {
                                     <Text style={[styles.center, styles.header, styles.cardH2]}>Total</Text>
                                     <Text
                                         style={{
+                                        textAlign:'center',
                                         fontSize: 18,
                                         fontWeight: 'bold'
                                     }}>
@@ -160,16 +170,22 @@ export class OrderList extends Component {
                                                     this.setState({selectedItem: item});
                                                 }
                                             }}
-                                            full
                                             small
+      
                                             style={{
-                                            height: 35,
+                                            width: 70,
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
                                             backgroundColor: this.getStatusButtonColor(item)
                                         }}>
                                             <Text
                                                 style={[
                                                 styles.center, {
+                                                    paddingLeft:0,
+                                                    paddingRight:0,
                                                     fontSize: 10,
+                                                    fontStyle:'italic',
+                                                    fontWeight:'bold',
                                                     lineHeight: 12
                                                 }
                                             ]}>{item.status}</Text>
