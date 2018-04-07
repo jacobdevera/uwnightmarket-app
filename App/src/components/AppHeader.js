@@ -1,10 +1,12 @@
 import React from 'react';
-
+import { Platform } from 'react-native';
 import { Header, Left, Button, Icon, Right, Body, Title } from 'native-base';
 
+import { config } from '../styles';
 const AppHeader = (props) => {
+    const headerTextColor = Platform.OS === 'ios' ? '#000' : '#fff';
     return (
-        <Header>
+        <Header androidStatusBarColor={config.colorDark}>
             {props.left ? props.left :
             <Left>
                 <Button transparent
@@ -15,7 +17,7 @@ const AppHeader = (props) => {
             </Left>
             }
             <Body>
-                <Title>{props.children}</Title>
+                <Title style={{ color: headerTextColor }}>{props.children}</Title>
             </Body>
 
             <Right>

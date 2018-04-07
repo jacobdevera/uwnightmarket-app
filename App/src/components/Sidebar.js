@@ -114,8 +114,7 @@ class Sidebar extends Component {
                             [
                                 {text: 'Cancel', style: 'cancel'},
                                 {text: 'Sign Out', onPress: () => this.handleSignOut(0) },
-                            ],
-                            { cancelable: false }
+                            ]
                         );
                     else
                         this.handleSignOut(0);

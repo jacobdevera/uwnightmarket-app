@@ -1,7 +1,8 @@
 import { StyleSheet } from "react-native";
 
 export const config = {
-    colorPrimary: '#d94d5d'
+    colorPrimary: '#d94d5d',
+    colorDark: '#a21334'
 }
 
 export default styles = StyleSheet.create({
