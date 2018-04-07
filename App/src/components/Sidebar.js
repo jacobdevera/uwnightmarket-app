@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { View, Linking } from 'react-native';
+import { Alert, View, Linking } from 'react-native';
 import { Content, List, ListItem, Text, Icon, Toast } from 'native-base';
-import ActionSheet from 'react-native-actionsheet';
 import styles from '../styles';
 
 import firebase from 'firebase';
@@ -109,7 +108,15 @@ class Sidebar extends Component {
                 />
                 <ListItem key={this.state.routes.length} noBorder button onPress={() => {
                     if (firebase.auth().currentUser.isAnonymous)
-                        this.ActionSheet.show();
+                        Alert.alert(
+                            'Are you sure you want to sign out?',
+                            'Any existing orders will be deleted.',
+                            [
+                                {text: 'Cancel', style: 'cancel'},
+                                {text: 'Sign Out', onPress: () => this.handleSignOut(0) },
+                            ],
+                            { cancelable: false }
+                        );
                     else
                         this.handleSignOut(0);
                     }}     
@@ -121,14 +128,6 @@ class Sidebar extends Component {
                     <Icon name='logo-instagram' onPress={ ()=>{ Linking.openURL('https://www.instagram.com/uwnightmarket/')} } style={styles.iconWhite}/>
                     <Icon name='logo-twitter' onPress={ ()=>{ Linking.openURL('https://twitter.com/uwnightmarket')} } style={styles.iconWhite}/>
                 </View>
-                <ActionSheet
-                    style={{ textAlign: 'center' }}
-                    ref={o => this.ActionSheet = o}
-                    title={'Any existing orders will be deleted.'}
-                    options={['Sign Out', 'Cancel']}
-                    cancelButtonIndex={1}
-                    destructiveButtonIndex={0}
-                    onPress={(index) => this.handleSignOut(index) }/>
             </Content>
         );
     }
