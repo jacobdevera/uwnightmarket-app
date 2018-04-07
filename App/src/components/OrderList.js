@@ -54,19 +54,9 @@ export class OrderList extends Component {
         }
     }
 
-    changestatus = (val) => {
-        if (!this.props.vendor) 
-            return;
-        this
-            .props
-            .changeStatus(val);
-
-    }
-
     showActionSheet = () => {
         this.ActionSheet.show();
     }
-
 
     hash = (input) => {
         let count = 4;
@@ -109,14 +99,12 @@ export class OrderList extends Component {
                                     <Badge
                                         width={64}
                                         style={{
-
                                         backgroundColor: config.colorPrimary
                                     }}>
                                         <Text
                                           style={{
                                             // fontSize: 12,
                                             // paddingLeft: 4,
-                                            
                                             textAlign:'center'
                                         }}
                                         >{this.hash(item.id)}</Text>
@@ -209,10 +197,4 @@ export class OrderList extends Component {
             </View>
         );
     }
-}
-
-{/* <StatusPicker changeStatus={this.changeStatus}
-style={{
-    backgroundColor: this.getStatusButtonColor(item)
-}}/> */
 }
