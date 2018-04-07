@@ -45,25 +45,12 @@ class VendorOrders extends Component {
             orders: [],
             update: false
         }
+        this.orderRef = firebase.database().ref(`/vendor-orders/${firebase.auth().currentUser.uid}`).orderByKey();
     }
 
     componentDidMount() {
-        // console.log("hello") // let orderRef = firebase.database().ref('/orders/' +
-        // // firebase.auth().currentUser.uid).orderByKey(); let orderRef = firebase
-        // .database()     .ref('/orders/')     .orderByKey(); orderRef     .on('value')
-        //     .then((snapshot) => {         console.log(snapshot.val());         let
-        // orders = snapshot.val();         let orderList = [];         let promises =
-        // [];         Object             .keys(orders)             .forEach((key) => {
-        //                orders[key].id = key;                 if (orders[key].vendorId
-        // == vendorID ) {                     orderList.push(orders[key]);
-        //    }             });         this.setState({orders: orderList})     });
-        // console.log(firebase.auth().currentUser.uid);
         const { params } = this.props.navigation.state;
-        let orderRef = firebase
-            .database()
-            .ref(`/vendor-orders/${firebase.auth().currentUser.uid}`)
-            .orderByKey();
-        orderRef.on('value', (snapshot) => {
+        this.orderRef.on('value', (snapshot) => {
             if (snapshot.val()) {
                 let orderList = [];
                 let promises = [];
@@ -84,6 +71,10 @@ class VendorOrders extends Component {
                     .catch((error) => console.log(error))
             }
         });
+    }
+
+    componentWillUnmount() {
+        this.orderRef.off('value');
     }
 
     // determine which orders to display whether on active or completed screen

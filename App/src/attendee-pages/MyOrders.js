@@ -11,11 +11,11 @@ class MyOrders extends Component {
     constructor(props) {
         super(props);
         this.state = { orders: [] }
+        this.orderRef = firebase.database().ref(`/user-orders/${firebase.auth().currentUser.uid}`).orderByKey();
     }
 
     componentDidMount() {
-        let orderRef = firebase.database().ref(`/user-orders/${firebase.auth().currentUser.uid}`).orderByKey();
-        orderRef.on('value', (snapshot) => {
+        this.orderRef.on('value', (snapshot) => {
             if (snapshot.val()) {
                 let orderList = [];
                 let promises = [];
@@ -31,6 +31,10 @@ class MyOrders extends Component {
                 }).catch((error) => console.log(error))
             }
         });
+    }
+
+    componentWillUnmount() {
+        this.orderRef.off('value');
     }
 
     render() {
