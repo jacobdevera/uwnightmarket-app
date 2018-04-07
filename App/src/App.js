@@ -19,9 +19,19 @@ export const Views = {
     VENDOR: 3
 }
 
+export const Status = {
+    READY: "READY",
+    NOT_READY: "NOT READY",
+    PICKED_UP: "PICKED UP"
+}
+
+export const filters = ['food','beverage','hot','cold','savory','sweet','spicy','available'];
+
 export default class App extends Component {
     constructor(props) {
         super(props);
+        // improper timer handling on Android
+        console.ignoredYellowBox = ['Setting a timer'];
         this.state = {
             view: 0,
             loggedIn: null
@@ -49,6 +59,7 @@ export default class App extends Component {
         });
     }
 
+    // will remove later
     addUserToDatabase = (user) => {
         let userData = {
             userId: user.uid,

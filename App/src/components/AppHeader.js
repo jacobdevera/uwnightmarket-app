@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-import { Header, Left, Button, Icon, Right, Body, Text, Title } from 'native-base';
+import { Header, Left, Button, Icon, Right, Body, Title } from 'native-base';
 
 const AppHeader = (props) => {
     return (

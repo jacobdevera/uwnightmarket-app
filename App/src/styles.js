@@ -24,8 +24,8 @@ export default styles = StyleSheet.create({
         color: '#fff'
     },
     paddedContainer: {
-        paddingLeft: 16,
-        paddingRight: 16,
+        paddingLeft: 8,
+        paddingRight: 8,
         backgroundColor: 'white'
     },
     listImage: {
@@ -37,19 +37,25 @@ export default styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'space-around',
         alignItems: 'center',
-        padding: 16
+        padding: 8
+    },
+    columnSmall: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        alignItems: 'center'
     },
     row: {
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-around',
-        padding: 20
+        padding: 8
     },
     rowSpaceBetween: {
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: 20
+        padding: 8
     },
     rowSmall: {
         width: '100%',
@@ -70,7 +76,7 @@ export default styles = StyleSheet.create({
     },
     header: {
         fontWeight: 'bold',
-        paddingBottom: 8
+        paddingBottom: 4
     },
     cardH1: {
         fontSize: 18
@@ -97,7 +103,6 @@ export default styles = StyleSheet.create({
         width: '100%'
     },
     section: {
-        marginTop: 8,
-        marginBottom: 8
+        marginTop: 8
     }
 });

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Linking } from 'react-native';
 import { Content, List, ListItem, Text, Icon, Toast } from 'native-base';
+import ActionSheet from 'react-native-actionsheet';
 import styles from '../styles';
 
 import firebase from 'firebase';
@@ -27,9 +28,9 @@ class Sidebar extends Component {
             case Views.VENDOR:
             routes = [
                 { route: 'VendorHome', title: 'Home' },
-                { route: 'VendorOrders', title: 'Orders' },
-                { route: 'VendorOrders', title: '\tActive' },
-                { route: 'VendorOrders', title: '\tCompleted'},
+                { route: 'VendorOrders', title: 'Orders', props: { active: true } },
+                { route: 'VendorOrders', title: '\tActive', props: { active: true } },
+                { route: 'VendorOrders', title: '\tCompleted', props: { active: false } },
                 { route: 'VendorMenu', title: 'Menu' },
                 { route: 'VendorSalesSummary', title: 'Sales Summary' },
                 { route: 'Map', title: 'Map' },
@@ -38,16 +39,18 @@ class Sidebar extends Component {
         this.setState({ routes: routes });
     }
 
-    handleSignOut = async () => {
-        let user = firebase.auth().currentUser;
-        if (user.isAnonymous) {
-            if (await this.deleteUserOrders(user)) {
-                user.delete();
+    handleSignOut = async (index) => {
+        if (index === 0) {
+            let user = firebase.auth().currentUser;
+            if (user.isAnonymous) { // is attendee
+                if (await this.deleteUserOrders(user)) {
+                    user.delete();
+                }
+            } else {
+                firebase.auth().signOut().catch((error) => {
+                    this.signOutError(error);
+                });
             }
-        } else {
-            firebase.auth().signOut().catch((error) => {
-                this.signOutError(error);
-            });
         }
     }
 
@@ -95,13 +98,22 @@ class Sidebar extends Component {
                     dataArray={this.state.routes}
                     renderRow={(data, index) => {
                         return (
-                            <ListItem key={index} noBorder button onPress={() => this.props.navigation.navigate(data.route)}>
+                            <ListItem key={index} noBorder button onPress={() => {
+                                this.props.navigation.navigate(data.route, data.props);
+                                this.props.navigation.setParams(data.props);
+                            }}>
                                 <Text style={styles.light}>{data.title}</Text>
                             </ListItem>
                         );
                     }}
                 />
-                <ListItem key={this.state.routes.length} noBorder button onPress={() => this.handleSignOut() }>
+                <ListItem key={this.state.routes.length} noBorder button onPress={() => {
+                    if (firebase.auth().currentUser.isAnonymous)
+                        this.ActionSheet.show();
+                    else
+                        this.handleSignOut(0);
+                    }}     
+                >
                     <Text style={styles.light}>Log Out</Text>
                 </ListItem>
                 <View style={styles.row}>
@@ -109,6 +121,14 @@ class Sidebar extends Component {
                     <Icon name='logo-instagram' onPress={ ()=>{ Linking.openURL('https://www.instagram.com/uwnightmarket/')} } style={styles.iconWhite}/>
                     <Icon name='logo-twitter' onPress={ ()=>{ Linking.openURL('https://twitter.com/uwnightmarket')} } style={styles.iconWhite}/>
                 </View>
+                <ActionSheet
+                    style={{ textAlign: 'center' }}
+                    ref={o => this.ActionSheet = o}
+                    title={'Any existing orders will be deleted.'}
+                    options={['Sign Out', 'Cancel']}
+                    cancelButtonIndex={1}
+                    destructiveButtonIndex={0}
+                    onPress={(index) => this.handleSignOut(index) }/>
             </Content>
         );
     }
