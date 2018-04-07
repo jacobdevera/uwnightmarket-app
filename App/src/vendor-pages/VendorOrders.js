@@ -42,7 +42,7 @@ class VendorOrders extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            orders: [],
+            orders: {},
             update: false
         }
         this.orderRef = firebase.database().ref(`/vendor-orders/${firebase.auth().currentUser.uid}`).orderByKey();
@@ -50,31 +50,50 @@ class VendorOrders extends Component {
 
     componentDidMount() {
         const { params } = this.props.navigation.state;
-        this.orderRef.on('value', (snapshot) => {
+        this.orderRef.once('value', (snapshot) => {
             if (snapshot.val()) {
-                let orderList = [];
+                let orderObj = {};
                 let promises = [];
                 Object
                     .keys(snapshot.val())
                     .forEach((key) => {
-                        promises.push(firebase.database().ref(`/orders/${key}`).once('value').then((orderSnapshot) => {
-                            let order = orderSnapshot.val();
-                            order.id = key;
-                            orderList.push(order);
+                        promises.push(firebase.database().ref(`/orders/${key}`).once('value').then((snapshot) => {
+                            let order = snapshot.val();
+                            order.id = snapshot.key;
+                            orderObj[snapshot.key] = order;
                         }))
                     })
                 Promise
                     .all(promises)
                     .then((responses) => {
-                        this.setState({ orders: orderList });
+                        this.setState({ orders: orderObj });
+                        this.orderRef.on('child_added', this.orderChanged);
+                        this.orderRef.on('child_changed', this.orderChanged);
+                        this.orderRef.on('child_removed', this.orderRemoved);
                     })
                     .catch((error) => console.log(error))
             }
         });
     }
 
+    orderChanged = (snapshot) => {
+        let newOrderObj = Object.assign({}, this.state.orders);
+        firebase.database().ref(`/orders/${snapshot.key}`).once('value').then((orderSnapshot) => {
+            let order = orderSnapshot.val();
+            order.id = snapshot.key;
+            newOrderObj[snapshot.key] = order;
+            this.setState({ orders: newOrderObj });
+        })
+    }
+
+    orderRemoved = (snapshot) => {
+        let newOrderObj = Object.assign({}, this.state.orders);
+        newOrderObj[snapshot.key] = null;
+        this.setState({ orders: newOrderObj });
+    }
+
     componentWillUnmount() {
-        this.orderRef.off('value');
+        this.orderRef.off();
     }
 
     // determine which orders to display whether on active or completed screen
@@ -113,7 +132,7 @@ class VendorOrders extends Component {
                 <Content style={styles.paddedContainer}>
                     {this.state.orders
                         ? <OrderList
-                                orders={this.getFilteredOrders(this.state.orders, params && params.active)}
+                                orders={this.getFilteredOrders(Object.values(this.state.orders), params && params.active)}
                                 vendor={true}
                                 handleStatusChange={this.handleStatusChange}></ OrderList>
                         : <Spinner size='small'/>}
