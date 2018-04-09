@@ -85,7 +85,7 @@ export class OrderList extends Component {
                     return (
                         <Card>
                             {
-                                this.props.vendor && 
+                                !this.props.vendor && 
                                 <Text style={[styles.row, styles.header, styles.cardH2]}>
                                     Vendor: {item.vendorName}
                                 </Text>
@@ -103,11 +103,8 @@ export class OrderList extends Component {
                                     }}>
                                         <Text
                                           style={{
-                                            // fontSize: 12,
-                                            // paddingLeft: 4,
                                             textAlign:'center'
-                                        }}
-                                        >{this.hash(item.id)}</Text>
+                                        }}>{this.hash(item.id)}</Text>
                                     </Badge>
                                 </View>
                                 <View

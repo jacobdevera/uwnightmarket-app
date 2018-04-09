@@ -65,8 +65,7 @@ export default styles = StyleSheet.create({
         alignItems: 'center'
     },
     desc: {
-        fontStyle: 'italic',
-        paddingBottom: 8
+        fontStyle: 'italic'
     },
     menuItem: {
         fontWeight: 'normal',

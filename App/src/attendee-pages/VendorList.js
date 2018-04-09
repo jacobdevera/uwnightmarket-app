@@ -187,17 +187,17 @@ export default class VendorList extends Component {
                                                     style={styles.listImage}
                                                     source={{ uri: item.img }}
                                                 />
-                                            </Left>
-                                            <Body>
-                                                <View style={styles.rowSmall}>
+                                            <Body style={{ alignSelf: 'flex-start' }}>
+                                                <View style={{ flexDirection: 'row' }}>
                                                     <Badge style={{ backgroundColor: config.colorPrimary, marginRight: 8}}>
                                                         <Text>{item.boothNumber}</Text>
                                                     </Badge>
                                                     <Text style={ [styles.header, styles.cardH1] }>{item.name}</Text>
                                                 </View>
-                                                <Text style={ [styles.desc] }>{item.desc}</Text>
-                                                <Text style={styles.bold}>Menu: <Text style={styles.menuItem}>{foodNames.join(', ')}</Text></Text>
+                                                <Text style={ [styles.desc, styles.section] }>{item.desc}</Text>
+                                                <Text style={ [styles.bold, styles.section] }>Menu: <Text style={styles.menuItem}>{foodNames.join(', ')}</Text></Text>
                                             </Body>
+                                            </Left>
                                         </CardItem>
                                     </Card>
                                 )
