@@ -57,37 +57,28 @@ export default class VendorFood extends Component {
         this.setState({ order: order })
     }
 
-    submitOrder = (totalQuantity) => {
-        if (totalQuantity <= 0) {
-            Toast.show({
-                text: `Must order something`,
-                position: 'bottom',
-                type: 'danger',
-                duration: 5000
-            });
-        } else {
-            let newOrderKey = firebase.database().ref().child('orders').push().key;
-            let userId = firebase.auth().currentUser.uid;
-            let filtered = this.state.order.filter((item) => item.quantity > 0);
-            
-            let orderData = {
-                vendorName: this.state.vendor.name,
-                vendorId: this.state.vendor.userId,
-                userId: userId,
-                time: firebase.database.ServerValue.TIMESTAMP,
-                items: filtered,
-                status: Status.NOT_READY
-            }
-
-            let updates = {};
-            updates['/orders/' + newOrderKey] = orderData;
-            updates['/user-orders/' + userId + '/' + newOrderKey] = Status.NOT_READY; 
-            updates['/vendor-orders/' + this.state.vendor.userId + '/' + newOrderKey] = Status.NOT_READY;
-            
-            firebase.database().ref().update(updates).then((response) => {
-                this.props.navigation.goBack();
-            });
+    submitOrder = () => {
+        let newOrderKey = firebase.database().ref().child('orders').push().key;
+        let userId = firebase.auth().currentUser.uid;
+        let filtered = this.state.order.filter((item) => item.quantity > 0);
+        
+        let orderData = {
+            vendorName: this.state.vendor.name,
+            vendorId: this.state.vendor.userId,
+            userId: userId,
+            time: firebase.database.ServerValue.TIMESTAMP,
+            items: filtered,
+            status: Status.NOT_READY
         }
+
+        let updates = {};
+        updates['/orders/' + newOrderKey] = orderData;
+        updates['/user-orders/' + userId + '/' + newOrderKey] = Status.NOT_READY; 
+        updates['/vendor-orders/' + this.state.vendor.userId + '/' + newOrderKey] = Status.NOT_READY;
+        
+        firebase.database().ref().update(updates).then((response) => {
+            this.props.navigation.goBack();
+        });
     }
     
     render() {
@@ -112,9 +103,9 @@ export default class VendorFood extends Component {
                 </AppHeader>
                 <Content style={styles.paddedContainer}>
                     <View style={[styles.rowSpaceBetween]}>
-                        <View style={{flex: 1}}><Text style={{textAlign: 'center'}}>Qty</Text></View>
-                        <View style={{flex: 1}}><Text style={{textAlign: 'right'}}>Item</Text></View>
-                        <View style={{flex: 1}}><Text style={{textAlign: 'right'}}>Price</Text></View>
+                        {vendor.canOrder && <View style={{flex: 1}}><Text style={[{textAlign: 'center'}, styles.bold]}>Qty</Text></View>}
+                        <View style={{flex: 1}}><Text style={[{textAlign: 'center'}, styles.bold]}>Item</Text></View>
+                        <View style={{flex: 1}}><Text style={[{textAlign: 'right'}, styles.bold]}>Price</Text></View>
                     </View>
                     {vendor &&
                         <FlatList
@@ -124,20 +115,21 @@ export default class VendorFood extends Component {
                             renderItem={({item, index}) => {
                                 return (
                                         <ListItem>
-                                            <Left>
+                                            {vendor.canOrder &&
+                                            <Left style={{ flex: 1 }}>
                                                 <Button disabled={!item.available} onPress={() => { 
                                                     if (item.available) this.updateQuantity(index, false) 
                                                 }}>
                                                     <Text>-</Text>
                                                 </Button>
-                                                <Text style={[{flex:1, marginLeft: 0}, styles.center]}>{order[index].quantity}</Text>
+                                                <Text style={[{ flex: 1, marginLeft: 0 }, styles.center]}>{order[index].quantity}</Text>
                                                 <Button disabled={!item.available} onPress={() => { 
                                                     if (item.available) this.updateQuantity(index, true) 
                                                 }}>
                                                     <Text>+</Text>
                                                 </Button>
-                                            </Left>
-                                            <Body>
+                                            </Left>}
+                                            <Body style={{ flex: 2 }}>
                                                 <Text>{item.name}</Text>
                                             </Body>
                                             <Right>
@@ -147,11 +139,14 @@ export default class VendorFood extends Component {
                                 )
                             }}
                         />}
-                    <Text style={[styles.center, styles.bold, styles.row]}>Total Due: ${totalPrice}</Text>
-                    <View style={styles.row}>
-                        <Button disabled={!vendor.canOrder} onPress={() => this.submitOrder(totalQuantity)}><Text>Submit Order</Text></Button>
+                    {vendor.canOrder ? 
+                    <View>
+                        <Text style={[styles.center, styles.bold, styles.row]}>Total Due: ${totalPrice}</Text>
+                        <View style={styles.row}>
+                            <Button disabled={!vendor.canOrder || totalQuantity <= 0} onPress={() => this.submitOrder()}><Text>Submit Order</Text></Button>
+                        </View>
                     </View>
-                    {!vendor.canOrder && <Text style={styles.center}>This vendor does not support mobile ordering.</Text>}
+                    : <Text style={[styles.section, styles.center]}>This vendor does not support mobile ordering.</Text>}
                 </Content>
             </Container>
         );
