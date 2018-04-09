@@ -3,12 +3,10 @@ import { Image, View, Modal, StyleSheet, FlatList } from 'react-native';
 import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon, Left, Right, Thumbnail, List, ListItem, Toast } from 'native-base';
 import firebase from 'firebase';
 
-import { Status } from '../App';
+import { Status, limits } from '../App';
 import { AppHeader } from '../components';
 import { Spinner } from '../components/common';
 import styles from '../styles';
-
-const MAX_QUANTITY = 7;
 
 export default class VendorFood extends Component {
     constructor() {
@@ -41,13 +39,13 @@ export default class VendorFood extends Component {
         let totalQuantity = order.reduce((prev, curr) => {
             return { quantity: prev.quantity + curr.quantity} ;
         });
-        if (add && totalQuantity.quantity < MAX_QUANTITY) {
+        if (add && totalQuantity.quantity < limits.quantity) {
             order[index].quantity++;
         } else if (!add && order[index].quantity > 0) {
             order[index].quantity--;
-        } else if (totalQuantity.quantity >= MAX_QUANTITY) {
+        } else if (totalQuantity.quantity >= limits.quantity) {
             Toast.show({
-                text: `Cannot exceed ${MAX_QUANTITY} items`,
+                text: `Cannot exceed ${limits.quantity} items`,
                 buttonText: 'okay',
                 position: 'bottom',
                 type: 'danger',
@@ -57,6 +55,24 @@ export default class VendorFood extends Component {
         this.setState({ order: order })
     }
 
+    lessThanMaxOrders = () => {
+        return new Promise((resolve) => {
+            firebase.database().ref(`/user-orders/${firebase.auth().currentUser.uid}`).once('value', (snapshot) => { 
+                if (snapshot.numChildren() >= limits.orders) {
+                    Toast.show({
+                        text: `Cannot exceed ${limits.orders} orders`,
+                        buttonText: 'okay',
+                        position: 'bottom',
+                        type: 'danger',
+                        duration: 5000
+                    });
+                    resolve(false);
+                } else {
+                    resolve(true);
+                }
+            })
+        });
+    }
     submitOrder = () => {
         let newOrderKey = firebase.database().ref().child('orders').push().key;
         let userId = firebase.auth().currentUser.uid;
@@ -143,7 +159,10 @@ export default class VendorFood extends Component {
                     <View>
                         <Text style={[styles.center, styles.bold, styles.row]}>Total Due: ${totalPrice}</Text>
                         <View style={styles.row}>
-                            <Button disabled={!vendor.canOrder || totalQuantity <= 0} onPress={() => this.submitOrder()}><Text>Submit Order</Text></Button>
+                            <Button disabled={!vendor.canOrder || totalQuantity <= 0} 
+                                onPress={async () => { if (await this.lessThanMaxOrders()) this.submitOrder() }}>
+                                <Text>Submit Order</Text>
+                            </Button>
                         </View>
                     </View>
                     : <Text style={[styles.section, styles.center]}>This vendor does not support mobile ordering.</Text>}
