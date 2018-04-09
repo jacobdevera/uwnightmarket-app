@@ -42,6 +42,7 @@ export default class VendorList extends Component {
             snapshot.forEach((vendorSnapshot) => {
                 vendorList.push(vendorSnapshot.val());
             });
+            vendorList = vendorList.sort(this.sortByBoothNumber);
             this.setState({ vendors: vendorList, filteredVendors: vendorList });
         });
     }
@@ -73,27 +74,19 @@ export default class VendorList extends Component {
         this.setState({ filteredVendors: newVendors, filters: newFilters });
     }
 
+    sortByBoothNumber = (a, b) => a.boothNumber - b.boothNumber;
+
+    sortByName = (a, b) => a.name.localeCompare(b.name);
+
     sort = (type) => {
         let sortToPerform;
         switch (type) {
             case 'number': 
-            sortToPerform = (a, b) => {
-                return a.boothNumber - b.boothNumber;
-            }
+            sortToPerform = this.sortByBoothNumber;
             break;
 
             case 'name':
-            sortToPerform = (a, b) => {
-                let nameA = a.name.toLowerCase();
-                let nameB = b.name.toLowerCase();
-                if (nameA < nameB) {
-                    return -1;
-                }
-                if (nameA > nameB) {
-                    return 1;
-                }
-                return 0;
-            }
+            sortToPerform = this.sortByName;
             break;
         }
         let sortedVendors = this.state.filteredVendors.sort(sortToPerform);
