@@ -59,36 +59,6 @@ export default class App extends Component {
         });
     }
 
-    // will remove later
-    addUserToDatabase = (user) => {
-        let userData = {
-            userId: user.uid,
-            name: '',
-            desc: '',
-            img: '',
-            menu: [
-                { 
-                    name: '',
-                    price: 0,
-                    traits: ['food']
-                },
-                { 
-                    name: '',
-                    price: 0,
-                    traits: ['food']
-                },
-                { 
-                    name: '',
-                    price: 7,
-                    traits: ['food']
-                }
-            ]
-        }
-
-        let newUserRef = firebase.database().ref('/vendors/' + user.uid);
-        newUserRef.set(userData);
-    }
-
     setView = (index) => {
         this.setState({ view: index });
         console.log("Set view to" + index);
@@ -102,7 +72,7 @@ export default class App extends Component {
                         {this.state.view === 0 ?
                         <LandingPage setView={this.setView} /> : this.state.view === Views.ATTENDEE ?
                         <AttendeeDrawerNav screenProps={{ state: this.state, setView: this.setView }} /> : this.state.view === Views.LOGIN ?
-                        <LoginForm setView={this.setView} addUserToDatabase={this.addUserToDatabase}/> :
+                        <LoginForm setView={this.setView} /> :
                         <VendorDrawerNav screenProps={{ state: this.state, setView: this.setView }} />}
                     </Container>
                 </Root>

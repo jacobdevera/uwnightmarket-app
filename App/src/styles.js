@@ -7,6 +7,7 @@ export const config = {
 
 export default styles = StyleSheet.create({
     errorTextStyle: {
+        marginTop: 8,
         fontSize: 20,
         alignSelf: 'center',
         color: 'red'
