@@ -130,12 +130,12 @@ class VendorOrders extends Component {
                     Orders
                 </AppHeader>
                 <Content style={styles.paddedContainer}>
-                    {this.state.orders
+                    {this.state.orders && this.state.orders.length > 0
                         ? <OrderList
                                 orders={this.getFilteredOrders(Object.values(this.state.orders), params && params.active)}
                                 vendor={true}
                                 handleStatusChange={this.handleStatusChange}></ OrderList>
-                        : <Spinner size='small'/>}
+                        : <Text style={[styles.section, styles.center]}>No one has ordered from you yet.</Text>}
                 </Content>
             </Container>
         );

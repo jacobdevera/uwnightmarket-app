@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, View } from 'react-native';
+import { Alert, Image, View } from 'react-native';
 import { Button, Container, Content, Text } from 'native-base';
 import firebase from 'firebase';
 import styles from './styles';
@@ -16,12 +16,28 @@ class LandingPage extends Component {
         };
     }
 
-    onButtonPress() {
+    onAttendeeButtonPress() {
         this.setState({ error: '', loading: true });
-    
+        this.attendeeSignIn();
+    }
+
+    attendeeSignIn = () => {
         firebase.auth().signInAnonymously()
-            .then()//this.onLoginSuccess.bind(this))
-            .catch( err =>{
+            .then((response) => {
+                firebase.database().ref(`/status/`).once('value').then((snapshot) => {
+                    let status = snapshot.val();
+                    if (status && !status.active) {
+                        Alert.alert(
+                            'Oops',
+                            'Looks like the night market has not started yet.',
+                            [
+                                {text: 'OK', style: 'cancel'}
+                            ]
+                        );
+                    }
+                    firebase.auth().signOut().catch(err => console.log(err));
+                });
+            }).catch( err =>{
                 console.log(error.code);
                 console.log(error.message);
                 this.onLoginFail.bind(this);
@@ -36,18 +52,10 @@ class LandingPage extends Component {
         });
     }
 
-    onLoginSuccess() {
-        this.setState({
-            error : '',
-            loading: false
-        });
-    };
-
     render(){
         return (
             this.state.loading ? <Spinner size='small' /> :
             <Content contentContainerStyle={styles.column}>
-                
                 <Image
                     style={[styles.logo]}
                     resizeMode='contain'
@@ -66,7 +74,7 @@ class LandingPage extends Component {
                 />
                 <Text style={{ alignSelf: 'flex-start', paddingLeft: 25 }}> I am a...</Text>
                 <View style={styles.row}>
-                    <Button onPress={() => { this.onButtonPress(); }}>
+                    <Button onPress={() => { this.onAttendeeButtonPress(); }}>
                         <Text>Attendee</Text>
                     </Button>
                     <Button onPress={() => this.props.setView(Views.LOGIN)}>

@@ -57,22 +57,28 @@ export default class VendorFood extends Component {
 
     lessThanMaxOrders = () => {
         return new Promise((resolve) => {
-            firebase.database().ref(`/user-orders/${firebase.auth().currentUser.uid}`).once('value', (snapshot) => { 
-                if (snapshot.numChildren() >= limits.orders) {
-                    Toast.show({
-                        text: `Cannot exceed ${limits.orders} orders`,
-                        buttonText: 'okay',
-                        position: 'bottom',
-                        type: 'danger',
-                        duration: 5000
-                    });
-                    resolve(false);
+            firebase.database().ref(`/user-orders/${firebase.auth().currentUser.uid}`).once('value', (snapshot) => {
+                if (snapshot.val()) {
+                    activeOrders = Object.values(snapshot.val()).filter((order) => order !== Status.PICKED_UP);
+                    if (activeOrders.length >= limits.orders) {
+                        Toast.show({
+                            text: `Cannot exceed ${limits.orders} active orders`,
+                            buttonText: 'okay',
+                            position: 'bottom',
+                            type: 'danger',
+                            duration: 5000
+                        });
+                        resolve(false);
+                    } else {
+                        resolve(true);
+                    }
                 } else {
                     resolve(true);
                 }
             })
         });
     }
+
     submitOrder = () => {
         let newOrderKey = firebase.database().ref().child('orders').push().key;
         let userId = firebase.auth().currentUser.uid;
