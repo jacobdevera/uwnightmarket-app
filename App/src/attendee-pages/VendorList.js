@@ -140,6 +140,7 @@ export default class VendorList extends Component {
                                                 <CheckBox 
                                                     color={'#d94d5d'}
                                                     checked={item.active} 
+                                                    onPress={() => this.toggleFilter(index)}
                                                 />
                                                 <Body>
                                                     <Text>{item.name}</Text>
