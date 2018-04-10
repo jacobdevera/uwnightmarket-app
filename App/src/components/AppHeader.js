@@ -6,7 +6,7 @@ import { config } from '../styles';
 const AppHeader = (props) => {
     const headerTextColor = Platform.OS === 'ios' ? '#000' : '#fff';
     return (
-        <Header androidStatusBarColor={config.colorDark}>
+        <Header  androidStatusBarColor={config.colorDark}>
             {props.left ? props.left :
             <Left>
                 <Button transparent
