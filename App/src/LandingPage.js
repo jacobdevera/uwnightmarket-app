@@ -34,8 +34,8 @@ class LandingPage extends Component {
                                 {text: 'OK', style: 'cancel'}
                             ]
                         );
+                        firebase.auth().currentUser.delete().catch(err => console.log(err));
                     }
-                    firebase.auth().signOut().catch(err => console.log(err));
                 });
             }).catch( err =>{
                 console.log(error.code);
