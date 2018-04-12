@@ -55,7 +55,6 @@ export class OrderList extends Component {
 
     showActionSheet = (item) => {
         let { title, options, cancelIndex, destructiveIndex, handleActionSelect } = this.props.asConfig;
-
         ActionSheet.show(
             {
                 options: options,
@@ -190,16 +189,6 @@ export class OrderList extends Component {
                         </Card>
                     )
                 }}/>
-                {/*<ActionSheet
-                    ref={o => this.ActionSheet = o}
-                    title={this.props.asTitle}
-                    options={this.props.asOptions}
-                    cancelButtonIndex={this.props.asCancelIndex}
-                    destructiveButtonIndex={this.props.asDestructiveIndex}
-                    onPress={(index) => {
-                    var handleToUpdate = this.props.handleActionSelect;
-                    handleToUpdate(index, this.state.selectedItem);
-                }}/>*/}
             </View>
         );
     }

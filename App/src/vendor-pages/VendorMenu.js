@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Image, View, FlatList } from 'react-native';
 import {
+    ActionSheet,
     Button,
     Card,
     CardItem,
@@ -16,7 +17,6 @@ import {
 } from 'native-base';
 import { AppHeader } from '../components';
 import styles from '../styles';
-import ActionSheet from 'react-native-actionsheet';
 import firebase from 'firebase';
 
 const STATUS_ITEMS = ['Available', 'Sold Out', 'Cancel'];
@@ -68,10 +68,19 @@ class VendorMenu extends Component {
                                 <Text style={{ flex: 60 }}>{item.name}</Text>
                                 <Text style={{ flex: 10 }}>${item.price}</Text>
                                 <View style={{ flex: 30 }}>
-                                    <Button full
+                                    <Button
                                         onPress = {() => {
-                                            this.ActionSheet.show();
-                                            this.setState({ selectedMenuIndex: index });
+                                            ActionSheet.show(
+                                                {
+                                                    options: STATUS_ITEMS,
+                                                    cancelButtonIndex: 2,
+                                                    destructiveButtonIndex: 1,
+                                                    title: 'Set Menu Item Status'
+                                                },
+                                                buttonIndex => {
+                                                    this.setMenuItemStatus(buttonIndex, index)
+                                                }
+                                            );
                                         }}
                                     >
                                         <Text>{item.traits.includes('available') ? 'Available' : 'Sold Out'}</Text>
@@ -80,15 +89,6 @@ class VendorMenu extends Component {
                             </ListItem>)
                         }} 
                     />
-                    <ActionSheet
-                        ref={o => this.ActionSheet = o}
-                        title={'Set Menu Item Status'}
-                        options={STATUS_ITEMS}
-                        cancelButtonIndex={2}
-                        destructiveButtonIndex={2}
-                        onPress={(index) => {
-                        this.setMenuItemStatus(index, this.state.selectedMenuIndex);
-                    }}/>
                 </Content>
             </Container>
         );

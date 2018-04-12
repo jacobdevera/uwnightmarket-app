@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, View, Modal, StyleSheet, FlatList } from 'react-native';
+import { Image, View, Modal, StyleSheet, FlatList, Platform } from 'react-native';
 import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon, Left, Right, Thumbnail, List, ListItem, Toast } from 'native-base';
 import firebase from 'firebase';
 import FCM, { FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType, 
@@ -95,7 +95,8 @@ export default class VendorFood extends Component {
             userToken: this.state.token,
             time: firebase.database.ServerValue.TIMESTAMP,
             items: filtered,
-            status: Status.NOT_READY
+            status: Status.NOT_READY,
+            platform: Platform.OS
         }
 
         let updates = {};

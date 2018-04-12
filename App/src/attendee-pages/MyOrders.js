@@ -50,7 +50,6 @@ class MyOrders extends Component {
         let { id, userId, vendorId, status } = selectedItem;
         if (index === 0 && status === Status.NOT_READY) {
             let updates = {};
-            
             updates['/orders/' + id] = null;
             updates['/user-orders/' + userId + '/' + id] = null;
             updates['/vendor-orders/' + vendorId + '/' + id] = null;

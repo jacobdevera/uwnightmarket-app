@@ -13,6 +13,7 @@ import {
     Left,
     Right,
     Thumbnail,
+    Toast,
     List,
     ListItem,
     Radio,
@@ -47,9 +48,9 @@ class VendorOrders extends Component {
         }
         this.orderRef = firebase.database().ref(`/vendor-orders/${firebase.auth().currentUser.uid}`).orderByKey();
         this.asConfig = {
-            title: 'Which one do you like?',
-            options: ['Not Ready', 'Ready', 'Picked Up', 'Cancel'],
-            cancelIndex: 3,
+            title: 'Set Order Status',
+            options: ['Not Ready', 'Ready', 'Picked Up', 'Delete Order', 'Cancel'],
+            cancelIndex: 4,
             destructiveIndex: 3,
             handleActionSelect: this.handleStatusChange
         }
@@ -74,13 +75,13 @@ class VendorOrders extends Component {
                     .all(promises)
                     .then((responses) => {
                         this.setState({ orders: orderObj });
-                        this.orderRef.on('child_added', this.orderChanged);
-                        this.orderRef.on('child_changed', this.orderChanged);
-                        this.orderRef.on('child_removed', this.orderRemoved);
                     })
                     .catch((error) => console.log(error))
             }
         });
+        this.orderRef.on('child_added', this.orderChanged);
+        this.orderRef.on('child_changed', this.orderChanged);
+        this.orderRef.on('child_removed', this.orderRemoved);
     }
 
     orderChanged = (snapshot) => {
@@ -95,7 +96,7 @@ class VendorOrders extends Component {
 
     orderRemoved = (snapshot) => {
         let newOrderObj = Object.assign({}, this.state.orders);
-        newOrderObj[snapshot.key] = null;
+        delete newOrderObj[snapshot.key];
         this.setState({ orders: newOrderObj });
     }
 
@@ -106,47 +107,76 @@ class VendorOrders extends Component {
     // determine which orders to display whether on active or completed screen
     getFilteredOrders = (orders, active) => {
         return orders.filter((order) => {
-            return ((active && order.status !== Status.PICKED_UP)
-                || (!active && order.status === Status.PICKED_UP))
+            return (order && ((active && order.status !== Status.PICKED_UP)
+                || (!active && order.status === Status.PICKED_UP)))
         });
     }
 
     handleStatusChange = (index, selectedItem) => {
-        let orderId = selectedItem.id;
+        let { id, userId, vendorId, status, vendorName } = selectedItem;
         if (index <= 2) {
-            let status = ['NOT READY', 'READY', 'PICKED UP'];
-            let updates = {
-                status: status[index]
-            };
-            firebase
-                .database()
-                .ref(`/orders/${orderId}`)
-                .update(updates);
-            let updates2 = {};
-            updates2['/user-orders/' + selectedItem.userId + '/' + orderId] = status[index];
-            updates2['/vendor-orders/' + selectedItem.vendorId + '/' + orderId] = status[index];
-            firebase.database().ref().update(updates2);
-
-            if (status[index] === Status.READY) {
-                let notifBody = this.buildNotification(selectedItem);
-                this.sendNotification(JSON.stringify(notifBody));
+            let statuses = ['NOT READY', 'READY', 'PICKED UP'];
+            let updates = {};
+            updates[`/orders/${id}/status`] = statuses[index];
+            updates['/user-orders/' + userId + '/' + id] = statuses[index];
+            updates['/vendor-orders/' + vendorId + '/' + id] = statuses[index];
+            firebase.database().ref().update(updates);
+            if (statuses[index] === Status.READY) {
+                let title = 'Order ready!';
+                let body = `Please head to ${vendorName} to pick it up.`
+                let notif = this.buildNotification(selectedItem, title, body);
+                this.sendNotification(JSON.stringify(notif));
             }
+        } else if (index === 3) {
+            let updates = {};
+            updates[`/orders/${id}`] = null;
+            updates['/user-orders/' + userId + '/' + id] = null;
+            updates['/vendor-orders/' + vendorId + '/' + id] = null;
+            firebase.database().ref().update(updates).then((res) => {
+                let title = 'Order canceled';
+                let body = `Unfortunately, ${vendorName} could not fulfill your order.`
+                let notif = this.buildNotification(selectedItem, title, body);
+                this.sendNotification(JSON.stringify(notif));
+                Toast.show({
+                    text: `Order removed`,
+                    position: 'bottom',
+                    duration: 5000
+                })
+            }).catch(e => console.log(e));
         }
     }
 
-    buildNotification = (order) => {
-        return {
-            "to": order.userToken,
-            "notification": {
-                "title": `Order ready!`,
-                "body": `Please head to ${order.vendorName} to pick it up.`,
-                "sound": "default"
-            },
-            data: {
-                targetScreen: 'detail'
-            },
-            "priority": 10
-        };
+    buildNotification = (order, title, body) => {
+        if (order.platform === 'android') {
+            return {
+                "to": order.userToken,
+                "data": {
+                    "type": "MEASURE_CHANGE",
+                    "custom_notification": {
+                        "title": title,
+                        "body": body,
+                        "color": config.colorPrimary,
+                        "priority": "high",
+                        "icon": "ic_notif",
+                        "show_in_foreground": true,
+                        "sound": "default"
+                    }
+                }
+            }
+        } else {
+            return {
+                "to": order.userToken,
+                "notification": {
+                    "title": title,
+                    "body": body,
+                    "sound": "default"
+                },
+                data: {
+                    targetScreen: 'detail'
+                },
+                "priority": 10
+            };
+        }
     }
 
     sendNotification = async (body) => {
