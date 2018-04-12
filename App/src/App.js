@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StatusBar } from 'react-native';
+import { StatusBar, Platform } from 'react-native';
 import { DrawerNavigator } from "react-navigation";
 import { Container, Drawer, StyleProvider, Root } from 'native-base';
 import getTheme from './native-base-theme/components';
@@ -11,6 +11,10 @@ import { LandingPage } from './LandingPage';
 import { LoginForm } from './vendor-pages';
 
 import firebase from 'firebase';
+import FCM, { FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType, 
+    NotificationActionType, NotificationActionOption, NotificationCategoryOption } from 'react-native-fcm';
+import { registerKilledListener } from "./Listeners";
+import { API_KEY } from './FirebaseConstants';
 
 export const Views = {
     INITIAL: 0,
@@ -30,7 +34,9 @@ export const limits = {
     orders: 2
 }
 
-export const filters = ['food','beverage','hot','cold','savory','sweet','spicy','available'];
+export const filters = ['food', 'beverage', 'hot', 'cold', 'savory', 'sweet', 'spicy', 'available'];
+
+registerKilledListener();
 
 export default class App extends Component {
     constructor(props) {
@@ -46,7 +52,7 @@ export default class App extends Component {
     componentWillMount() {
         if (!firebase.apps.length) {
             firebase.initializeApp({
-                apiKey: "AIzaSyD9oIu2WqxmvQOrIlPQ-7GQRKZJgKamSk4",
+                apiKey: API_KEY,
                 authDomain: "uwnightmarket-90946.firebaseapp.com",
                 databaseURL: "https://uwnightmarket-90946.firebaseio.com",
                 storageBucket: "uwnightmarket-90946.appspot.com",
@@ -54,13 +60,70 @@ export default class App extends Component {
             });
         }
 
-        firebase.auth().onAuthStateChanged((user) => {
+        FCM.getInitialNotification().then(notif => {
+            console.log("INITIAL NOTIFICATION", notif)
+        });
+
+        firebase.auth().onAuthStateChanged(async (user) => {
             if (user) {
                 let newView = user.isAnonymous ? Views.ATTENDEE : Views.VENDOR;
+                if (user.isAnonymous) {
+                    await FCM.requestPermissions();
+                }
                 this.setState({ view: newView, loggedIn: true });
             } else {
                 this.setState({ view: Views.INITIAL, loggedIn: false });
             }
+        });
+
+
+        this.notificationListener = FCM.on(FCMEvent.Notification, notif => {
+            console.log("Notification", notif);
+            if (notif.local_notification) {
+                return;
+            }
+            if (notif.opened_from_tray) {
+                return;
+            }
+
+            if (Platform.OS === 'ios') {
+                //optional
+                //iOS requires developers to call completionHandler to end notification process. If you do not call it your background remote notifications could be throttled, to read more about it see the above documentation link.
+                //This library handles it for you automatically with default behavior (for remote notification, finish with NoData; for WillPresent, finish depend on "show_in_foreground"). However if you want to return different result, follow the following code to override
+                //notif._notificationType is available for iOS platfrom
+                switch (notif._notificationType) {
+                    case NotificationType.Remote:
+                        notif.finish(RemoteNotificationResult.NewData) //other types available: RemoteNotificationResult.NewData, RemoteNotificationResult.ResultFailed
+                        break;
+                    case NotificationType.NotificationResponse:
+                        notif.finish();
+                        break;
+                    case NotificationType.WillPresent:
+                        notif.finish(WillPresentNotificationResult.All) //other types available: WillPresentNotificationResult.None
+                        break;
+                }
+            }
+            this.showLocalNotification(notif);
+        });
+
+        this.refreshTokenListener = FCM.on(FCMEvent.RefreshToken, token => {
+            console.log("TOKEN (refreshUnsubscribe)", token);
+        });
+    }
+
+    componentWillUnmount() {
+        this.notificationListener.remove();
+        this.refreshTokenListener.remove();
+    }
+
+    showLocalNotification = (notif) => {
+        FCM.presentLocalNotification({
+            title: notif.title,
+            body: notif.body,
+            priority: "high",
+            click_action: notif.click_action,
+            show_in_foreground: true,
+            local: true
         });
     }
 
@@ -70,15 +133,15 @@ export default class App extends Component {
     };
 
     render() {
-    return (
+        return (
             <StyleProvider style={getTheme(commonColor)}>
                 <Root>
                     <Container>
                         {this.state.view === 0 ?
-                        <LandingPage setView={this.setView} /> : this.state.view === Views.ATTENDEE ?
-                        <AttendeeDrawerNav screenProps={{ state: this.state, setView: this.setView }} /> : this.state.view === Views.LOGIN ?
-                        <LoginForm setView={this.setView} /> :
-                        <VendorDrawerNav screenProps={{ state: this.state, setView: this.setView }} />}
+                            <LandingPage setView={this.setView} /> : this.state.view === Views.ATTENDEE ?
+                                <AttendeeDrawerNav screenProps={{ state: this.state, setView: this.setView }} /> : this.state.view === Views.LOGIN ?
+                                    <LoginForm setView={this.setView} /> :
+                                    <VendorDrawerNav screenProps={{ state: this.state, setView: this.setView }} />}
                     </Container>
                 </Root>
             </StyleProvider>

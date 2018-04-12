@@ -98,9 +98,10 @@ export class OrderList extends Component {
                                     <Text style={[styles.center, styles.header, styles.cardH2]}>Order #</Text>
                                     <Badge
                                         width={64}
-                                        style={{
-                                        backgroundColor: config.colorPrimary
-                                    }}>
+                                        style={{ 
+                                            alignSelf: 'center',
+                                            backgroundColor: config.colorPrimary 
+                                        }}>
                                         <Text
                                           style={{
                                             textAlign:'center'
@@ -121,7 +122,7 @@ export class OrderList extends Component {
                                                 style={{
                                                 fontSize: 12,
                                                 paddingLeft: 4,
-                                                textAlign:'center'
+                                                textAlign: 'center'
                                             }}>{item.quantity} {item.name}</Text>
                                         )
                                     }}/>

@@ -22,8 +22,8 @@ exports.getOrders = functions.https.onRequest((req, res) => {
             });
             return res.status(200).send(orders);
         });
-        }).catch((error) => {
-            console.log(error);
-        }
+    }).catch((error) => {
+        console.log(error);
+    }
     );
 })

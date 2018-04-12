@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Image, View, Modal, StyleSheet, FlatList } from 'react-native';
 import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon, Left, Right, Thumbnail, List, ListItem, Toast } from 'native-base';
 import firebase from 'firebase';
+import FCM, { FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType, 
+    NotificationActionType, NotificationActionOption, NotificationCategoryOption } from 'react-native-fcm';
 
 import { Status, limits } from '../App';
 import { AppHeader } from '../components';
@@ -30,8 +32,10 @@ export default class VendorFood extends Component {
                 available: item.traits.includes('available') 
             }
         });
-
-        this.setState({ vendor: vendor, order: order });
+        FCM.getFCMToken().then(token => {
+            console.log(token);
+            this.setState({ vendor: vendor, order: order, token: token || "" })
+        });
     }
 
     updateQuantity = (index, add) => {
@@ -88,6 +92,7 @@ export default class VendorFood extends Component {
             vendorName: this.state.vendor.name,
             vendorId: this.state.vendor.userId,
             userId: userId,
+            userToken: this.state.token,
             time: firebase.database.ServerValue.TIMESTAMP,
             items: filtered,
             status: Status.NOT_READY

@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {Image, View, Modal, StyleSheet, FlatList} from 'react-native';
+import React, { Component } from 'react';
+import { Alert, Image, View, Modal, StyleSheet, FlatList } from 'react-native';
 import {
     Button,
     Container,
@@ -18,13 +18,14 @@ import {
     Radio,
     Badge
 } from 'native-base';
-import {StackNavigator} from "react-navigation";
+import { StackNavigator } from "react-navigation";
 import firebase from 'firebase'
 
 import { Status } from '../App';
-import {AppHeader, StackHeader, OrderList} from '../components';
-import {Spinner} from '../components/common';
-import styles, {config} from '../styles';
+import { SERVER_KEY, FCM_URL } from '../FirebaseConstants';
+import { AppHeader, StackHeader, OrderList } from '../components';
+import { Spinner } from '../components/common';
+import styles, { config } from '../styles';
 
 const modalStyles = StyleSheet.create({
     modalContainer: {
@@ -42,8 +43,7 @@ class VendorOrders extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            orders: {},
-            update: false
+            orders: {}
         }
         this.orderRef = firebase.database().ref(`/vendor-orders/${firebase.auth().currentUser.uid}`).orderByKey();
     }
@@ -99,7 +99,7 @@ class VendorOrders extends Component {
     // determine which orders to display whether on active or completed screen
     getFilteredOrders = (orders, active) => {
         return orders.filter((order) => {
-            return ((active && order.status !== Status.PICKED_UP) 
+            return ((active && order.status !== Status.PICKED_UP)
                 || (!active && order.status === Status.PICKED_UP))
         });
     }
@@ -119,22 +119,66 @@ class VendorOrders extends Component {
             updates2['/user-orders/' + selectedItem.userId + '/' + orderId] = status[index];
             updates2['/vendor-orders/' + selectedItem.vendorId + '/' + orderId] = status[index];
             firebase.database().ref().update(updates2);
+
+            if (status[index] === Status.READY) {
+                let notifBody = this.buildNotification(selectedItem);
+                this.sendNotification(JSON.stringify(notifBody));
+            }
+        }
+    }
+
+    buildNotification = (order) => {
+        return {
+            "to": order.userToken,
+            "notification": {
+                "title": `Order ready!`,
+                "body": `Please head to ${order.vendorName} to pick it up.`,
+                "sound": "default"
+            },
+            data: {
+                targetScreen: 'detail'
+            },
+            "priority": 10
+        };
+    }
+
+    sendNotification = async (body) => {
+        console.log(body);
+        let headers = new Headers({
+            "Content-Type": "application/json",
+            "Authorization": "key=" + SERVER_KEY
+        });
+
+        try {
+            let response = await fetch(FCM_URL, { method: "POST", headers, body });
+            console.log(response);
+            try {
+                response = await response.json();
+                if (!response.success) {
+                    Alert.alert('Failed to send notification, check error log')
+                }
+            } catch (err) {
+                Alert.alert('Failed to send notification, check error log')
+            }
+        } catch (err) {
+            Alert.alert(err && err.message)
         }
     }
 
     render() {
         const { params } = this.props.navigation.state;
+        const { orders } = this.state;
         return (
             <Container>
                 <AppHeader navigation={this.props.navigation}>
                     Orders
                 </AppHeader>
                 <Content style={styles.paddedContainer}>
-                    {this.state.orders && this.state.orders.length > 0
+                    {orders && Object.values(orders).length > 0
                         ? <OrderList
-                                orders={this.getFilteredOrders(Object.values(this.state.orders), params && params.active)}
-                                vendor={true}
-                                handleStatusChange={this.handleStatusChange}></ OrderList>
+                            orders={this.getFilteredOrders(Object.values(orders), params && params.active)}
+                            vendor={true}
+                            handleStatusChange={this.handleStatusChange}></ OrderList>
                         : <Text style={[styles.section, styles.center]}>No one has ordered from you yet.</Text>}
                 </Content>
             </Container>
