@@ -28,6 +28,7 @@ export default class VendorFood extends Component {
             order[index] = { 
                 name: item.name, 
                 price: item.price, 
+                desc: item.desc,
                 quantity: 0, 
                 available: item.traits.includes('available') 
             }
@@ -159,6 +160,7 @@ export default class VendorFood extends Component {
                                             </Left>}
                                             <Body style={{ flex: 2 }}>
                                                 <Text>{item.name}</Text>
+                                                {item.desc && <Text style={styles.menuDesc}>{item.desc}</Text>}
                                             </Body>
                                             <Right>
                                                 <Text>${item.price}</Text>

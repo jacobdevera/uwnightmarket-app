@@ -65,6 +65,10 @@ export default styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center'
     },
+    menuDesc: {
+        fontSize: 14,
+        color: 'gray'
+    },
     desc: {
         fontStyle: 'italic'
     },
