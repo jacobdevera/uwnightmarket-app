@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Image, View, FlatList} from 'react-native';
 import {
+    ActionSheet,
     Button,
     Card,
     CardItem,
@@ -18,13 +19,11 @@ import styles, {config} from '../styles';
 import StatusPicker from './StatusPicker';
 import {Status} from '../App';
 import {StackNavigator} from "react-navigation";
-import ActionSheet from 'react-native-actionsheet';
 import firebase from 'firebase';
 
 export class OrderList extends Component {
     constructor(props) {
         super(props);
-        this.state = { selectedItem : null }
     }
 
     getTotalPrice = (order) => {
@@ -54,9 +53,22 @@ export class OrderList extends Component {
         }
     }
 
-    showActionSheet = () => {
-        this.ActionSheet.show();
+    showActionSheet = (item) => {
+        let { title, options, cancelIndex, destructiveIndex, handleActionSelect } = this.props.asConfig;
+
+        ActionSheet.show(
+            {
+                options: options,
+                cancelButtonIndex: cancelIndex,
+                destructiveButtonIndex: destructiveIndex,
+                title: title
+            },
+            buttonIndex => {
+                handleActionSelect(buttonIndex, item);
+            }
+        );
     }
+    
 
     hash = (input) => {
         let count = 4;
@@ -151,13 +163,9 @@ export class OrderList extends Component {
                                     <View>
                                         <Button 
                                             onPress={() => {
-                                                if (this.props.vendor) {
-                                                    this.showActionSheet();
-                                                    this.setState({selectedItem: item});
-                                                }
+                                                this.showActionSheet(item);
                                             }}
                                             small
-      
                                             style={{
                                             width: 70,
                                             justifyContent: 'center',
@@ -182,16 +190,16 @@ export class OrderList extends Component {
                         </Card>
                     )
                 }}/>
-                <ActionSheet
+                {/*<ActionSheet
                     ref={o => this.ActionSheet = o}
-                    title={'Which one do you like ?'}
-                    options={['Not Ready', 'Ready', 'Picked Up', 'Cancel']}
-                    cancelButtonIndex={3}
-                    destructiveButtonIndex={3}
+                    title={this.props.asTitle}
+                    options={this.props.asOptions}
+                    cancelButtonIndex={this.props.asCancelIndex}
+                    destructiveButtonIndex={this.props.asDestructiveIndex}
                     onPress={(index) => {
-                    var handleToUpdate = this.props.handleStatusChange;
+                    var handleToUpdate = this.props.handleActionSelect;
                     handleToUpdate(index, this.state.selectedItem);
-                }}/>
+                }}/>*/}
             </View>
         );
     }

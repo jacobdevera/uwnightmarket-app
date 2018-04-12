@@ -5,8 +5,9 @@ import { Header, Left, Button, Icon, Right, Body, Title } from 'native-base';
 import { config } from '../styles';
 const AppHeader = (props) => {
     const headerTextColor = Platform.OS === 'ios' ? '#000' : '#fff';
+    const borderBottomWidth = Platform.OS === 'ios' ? 1 : 0;
     return (
-        <Header  androidStatusBarColor={config.colorDark}>
+        <Header androidStatusBarColor={config.colorDark} style={{ borderBottomWidth: borderBottomWidth }}>
             {props.left ? props.left :
             <Left>
                 <Button transparent

@@ -46,6 +46,13 @@ class VendorOrders extends Component {
             orders: {}
         }
         this.orderRef = firebase.database().ref(`/vendor-orders/${firebase.auth().currentUser.uid}`).orderByKey();
+        this.asConfig = {
+            title: 'Which one do you like?',
+            options: ['Not Ready', 'Ready', 'Picked Up', 'Cancel'],
+            cancelIndex: 3,
+            destructiveIndex: 3,
+            handleActionSelect: this.handleStatusChange
+        }
     }
 
     componentDidMount() {
@@ -176,9 +183,9 @@ class VendorOrders extends Component {
                 <Content style={styles.paddedContainer}>
                     {orders && Object.values(orders).length > 0
                         ? <OrderList
+                            asConfig={this.asConfig}
                             orders={this.getFilteredOrders(Object.values(orders), params && params.active)}
-                            vendor={true}
-                            handleStatusChange={this.handleStatusChange}></ OrderList>
+                            vendor={true}></ OrderList>
                         : <Text style={[styles.section, styles.center]}>No one has ordered from you yet.</Text>}
                 </Content>
             </Container>

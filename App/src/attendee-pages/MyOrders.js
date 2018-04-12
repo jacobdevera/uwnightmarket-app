@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Image, View } from 'react-native';
-import { Button, Container, Content, H1, H2, H3, Text, FlatList, Card, CardItem, Body } from 'native-base';
+import { Button, Container, Content, H1, H2, H3, Text, FlatList, Card, CardItem, Body, Toast } from 'native-base';
 import firebase from 'firebase';
 
 import { AppHeader, OrderList } from '../components';
@@ -12,6 +12,13 @@ class MyOrders extends Component {
         super(props);
         this.state = { orders: [] }
         this.orderRef = firebase.database().ref(`/user-orders/${firebase.auth().currentUser.uid}`).orderByKey();
+        this.asConfig = {
+            title: 'You can delete your order if you are unable to pick it up.',
+            options: ['Delete Order', 'Cancel'],
+            cancelIndex: 1,
+            destructiveIndex: 0,
+            handleActionSelect: this.handleActionSelect
+        }
     }
 
     componentDidMount() {
@@ -29,12 +36,32 @@ class MyOrders extends Component {
                 Promise.all(promises).then((responses) => {
                     this.setState({ orders: orderList });
                 }).catch((error) => console.log(error))
+            } else {
+                this.setState({ orders: [] });
             }
         });
     }
 
     componentWillUnmount() {
         this.orderRef.off('value');
+    }
+
+    handleActionSelect = (index, selectedItem) => {
+        let { id, userId, vendorId, status } = selectedItem;
+        if (index === 0 && status === Status.NOT_READY) {
+            let updates = {};
+            
+            updates['/orders/' + id] = null;
+            updates['/user-orders/' + userId + '/' + id] = null;
+            updates['/vendor-orders/' + vendorId + '/' + id] = null;
+            firebase.database().ref().update(updates).then((res) => {
+                Toast.show({
+                    text: `Order removed`,
+                    position: 'bottom',
+                    duration: 5000
+                })
+            }).catch(e => console.log(e));
+        }
     }
 
     render() {
@@ -49,7 +76,10 @@ class MyOrders extends Component {
                     {activeOrders.length > 0 ?
                     <View style={styles.section}>
                         <Text style={ [styles.header, styles.h1] }>Active Orders</Text>
-                        <OrderList orders={this.state.orders.filter((order) => order.status !== Status.PICKED_UP)} vendor={false} /> 
+                        <OrderList 
+                            asConfig={this.asConfig} 
+                            orders={this.state.orders.filter((order) => order.status !== Status.PICKED_UP)} 
+                            vendor={false} /> 
                     </View>
                     : <View style={[styles.column]}>
                         <Text style={styles.section}>You have no active orders right now.</Text>
@@ -60,7 +90,10 @@ class MyOrders extends Component {
                     {pastOrders.length > 0 &&
                     <View style={styles.section}>
                         <Text style={ [styles.header, styles.h1] }>Past Orders</Text>
-                        <OrderList orders={pastOrders} vendor={false} />
+                        <OrderList 
+                            asConfig={this.asConfig}
+                            orders={pastOrders} 
+                            vendor={false} />
                     </View>}
                 </Content>
             </Container>);
