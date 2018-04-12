@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Image, View, Modal, StyleSheet, FlatList } from 'react-native';
-import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon, Left, Right, Thumbnail, List, ListItem, Radio, Badge } from 'native-base';
+import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon, Left, Right, List, ListItem, Radio, Badge } from 'native-base';
 import { StackNavigator } from "react-navigation";
 import firebase from 'firebase'
 
@@ -176,8 +176,8 @@ export default class VendorList extends Component {
                                             }}
                                         >
                                             <Left>
-                                                <Thumbnail
-                                                    square
+                                                <Image
+                                                    resizeMode="contain"
                                                     style={styles.listImage}
                                                     source={{ uri: item.img }}
                                                 />
