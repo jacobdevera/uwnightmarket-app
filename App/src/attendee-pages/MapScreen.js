@@ -5,14 +5,14 @@ import {
   Text,
   View,
   ScrollView,
-  Animated,
   Image,
   Dimensions,
   TouchableOpacity,
+  Animated
 } from "react-native";
 
-import MapView ,{ Callout, } from "react-native-maps";
-
+import MapView ,{ Callout, AnimatedRegion, Marker  } from "react-native-maps";
+import firebase from 'firebase';
 
 const Images = [
   { uri: "https://s.yimg.com/ny/api/res/1.2/g7I3e.RD0ngPAwFoft5kPg--/YXBwaWQ9aGlnaGxhbmRlcjtzbT0xO3c9MTI4MDtoPTk2MA--/http://media.zenfs.com/en-US/homerun/delish_597/51abed18dd08738b233b51058275c63f" },
@@ -31,58 +31,26 @@ export default class MapScreen extends Component {
     constructor(props){
         super();
         this.centerMarker = this.centerMarker.bind(this);
-        // this.scrollView = null;
     }
 
   state = {
-    markers: [
-      {
-        coordinate: {
-          latitude: 47.656139,
-          longitude: -122.309745,
-        },
-        title: "Rice",
-        description: "Best Shrimp Rice",
-        image: Images[0],
-      },
-      {
-        coordinate: {
-          latitude: 47.655687,
-          longitude: -122.309927,
-        },
-        title: "No.1 Mexican",
-        description: "Best Taco",
-        image: Images[1],
-      },
-      {
-        coordinate: {
-          latitude: 47.656131,
-          longitude: -122.308924,
-        },
-        title: "BBQ",
-        description: "All kinds of BBQ",
-        image: Images[2],
-      },
-      {
-        coordinate: {
-          latitude: 47.655611,
-          longitude: -122.308962,
-        },
-        title: "Tornato Potato",
-        description: "Delicious",
-        image: Images[3],
-      },
-    ],
-    region: {
-      latitude: 47.655990,
-      longitude: -122.309463,
-      latitudeDelta: 0.0025,
-      longitudeDelta: 0.0025,
+    vendors:[],
+
+    region:{
+      latitude: 47.655661,
+      longitude: -122.309414,
+      latitudeDelta: 0.0018,
+      longitudeDelta: 0.0018,    
     },
-    currentCard :1
+    currentCard :1,
+    markerPressed: false,
+
   };
 
  
+  
+
+
   componentWillMount() {
     this.index = 0;
     this.animation = new Animated.Value(0);
@@ -90,49 +58,86 @@ export default class MapScreen extends Component {
   componentDidMount() {
     // We should detect when scrolling has stopped then animate
     // We should just debounce the event listener here
-    this.animation.addListener(({ value }) => {
-      let index = Math.floor(value / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item
-      if (index >= this.state.markers.length) {
-        index = this.state.markers.length - 1;
-      }
-      if (index <= 0) {
-        index = 0;
-      }
+    let vendorRef = firebase.database().ref('/vendors/').orderByKey();
+            vendorRef.once('value').then((snapshot) => {
+              // console.log("map snapshot:    ", snapshot.val());
+            let vendorList = [];
+            snapshot.forEach((vendorSnapshot) => {
+              let each = vendorSnapshot.val();
+              if(each.latitude !==  0 &&each.longitude !==  0){
+                vendorList.push(each);
+              }
+              each
+            });
+            console.log(vendorList);
 
-      clearTimeout(this.regionTimeout);
-      this.regionTimeout = setTimeout(() => {
-        if (this.index !== index) {
-          this.index = index;
-          const { coordinate } = this.state.markers[index];
-          this.map.animateToRegion(
-            {
-              ...coordinate,
-              latitudeDelta: this.state.region.latitudeDelta,
-              longitudeDelta: this.state.region.longitudeDelta,
-            },
-            350
-          );
+            // vendorList = vendorList.sort(this.sortByBoothNumber);
+            this.setState({ vendors: vendorList});
+    });
+
+
+
+
+
+
+    this.animation.addListener(({ value }) => {
+      console.log("Presser?: ", this.state.markerPressed)
+
+      if (!this.state.markerPressed) {
+        console.log("INSIDE")
+        let index = Math.floor(value / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item
+        if (index >= this.state.vendors.length) {
+          index = this.state.vendors.length - 1;
         }
-      }, 10);
+        if (index <= 0) {
+          index = 0;
+        }
+  
+  
+        // clearTimeout(this.regionTimeout);
+        // this.regionTimeout = setTimeout(() => {
+        //   if (this.index !== index) {
+        //     this.index = index;
+        //     this.map.animateToRegion(
+        //       {
+        //         ...this.makeCoordinate(this.state.vendors[index]),
+        //         latitudeDelta: this.state.region.latitudeDelta,
+        //         longitudeDelta: this.state.region.longitudeDelta,
+        //       },
+        //       350
+        //     );
+        //   }
+        // }, 10);
+  
+        this.map.animateToCoordinate({
+          latitude: this.state.vendors[index].latitude,
+          longitude: this.state.vendors[index].longitude,
+        }, 300);
+        
+      }
+      // this.setState({markerPressed: false});
     });
   }
 
   centerMarker(key){
-    // const _scrollView = this.scrollView;
-    // console.log(_scrollView)
-    // if (_scrollView) {
-    
-    // var diff = this.sv.props.key
     console.log(this.sv)
     console.log(key)
     this.sv._component.scrollTo({x:  (key - 1) * 140});
-    // this.setState({currentCard: this.sv.props.key});
-    // }
   }
 
-å
+  makeCoordinate(vendor){
+    return {
+      latitude: vendor.latitude,
+      longitude: vendor.longitude,
+    }
+  }
+
+  onRegionChange(region) {
+    this.setState({ region });
+  }
+
   render() {
-    const interpolations = this.state.markers.map((marker, index) => {
+    const interpolations = this.state.vendors.map((marker, index) => {
       const inputRange = [
         (index - 1) * CARD_WIDTH,
         index * CARD_WIDTH,
@@ -164,7 +169,7 @@ export default class MapScreen extends Component {
           showsMyLocationButton
           // showsUserLocation
         >
-          {this.state.markers.map((marker, index) => {
+          {this.state.vendors.map((marker, index) => {
             const scaleStyle = {
               transform: [
                 {
@@ -176,10 +181,21 @@ export default class MapScreen extends Component {
               opacity: interpolations[index].opacity,
             };
             return (
-              <MapView.Marker key={index} coordinate={marker.coordinate} 
+              <MapView.Marker.Animated
+              ref={marker => { this.marker = marker }}
+              coordinate={this.makeCoordinate(marker)} 
+              key={index} 
               onPress={e => {
-                  console.log(e.nativeEvent);
-                  // breaks tapping header -> this.centerMarker(index);
+                  this.setState({markerPressed: true});
+                  console.log(marker.latitude);
+                  this.centerMarker(index);
+                  this.map.animateToCoordinate({
+                    latitude: marker.latitude,
+                    longitude: marker.longitude
+                  }, 300);
+                  setTimeout(() =>
+                    this.setState({markerPressed: false})
+                  , 3000);
                 }
               }>
               
@@ -188,12 +204,12 @@ export default class MapScreen extends Component {
                   {/* <View style={styles.marker} /> */}
                     <Callout>
                       {/* <CustomCallout> */}
-                        <Text>{marker.title}</ Text>
+                        <Text>{marker.name}</ Text>
                       {/* </ CustomCallout> */}
                    </Callout>
                   {/* </ Animated.View> */}
                 {/* </Animated.View> */}
-              </MapView.Marker>
+              </MapView.Marker.Animated>
             );
           })}
         </MapView>
@@ -219,21 +235,18 @@ export default class MapScreen extends Component {
           style={styles.scrollView}
           contentContainerStyle={styles.endPadding}
         >
-          {this.state.markers.map((marker, index) => (
-            <View style={styles.card} key={index}>
-              <Image
-                source={marker.image}
-                style={styles.cardImage}
-                resizeMode="cover"
-              />
-              <View style={styles.textContent}>
-                <Text numberOfLines={1} style={styles.cardtitle}>{marker.title}</Text>
-                <Text numberOfLines={1} style={styles.cardDescription}>
-                  {marker.description}
-                </Text>
-              </View>
-            </View>
-          ))}
+          {this.state.vendors.map((marker, index) => {
+              return (<View style={styles.card} key={index}>
+                <Image
+                  source={{ uri: marker.img}}
+                  style={styles.cardImage}
+                  resizeMode="cover"
+                />
+                <View style={styles.textContent}>
+                  <Text numberOfLines={1} style={styles.cardtitle}>{marker.name}</Text>
+                </View>
+              </View>);
+          })}
         </Animated.ScrollView>
       </View>
     );
