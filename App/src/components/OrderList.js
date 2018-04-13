@@ -35,7 +35,7 @@ export class OrderList extends Component {
                 }
             })
             .price 
-            : order.items.length > 0 ? order.items[0].price  * order.items[0].quantity 
+            : order.items.length > 0 ? order.items[0].price * order.items[0].quantity 
             : 0;
         return total;
     }

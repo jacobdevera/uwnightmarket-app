@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StatusBar, Platform } from 'react-native';
+import { AsyncStorage, StatusBar, Platform } from 'react-native';
 import { DrawerNavigator } from "react-navigation";
 import { Container, Drawer, StyleProvider, Root } from 'native-base';
 import getTheme from './native-base-theme/components';
@@ -42,7 +42,7 @@ export default class App extends Component {
     constructor(props) {
         super(props);
         // improper timer handling on Android
-        console.ignoredYellowBox = ['Setting a timer'];
+        console.ignoredYellowBox = ['Setting a timer', 'Remote', 'source.uri'];
         this.state = {
             view: 0,
             loggedIn: null
