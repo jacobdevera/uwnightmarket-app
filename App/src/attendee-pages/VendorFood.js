@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, View, Modal, StyleSheet, FlatList, Platform } from 'react-native';
+import { Alert, Image, View, Modal, StyleSheet, FlatList, Platform } from 'react-native';
 import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon, Left, Right, Thumbnail, List, ListItem, Toast } from 'native-base';
 import firebase from 'firebase';
 import FCM, { FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType, 
@@ -28,7 +28,7 @@ export default class VendorFood extends Component {
             order[index] = { 
                 name: item.name, 
                 price: item.price, 
-                desc: item.desc,
+                desc: item.desc ? item.desc : '',
                 quantity: 0, 
                 available: item.traits.includes('available') 
             }
@@ -105,9 +105,17 @@ export default class VendorFood extends Component {
         updates['/user-orders/' + userId + '/' + newOrderKey] = Status.NOT_READY; 
         updates['/vendor-orders/' + this.state.vendor.userId + '/' + newOrderKey] = Status.NOT_READY;
         
-        firebase.database().ref().update(updates).then((response) => {
-            this.props.navigation.goBack();
-        });
+        Alert.alert(
+            'Are you sure?',
+            `When your order is ready, you must go to the vendor's booth and be prepared to pay with cash.`,
+            [
+                {text: 'Cancel', style: 'cancel'},
+                {text: 'Submit', onPress: () => firebase.database().ref().update(updates).then((response) => {
+                        this.props.navigation.goBack();
+                    }
+                )},
+            ]
+        );
     }
     
     render() {

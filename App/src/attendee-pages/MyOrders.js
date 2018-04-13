@@ -88,9 +88,7 @@ class MyOrders extends Component {
         let {id, userId, vendorId, status, time} = selectedItem;
 
         if (index === 0 && status === Status.NOT_READY) {
-            // console.log("current TIMESTAMP:" + Date.now()) console.log("item TIMESTAMP:"
-            // + time)
-            if (Date.now() - time <= 120000) {
+            if (Date.now() - time >= 120000) {
                 let updates = {};
                 updates['/orders/' + id] = null;
                 updates['/user-orders/' + userId + '/' + id] = null;
@@ -104,7 +102,12 @@ class MyOrders extends Component {
                     })
                     .catch(e => console.log(e));
             } else {
-                Toast.show({text: `You can't remove the order longer than 2 minutes`, position: 'bottom', duration: 5000})
+                Toast.show({
+                    text: `Please wait 2 minutes before deleting another order`, 
+                    type: 'danger', 
+                    position: 'bottom', 
+                    duration: 5000
+                })
             }
         }
     }
