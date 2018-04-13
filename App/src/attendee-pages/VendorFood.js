@@ -24,18 +24,18 @@ export default class VendorFood extends Component {
         const { params } = this.props.navigation.state;
         const vendor = params ? params.vendor : null;
         let order = new Array(vendor.menu.length);
+        let descs = vendor.menu.map(item => item.desc);
         vendor.menu.forEach((item, index) => {
             order[index] = { 
                 name: item.name, 
-                price: item.price, 
-                desc: item.desc ? item.desc : '',
+                price: item.price,
                 quantity: 0, 
                 available: item.traits.includes('available') 
             }
         });
         FCM.getFCMToken().then(token => {
             console.log(token);
-            this.setState({ vendor: vendor, order: order, token: token || "" })
+            this.setState({ vendor: vendor, order: order, token: token || "", descs: descs })
         });
     }
 
@@ -124,7 +124,7 @@ export default class VendorFood extends Component {
     }
     
     render() {
-        let { vendor, order } = this.state;
+        let { vendor, order, descs } = this.state;
         let totalQuantity = 0;
         let totalPrice = 0;
         order.forEach((item) => {
@@ -173,7 +173,7 @@ export default class VendorFood extends Component {
                                             </Left>}
                                             <Body style={{ flex: 2 }}>
                                                 <Text>{item.name}</Text>
-                                                {item.desc && <Text style={styles.menuDesc}>{item.desc}</Text>}
+                                                {descs[index] && <Text style={styles.menuDesc}>{descs[index]}</Text>}
                                             </Body>
                                             <Right>
                                                 <Text>${item.price}</Text>
