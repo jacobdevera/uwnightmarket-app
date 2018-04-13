@@ -66,9 +66,10 @@ class VendorMenu extends Component {
                             return (
                             <ListItem> 
                                 <Text style={{ flex: 60 }}>{item.name}</Text>
-                                <Text style={{ flex: 10 }}>${item.price}</Text>
+                                <Text style={[styles.center, { flex: 10 }]}>${item.price}</Text>
                                 <View style={{ flex: 30 }}>
                                     <Button
+                                        style={{ alignSelf: 'center' }}
                                         onPress = {() => {
                                             ActionSheet.show(
                                                 {

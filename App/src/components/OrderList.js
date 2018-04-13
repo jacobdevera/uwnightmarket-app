@@ -27,14 +27,17 @@ export class OrderList extends Component {
     }
 
     getTotalPrice = (order) => {
-        return order
+        let total = order.items.length > 1 ? order
             .items
             .reduce((acc, curr) => {
                 return {
                     price: (acc.price) + (curr.price * curr.quantity)
                 }
             })
-            .price;
+            .price 
+            : order.items.length > 0 ? order.items[0].price  * order.items[0].quantity 
+            : 0;
+        return total;
     }
 
     getStatusButtonColor = (order) => {
