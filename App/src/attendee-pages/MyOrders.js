@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Image, View} from 'react-native';
+import {AsyncStorage, Image, View} from 'react-native';
 import {
     Button,
     Container,
@@ -19,6 +19,9 @@ import firebase from 'firebase';
 import {AppHeader, OrderList} from '../components';
 import {Status} from '../App';
 import styles from '../styles';
+
+const MAX_ORDER_AGE_MS = 120000;
+const ORDER_DELETE_COOLDOWN_MS = 60000;
 
 class MyOrders extends Component {
     constructor(props) {
@@ -84,23 +87,37 @@ class MyOrders extends Component {
             .off('value');
     }
 
-    handleActionSelect = (index, selectedItem) => {
+    handleActionSelect = async (index, selectedItem) => {
         let {id, userId, vendorId, status, time} = selectedItem;
 
         if (index === 0 && status === Status.NOT_READY) {
-            if (Date.now() - time <= 120000) {
-                let updates = {};
-                updates['/orders/' + id] = null;
-                updates['/user-orders/' + userId + '/' + id] = null;
-                updates['/vendor-orders/' + vendorId + '/' + id] = null;
-                firebase
-                    .database()
-                    .ref()
-                    .update(updates)
-                    .then((res) => {
-                        Toast.show({text: `Order removed`, position: 'bottom', duration: 5000})
+            let lastTimeDeleted = parseInt(await AsyncStorage.getItem('lastTimeDeleted'));
+            if (lastTimeDeleted === null) {
+                await AsyncStorage.setItem('lastTimeDeleted', Date.now().toString()).catch((e) => console.log(e));
+            }
+            if (Date.now() - time <= MAX_ORDER_AGE_MS) {
+                if (Date.now() - lastTimeDeleted >= ORDER_DELETE_COOLDOWN_MS) {
+                    let updates = {};
+                    updates['/orders/' + id] = null;
+                    updates['/user-orders/' + userId + '/' + id] = null;
+                    updates['/vendor-orders/' + vendorId + '/' + id] = null;
+                    firebase
+                        .database()
+                        .ref()
+                        .update(updates)
+                        .then((res) => {
+                            Toast.show({text: `Order removed`, position: 'bottom', duration: 5000})
+                            AsyncStorage.setItem('lastTimeDeleted', Date.now().toString()).catch((e) => console.log(e));
+                        })
+                        .catch(e => console.log(e));
+                } else { 
+                    Toast.show({ 
+                        text: `Please wait 1 minute before deleting another order`, 
+                        type: 'danger', 
+                        position: 'bottom', 
+                        duration: 5000
                     })
-                    .catch(e => console.log(e));
+                }
             } else {
                 Toast.show({
                     text: `You can't remove an order older than 2 minutes`, 

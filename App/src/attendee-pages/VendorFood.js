@@ -111,6 +111,11 @@ export default class VendorFood extends Component {
             [
                 {text: 'Cancel', style: 'cancel'},
                 {text: 'Submit', onPress: () => firebase.database().ref().update(updates).then((response) => {
+                        Toast.show({ 
+                            text: `Order submitted`,
+                            position: 'bottom', 
+                            duration: 5000
+                        })
                         this.props.navigation.goBack();
                     }
                 )},
