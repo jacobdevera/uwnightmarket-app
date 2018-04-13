@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AsyncStorage, Image, View} from 'react-native';
+import {Alert, AsyncStorage, Image, View} from 'react-native';
 import {
     Button,
     Container,
@@ -17,11 +17,9 @@ import {
 import firebase from 'firebase';
 
 import {AppHeader, OrderList} from '../components';
-import {Status} from '../App';
+import {Status, limits} from '../App';
 import styles from '../styles';
 
-const MAX_ORDER_AGE_MS = 120000;
-const ORDER_DELETE_COOLDOWN_MS = 60000;
 
 class MyOrders extends Component {
     constructor(props) {
@@ -88,31 +86,25 @@ class MyOrders extends Component {
     }
 
     handleActionSelect = async (index, selectedItem) => {
-        let {id, userId, vendorId, status, time} = selectedItem;
-
-        if (index === 0 && status === Status.NOT_READY) {
+        if (index === 0 && selectedItem.status === Status.NOT_READY) {
             let lastTimeDeleted = parseInt(await AsyncStorage.getItem('lastTimeDeleted'));
-            if (lastTimeDeleted === null) {
+            console.log(lastTimeDeleted);
+            if (lastTimeDeleted === null || isNaN(lastTimeDeleted)) {
                 await AsyncStorage.setItem('lastTimeDeleted', Date.now().toString()).catch((e) => console.log(e));
             }
-            if (Date.now() - time <= MAX_ORDER_AGE_MS) {
-                if (Date.now() - lastTimeDeleted >= ORDER_DELETE_COOLDOWN_MS) {
-                    let updates = {};
-                    updates['/orders/' + id] = null;
-                    updates['/user-orders/' + userId + '/' + id] = null;
-                    updates['/vendor-orders/' + vendorId + '/' + id] = null;
-                    firebase
-                        .database()
-                        .ref()
-                        .update(updates)
-                        .then((res) => {
-                            Toast.show({text: `Order removed`, position: 'bottom', duration: 5000})
-                            AsyncStorage.setItem('lastTimeDeleted', Date.now().toString()).catch((e) => console.log(e));
-                        })
-                        .catch(e => console.log(e));
+            if (Date.now() - selectedItem.time <= limits.orderAge) {
+                if (Date.now() - lastTimeDeleted >= limits.orderCooldown) {
+                    Alert.alert(
+                        'Are you sure?',
+                        `You must wait a short time before being able to delete another order.`,
+                        [
+                            {text: 'Cancel', style: 'cancel'},
+                            {text: 'Delete', onPress: () => this.deleteOrder(selectedItem)}
+                        ]
+                    );
                 } else { 
                     Toast.show({ 
-                        text: `Please wait 1 minute before deleting another order`, 
+                        text: `Please wait before deleting another order`, 
                         type: 'danger', 
                         position: 'bottom', 
                         duration: 5000
@@ -127,6 +119,23 @@ class MyOrders extends Component {
                 })
             }
         }
+    }
+
+    deleteOrder = (order) => {
+        let {id, userId, vendorId, time} = order;
+        let updates = {};
+        updates['/orders/' + id] = null;
+        updates['/user-orders/' + userId + '/' + id] = null;
+        updates['/vendor-orders/' + vendorId + '/' + id] = null;
+        firebase
+            .database()
+            .ref()
+            .update(updates)
+            .then((res) => {
+                Toast.show({text: `Order removed`, position: 'bottom', duration: 5000})
+                AsyncStorage.setItem('lastTimeDeleted', Date.now().toString()).catch((e) => console.log(e));
+            })
+            .catch(e => console.log(e));
     }
 
     render() {
