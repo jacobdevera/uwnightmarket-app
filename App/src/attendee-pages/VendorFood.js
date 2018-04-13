@@ -159,6 +159,7 @@ export default class VendorFood extends Component {
                                             </Left>}
                                             <Body style={{ flex: 2 }}>
                                                 <Text>{item.name}</Text>
+                                                <Text>{item.description}</Text>
                                             </Body>
                                             <Right>
                                                 <Text>${item.price}</Text>

@@ -155,8 +155,14 @@ export default class MapScreen extends Component {
       <View style={styles.container}>
         <MapView
           ref={map => this.map = map}
+          loadingEnabled
+          
           initialRegion={this.state.region}
           style={styles.container}
+          showsUserLocation={true}
+          followUserLocation={true}
+          showsMyLocationButton
+          // showsUserLocation
         >
           {this.state.markers.map((marker, index) => {
             const scaleStyle = {

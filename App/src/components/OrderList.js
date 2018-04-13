@@ -63,6 +63,7 @@ export class OrderList extends Component {
                 title: title
             },
             buttonIndex => {
+                console.log("item:   " +item);
                 handleActionSelect(buttonIndex, item);
             }
         );
@@ -92,10 +93,11 @@ export class OrderList extends Component {
                     data={this.props.orders}
                     extraData={this.props}
                     keyExtractor={item => `${item.time}`}
+                    
                     renderItem={({ item }) => {
                     return (
                         <Card>
-                            {
+                            {    
                                 !this.props.vendor && 
                                 <Text style={[styles.row, styles.header, styles.cardH2]}>
                                     Vendor: {item.vendorName}
@@ -162,6 +164,7 @@ export class OrderList extends Component {
                                     <View>
                                         <Button 
                                             onPress={() => {
+                                                console.log("onPress:  " + item);
                                                 this.showActionSheet(item);
                                             }}
                                             small
