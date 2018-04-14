@@ -1,5 +1,6 @@
-import { StyleSheet } from "react-native";
-
+import { StyleSheet, Dimensions } from "react-native";
+const { height, width } = Dimensions.get('window');
+const scale = parseInt(width) / 414; // 414: iPhone 6 Plus width
 export const config = {
     colorPrimary: '#d94d5d',
     colorDark: '#a21334'
@@ -13,10 +14,10 @@ export default styles = StyleSheet.create({
         color: 'red'
     },
     logo: {
-        height: 150
+        height: 150 * scale
     },
     logoSmall: {
-        height: 75
+        height: 75 * scale
     },
     sideBar: {
         paddingTop: 20,
@@ -29,14 +30,14 @@ export default styles = StyleSheet.create({
         color: '#666666'
     },
     paddedContainer: {
-        paddingLeft: 8,
-        paddingRight: 8,
+        paddingLeft: Math.max(16, 16 * scale),
+        paddingRight: Math.max(16, 16 * scale),
         flexGrow: 1,
         backgroundColor: 'white'
     },
     listImage: {
-        height: 125,
-        width: 125
+        height: 125 * scale,
+        width: 125 * scale
     },
     column: {
         flex: 1,
@@ -111,6 +112,6 @@ export default styles = StyleSheet.create({
         width: '100%'
     },
     section: {
-        marginTop: 8
+        marginTop: Math.max(8, 8 * scale)
     }
 });
