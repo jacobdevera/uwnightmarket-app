@@ -126,7 +126,7 @@ class MyOrders extends Component {
         let updates = {};
         updates['/orders/' + id] = null;
         updates['/user-orders/' + userId + '/' + id] = null;
-        updates['/vendor-orders/' + vendorId + '/' + id] = null;
+        updates['/vendor-orders/' + vendorId + '/orders/' + id] = null;
         firebase
             .database()
             .ref()

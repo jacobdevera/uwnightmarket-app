@@ -64,7 +64,7 @@ class Sidebar extends Component {
                         promises.push(firebase.database().ref(`/orders/${key}`).once('value').then((orderSnapshot) => {
                             let order = orderSnapshot.val();
                             updates[`/user-orders/${order.userId}/${key}`] = null;
-                            updates[`/vendor-orders/${order.vendorId}/${key}`] = null;
+                            updates[`/vendor-orders/${order.vendorId}/orders/${key}`] = null;
                             updates[`/orders/${key}`] = null;
                         }))
                     })

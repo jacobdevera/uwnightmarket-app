@@ -119,7 +119,7 @@ class VendorOrders extends Component {
             let updates = {};
             updates[`/orders/${id}/status`] = statuses[index];
             updates['/user-orders/' + userId + '/' + id] = statuses[index];
-            updates['/vendor-orders/' + vendorId + '/' + id] = statuses[index];
+            updates['/vendor-orders/' + vendorId + '/orders/' + id] = statuses[index];
             firebase.database().ref().update(updates);
             if (statuses[index] === Status.READY) {
                 let title = 'Order ready!';
@@ -131,7 +131,7 @@ class VendorOrders extends Component {
             let updates = {};
             updates[`/orders/${id}`] = null;
             updates['/user-orders/' + userId + '/' + id] = null;
-            updates['/vendor-orders/' + vendorId + '/' + id] = null;
+            updates['/vendor-orders/' + vendorId + '/orders/' + id] = null;
             firebase.database().ref().update(updates).then((res) => {
                 let title = 'Order canceled';
                 let body = `Unfortunately, ${vendorName} could not fulfill your order.`

@@ -103,7 +103,7 @@ export default class VendorFood extends Component {
         let updates = {};
         updates['/orders/' + newOrderKey] = orderData;
         updates['/user-orders/' + userId + '/' + newOrderKey] = Status.NOT_READY; 
-        updates['/vendor-orders/' + this.state.vendor.userId + '/' + newOrderKey] = Status.NOT_READY;
+        updates['/vendor-orders/' + this.state.vendor.userId + '/orders/' + newOrderKey] = Status.NOT_READY;
         
         Alert.alert(
             'Are you sure?',
