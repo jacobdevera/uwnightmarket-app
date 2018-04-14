@@ -109,55 +109,55 @@ export default class VendorList extends Component {
                         transparent={true}
                         visible={this.state.modalVisible}
                         animationType={'fade'}
-                        onRequestClose={() => console.log('closed')}
+                        onRequestClose={() => this.modalClose()}
                     >
                         <View style={modalStyles.modalContainer}>
                             <View style={modalStyles.innerContainer}>
-                            <ListItem style={{ borderBottomWidth: 0 }}>
-                                    <Text style={[styles.bold]}>Sort</Text>
-                            </ListItem>
-                            <ScrollView>
-                                <ListItem onPress={() => this.sort('number')}>
-                                    <Text>Booth Number</Text>
-                                    <Right>
-                                    <Radio selected={this.state.sort === 'number'} />
-                                    </Right>
-                                </ListItem>
-                                <ListItem onPress={() => this.sort('name')}>
-                                    <Text>Name</Text>
-                                    <Right>
-                                    <Radio selected={this.state.sort === 'name'} />
-                                    </Right>
-                                </ListItem>
                                 <ListItem style={{ borderBottomWidth: 0 }}>
-                                    <Text style={[styles.bold]}>Filter</Text>
+                                        <Text style={[styles.bold]}>Sort</Text>
                                 </ListItem>
-                                <FlatList
-                                    data={this.state.filters}
-                                    extraData={this.state}
-                                    keyExtractor={ item => item.name }
-                                    renderItem={({ item, index }) => {
-                                        return (
-                                            <ListItem button onPress={() => this.toggleFilter(index)}>
-                                                <CheckBox 
-                                                    color={'#d94d5d'}
-                                                    checked={item.active} 
-                                                    onPress={() => this.toggleFilter(index)}
-                                                />
-                                                <Body>
-                                                    <Text>{item.name}</Text>
-                                                </Body>
-                                            </ListItem>
-                                        );
-                                    }}
-                                />
-                                <View style={styles.row}>
-                                    <Button
-                                        onPress={() => this.modalClose()}
-                                    >
-                                        <Text>Close</Text>
-                                    </Button>
-                                </View>
+                                <ScrollView>
+                                    <ListItem onPress={() => this.sort('number')}>
+                                        <Text>Booth Number</Text>
+                                        <Right>
+                                        <Radio selected={this.state.sort === 'number'} />
+                                        </Right>
+                                    </ListItem>
+                                    <ListItem onPress={() => this.sort('name')}>
+                                        <Text>Name</Text>
+                                        <Right>
+                                        <Radio selected={this.state.sort === 'name'} />
+                                        </Right>
+                                    </ListItem>
+                                    <ListItem style={{ borderBottomWidth: 0 }}>
+                                        <Text style={[styles.bold]}>Filter</Text>
+                                    </ListItem>
+                                    <FlatList
+                                        data={this.state.filters}
+                                        extraData={this.state}
+                                        keyExtractor={ item => item.name }
+                                        renderItem={({ item, index }) => {
+                                            return (
+                                                <ListItem button onPress={() => this.toggleFilter(index)}>
+                                                    <CheckBox 
+                                                        color={'#d94d5d'}
+                                                        checked={item.active} 
+                                                        onPress={() => this.toggleFilter(index)}
+                                                    />
+                                                    <Body>
+                                                        <Text>{item.name}</Text>
+                                                    </Body>
+                                                </ListItem>
+                                            );
+                                        }}
+                                    />
+                                    <View style={styles.row}>
+                                        <Button
+                                            onPress={() => this.modalClose()}
+                                        >
+                                            <Text>Close</Text>
+                                        </Button>
+                                    </View>
                                 </ScrollView>
                             </View>
                         </View>

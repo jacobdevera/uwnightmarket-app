@@ -101,7 +101,7 @@ class Sidebar extends Component {
                                 this.props.navigation.navigate(data.route, data.props);
                                 this.props.navigation.setParams(data.props);
                             }}>
-                                <Text style={styles.light}>{data.title}</Text>
+                                <Text style={[styles.light, styles.bold]}>{data.title}</Text>
                             </ListItem>
                         );
                     }}
@@ -120,7 +120,7 @@ class Sidebar extends Component {
                         this.handleSignOut(0);
                     }}     
                 >
-                    <Text style={styles.light}>Log Out</Text>
+                    <Text style={[styles.light, styles.bold]}>Log Out</Text>
                 </ListItem>
                 <View style={styles.row}>
                     <Icon name='logo-facebook' onPress={ ()=>{ Linking.openURL('https://www.facebook.com/TheUWNightMarket')}} style={styles.iconWhite}/>

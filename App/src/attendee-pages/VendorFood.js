@@ -144,7 +144,7 @@ export default class VendorFood extends Component {
                     {vendor && vendor.name}
                 </AppHeader>
                 <Content style={styles.paddedContainer}>
-                    <View style={[styles.rowSpaceBetween]}>
+                    <View style={[styles.rowSpaceBetween, styles.section]}>
                         {vendor.canOrder && <View style={{flex: 1}}><Text style={[{textAlign: 'center'}, styles.bold]}>Qty</Text></View>}
                         <View style={{flex: 1}}><Text style={[{textAlign: 'center'}, styles.bold]}>Item</Text></View>
                         <View style={{flex: 1}}><Text style={[{textAlign: 'right'}, styles.bold]}>Price</Text></View>
@@ -172,7 +172,7 @@ export default class VendorFood extends Component {
                                                 </Button>
                                             </Left>}
                                             <Body style={{ flex: 2 }}>
-                                                <Text>{item.name}</Text>
+                                                <Text style={styles.bold}>{item.name}</Text>
                                                 {descs[index] && <Text style={styles.menuDesc}>{descs[index]}</Text>}
                                             </Body>
                                             <Right>

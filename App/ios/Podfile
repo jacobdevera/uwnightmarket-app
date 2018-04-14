@@ -28,6 +28,8 @@ target 'uwnightmarket' do
   pod 'react-native-fcm', :path => '../node_modules/react-native-fcm'
   pod 'Firebase/Core'
   pod 'Firebase/Messaging'
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
 end
 
 post_install do |installer|

@@ -28,6 +28,7 @@ export default styles = StyleSheet.create({
     paddedContainer: {
         paddingLeft: 8,
         paddingRight: 8,
+        flexGrow: 1,
         backgroundColor: 'white'
     },
     listImage: {
@@ -66,7 +67,6 @@ export default styles = StyleSheet.create({
         alignItems: 'center'
     },
     menuDesc: {
-        fontSize: 14,
         color: 'gray'
     },
     desc: {
@@ -74,13 +74,13 @@ export default styles = StyleSheet.create({
     },
     menuItem: {
         fontWeight: 'normal',
-        fontStyle: 'italic'
+        fontFamily: 'Montserrat-Italic'
     },
     bold: {
-        fontWeight: 'bold'
+        fontFamily: 'Montserrat-Bold'
     },
     header: {
-        fontWeight: 'bold',
+        fontFamily: 'Montserrat-Bold',
         paddingBottom: 4
     },
     cardH1: {

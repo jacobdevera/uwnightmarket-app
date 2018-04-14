@@ -156,8 +156,8 @@ class MyOrders extends Component {
                             orders={this.state.orders.filter((order) => order.status !== Status.PICKED_UP)} 
                             vendor={false} /> 
                     </View>
-                    : <View style={[styles.column]}>
-                        <Text style={styles.section}>You have no active orders right now.</Text>
+                    : <View style={[styles.column, styles.section]}>
+                        <Text>You have no active orders right now.</Text>
                         <Button style={[{ alignSelf: 'center' }, styles.section]} onPress={() => this.props.navigation.navigate('VendorNavigator')}>
                             <Text>Order Now</Text>
                         </Button>
