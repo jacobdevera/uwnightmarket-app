@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, View, Modal, StyleSheet, FlatList } from 'react-native';
+import { Image, View, Modal, StyleSheet, FlatList, ScrollView } from 'react-native';
 import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon, Left, Right, List, ListItem, Radio, Badge } from 'native-base';
 import { StackNavigator } from "react-navigation";
 import firebase from 'firebase'
@@ -16,8 +16,9 @@ const modalStyles = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,0.3)'
     },
     innerContainer: {
-        margin: 16,
-        backgroundColor: 'white'
+        margin: 32,
+        backgroundColor: 'white',
+        borderRadius: 8
     },
 });
 
@@ -108,27 +109,28 @@ export default class VendorList extends Component {
                         transparent={true}
                         visible={this.state.modalVisible}
                         animationType={'fade'}
-                        onRequestClose={() => this.modalClose()}
+                        onRequestClose={() => console.log('closed')}
                     >
                         <View style={modalStyles.modalContainer}>
                             <View style={modalStyles.innerContainer}>
-                                <ListItem itemDivider>
-                                    <Text style={[styles.bold, styles.cardH1]}>Sort</Text>
+                            <ListItem style={{ borderBottomWidth: 0 }}>
+                                    <Text style={[styles.bold]}>Sort</Text>
+                            </ListItem>
+                            <ScrollView>
+                                <ListItem onPress={() => this.sort('number')}>
+                                    <Text>Booth Number</Text>
+                                    <Right>
+                                    <Radio selected={this.state.sort === 'number'} />
+                                    </Right>
                                 </ListItem>
-                                    <ListItem onPress={() => this.sort('number')}>
-                                        <Text>Booth Number</Text>
-                                        <Right>
-                                        <Radio selected={this.state.sort === 'number'} />
-                                        </Right>
-                                    </ListItem>
-                                    <ListItem onPress={() => this.sort('name')}>
-                                        <Text>Name</Text>
-                                        <Right>
-                                        <Radio selected={this.state.sort === 'name'} />
-                                        </Right>
-                                    </ListItem>
-                                <ListItem itemDivider>
-                                    <Text style={[styles.bold, styles.cardH1]}>Filter</Text>
+                                <ListItem onPress={() => this.sort('name')}>
+                                    <Text>Name</Text>
+                                    <Right>
+                                    <Radio selected={this.state.sort === 'name'} />
+                                    </Right>
+                                </ListItem>
+                                <ListItem style={{ borderBottomWidth: 0 }}>
+                                    <Text style={[styles.bold]}>Filter</Text>
                                 </ListItem>
                                 <FlatList
                                     data={this.state.filters}
@@ -156,6 +158,7 @@ export default class VendorList extends Component {
                                         <Text>Close</Text>
                                     </Button>
                                 </View>
+                                </ScrollView>
                             </View>
                         </View>
                     </Modal>
