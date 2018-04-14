@@ -25,6 +25,9 @@ export default styles = StyleSheet.create({
     light: {
         color: '#fff'
     },
+    lightGrey: {
+        color: '#666666'
+    },
     paddedContainer: {
         paddingLeft: 8,
         paddingRight: 8,
