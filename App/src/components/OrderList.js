@@ -27,7 +27,11 @@ export class OrderList extends Component {
     }
 
     getTotalPrice = (order) => {
-        let total = order.items.length > 1 ? order
+        let totalPrice = 0;
+        order.items.forEach((item) => {
+            totalPrice += item.quantity * item.price;
+        });
+        /*let totalPrice = order.items.length > 1 ? order
             .items
             .reduce((acc, curr) => {
                 return {
@@ -36,8 +40,8 @@ export class OrderList extends Component {
             })
             .price 
             : order.items.length > 0 ? order.items[0].price * order.items[0].quantity 
-            : 0;
-        return total;
+            : 0;*/
+        return totalPrice;
     }
 
     getStatusButtonColor = (order) => {
