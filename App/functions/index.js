@@ -23,7 +23,7 @@ exports.updateNumActiveOrders = functions.database.ref('/vendor-orders/{vendorId
                 console.log('update')
                 if (event.data.previous.val() === Status.NOT_READY && event.data.val() !== Status.NOT_READY) {
                     return ref.set(orderCount - 1);
-                } else if (event.data.previous.val() === Status.NOT_READY && event.data.val() !== Status.NOT_READY) {
+                } else if (event.data.previous.val() !== Status.NOT_READY && event.data.val() === Status.NOT_READY) {
                     return ref.set(orderCount + 1);
                 }
             } else if (event.data.previous.exists() && !event.data.exists()) { // delete order

@@ -46,7 +46,7 @@ class VendorOrders extends Component {
         this.state = {
             orders: {}
         }
-        this.orderRef = firebase.database().ref(`/vendor-orders/${firebase.auth().currentUser.uid}`).orderByKey();
+        this.orderRef = firebase.database().ref(`/vendor-orders/${firebase.auth().currentUser.uid}/orders/`).orderByKey();
         this.asConfig = {
             title: 'Set Order Status',
             options: ['Not Ready', 'Ready', 'Picked Up', 'Delete Order', 'Cancel'],
