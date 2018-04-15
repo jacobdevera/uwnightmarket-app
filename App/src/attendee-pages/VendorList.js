@@ -7,7 +7,7 @@ import firebase from 'firebase'
 import { filters } from '../App';
 import { AppHeader, StackHeader } from '../components';
 import { Spinner } from '../components/common';
-import styles, { config } from '../styles';
+import styles, { config, scale } from '../styles';
 
 const modalStyles = StyleSheet.create({
     modalContainer: {
@@ -16,7 +16,8 @@ const modalStyles = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,0.3)'
     },
     innerContainer: {
-        margin: 32,
+        flex: 1,
+        margin: Math.max(32, 32 * scale),
         backgroundColor: 'white',
         borderRadius: 8
     },
@@ -32,7 +33,8 @@ export default class VendorList extends Component {
                 return { name: filter, active: false }
             }),
             modalVisible: false,
-            sort: 'number'
+            sort: 'number',
+            canOrderFilter: false
         }
     }
     
@@ -54,25 +56,40 @@ export default class VendorList extends Component {
     toggleFilter = (index) => {
         let newFilters = this.state.filters.slice();
         newFilters[index].active = !newFilters[index].active;
+        let newVendors = this.filterVendors(newFilters.filter(filter => filter.active));
 
+        newVendors = this.state.canOrderFilter ? newVendors.filter(vendor => vendor.canOrder) : newVendors;
+
+        this.setState({ filteredVendors: newVendors, filters: newFilters });
+    }
+
+    filterVendors = (filters) => {
         let newVendors = this.state.vendors.slice();
-        let activeFilters = newFilters.filter((filter) => filter.active);
-
-        if (activeFilters.length > 0) {
+        
+        if (filters.length > 0) {
             newVendors = newVendors.filter((vendor) => {
-                let satisfiesFilters = false;
-                vendor.menu.forEach((item) => {
-                    activeFilters.forEach((filter) => {
-                        if (item.traits.includes(filter.name)) {
-                            satisfiesFilters = true;
-                        }
-                    });
-                });
+                let satisfiesFilters = true;
+                filters.forEach((filter) => {
+                    let filterExists = false;
+                    vendor.menu.forEach((item) => {
+                        if (item.traits.includes(filter.name))
+                            filterExists = true;
+                    })
+                    if (!filterExists)
+                        satisfiesFilters = false;
+                })
                 return satisfiesFilters;
             });
         }
+        return newVendors;
+    }
 
-        this.setState({ filteredVendors: newVendors, filters: newFilters });
+    toggleCanOrderFilter = () => {
+        let canOrderFilter = !this.state.canOrderFilter;
+        let newVendors = this.filterVendors(this.state.filters.filter(filter => filter.active));
+        newVendors = canOrderFilter ? newVendors.filter(vendor => vendor.canOrder) : newVendors;
+
+        this.setState({ canOrderFilter: canOrderFilter, filteredVendors: newVendors });
     }
 
     sortByBoothNumber = (a, b) => a.boothNumber - b.boothNumber;
@@ -114,51 +131,69 @@ export default class VendorList extends Component {
                         <View style={modalStyles.modalContainer}>
                             <View style={modalStyles.innerContainer}>
                                 <ListItem style={{ borderBottomWidth: 0 }}>
-                                        <Text style={[styles.bold]}>Sort</Text>
+                                    <Text style={[styles.bold]}>Sort</Text>
                                 </ListItem>
-                                <ScrollView>
-                                    <ListItem onPress={() => this.sort('number')}>
+                                <View style={{ flex: 1 }}>
+                                    <ListItem style={{ justifyContent: 'space-between' }} 
+                                        onPress={() => this.sort('number')}
+                                    >
                                         <Text>Booth Number</Text>
                                         <Right>
-                                        <Radio selected={this.state.sort === 'number'} />
+                                            <Radio selected={this.state.sort === 'number'} />
                                         </Right>
                                     </ListItem>
-                                    <ListItem onPress={() => this.sort('name')}>
+                                    <ListItem style={{ justifyContent: 'space-between' }} 
+                                        onPress={() => this.sort('name')}
+                                    >
                                         <Text>Name</Text>
                                         <Right>
-                                        <Radio selected={this.state.sort === 'name'} />
+                                            <Radio selected={this.state.sort === 'name'} />
                                         </Right>
                                     </ListItem>
                                     <ListItem style={{ borderBottomWidth: 0 }}>
                                         <Text style={[styles.bold]}>Filter</Text>
                                     </ListItem>
-                                    <FlatList
-                                        data={this.state.filters}
-                                        extraData={this.state}
-                                        keyExtractor={ item => item.name }
-                                        renderItem={({ item, index }) => {
-                                            return (
-                                                <ListItem button onPress={() => this.toggleFilter(index)}>
-                                                    <CheckBox 
-                                                        color={'#d94d5d'}
-                                                        checked={item.active} 
-                                                        onPress={() => this.toggleFilter(index)}
-                                                    />
-                                                    <Body>
-                                                        <Text>{item.name}</Text>
-                                                    </Body>
-                                                </ListItem>
-                                            );
-                                        }}
-                                    />
+                                    <ScrollView contentContainerStyle={{ flexGrow: 0 }}>
+                                        <FlatList
+                                            scrollEnabled={false}
+                                            data={this.state.filters}
+                                            extraData={this.state}
+                                            keyExtractor={ item => item.name }
+                                            renderItem={({ item, index }) => {
+                                                return (
+                                                    <ListItem button onPress={() => this.toggleFilter(index)}>
+                                                        <CheckBox 
+                                                            color={'#d94d5d'}
+                                                            checked={item.active} 
+                                                            onPress={() => this.toggleFilter(index)}
+                                                        />
+                                                        <Body>
+                                                            <Text>{item.name}</Text>
+                                                        </Body>
+                                                    </ListItem>
+                                                );
+                                            }}
+                                        />
+                                        <ListItem button onPress={() => this.toggleCanOrderFilter()}>
+                                            <CheckBox 
+                                                color={'#d94d5d'}
+                                                checked={this.state.canOrderFilter} 
+                                                onPress={() => this.toggleCanOrderFilter()}
+                                            />
+                                            <Body>
+                                                <Text>supports mobile ordering</Text>
+                                            </Body>
+                                        </ListItem>
+                                    </ScrollView>
                                     <View style={styles.row}>
                                         <Button
+                                            style={{ alignSelf: 'flex-end' }}
                                             onPress={() => this.modalClose()}
                                         >
                                             <Text>Close</Text>
                                         </Button>
                                     </View>
-                                </ScrollView>
+                                </View>
                             </View>
                         </View>
                     </Modal>
