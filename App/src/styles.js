@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions } from "react-native";
 const { height, width } = Dimensions.get('window');
-const scale = parseInt(width) / 414; // 414: iPhone 6 Plus width
+export const scale = parseInt(width) / 414; // 414: iPhone 6 Plus width
 export const config = {
     colorPrimary: '#d94d5d',
     colorDark: '#a21334'

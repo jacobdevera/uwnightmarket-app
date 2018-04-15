@@ -104,7 +104,7 @@ export default class VendorList extends Component {
                     Vendors / Food
                 </AppHeader>
                 
-                <Content style={styles.paddedContainer}>
+                <Content style={[styles.paddedContainer]}>
                     <Modal
                         transparent={true}
                         visible={this.state.modalVisible}
@@ -164,6 +164,7 @@ export default class VendorList extends Component {
                     </Modal>
                     {this.state.vendors ?
                         <FlatList
+                            style={styles.section}
                             data={this.state.filteredVendors}
                             extraData={this.state}
                             keyExtractor={ item => item.name }

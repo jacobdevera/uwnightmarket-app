@@ -14,8 +14,9 @@ import {
     List,
     ListItem,
     Badge,
+    Icon
 } from 'native-base';
-import styles, {config} from '../styles';
+import styles, {config, scale} from '../styles';
 import StatusPicker from './StatusPicker';
 import {Status} from '../App';
 import {StackNavigator} from "react-navigation";
@@ -78,7 +79,7 @@ export class OrderList extends Component {
     
 
     hash = (input) => {
-        let count = 4;
+        let count = 3;
         let res = "";
         let index = 6;
         let alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -105,10 +106,19 @@ export class OrderList extends Component {
                     return (
                         <Card>
                             {    
-                                !this.props.vendor && 
-                                <Text style={[styles.row, styles.header, styles.cardH2]}>
-                                    Vendor: {item.vendorName}
-                                </Text>
+                                !this.props.vendor &&
+                                <ListItem itemDivider style={[styles.rowSpaceBetween, { alignItems: 'flex-start' }]}>
+                                    <Text style={[styles.header, styles.cardH2, { marginTop: 8, marginLeft: 8 }]}>
+                                        Vendor: {item.vendorName}
+                                    </Text>
+                                    {item.status !== Status.PICKED_UP && 
+                                    <Button transparent
+                                        style={{ height: 32 }}
+                                        onPress={() => this.showActionSheet(item)}
+                                    >
+                                        <Icon style={{ fontSize: 32, marginLeft: 8, marginRight: 8 }} name='more' />
+                                    </Button>}
+                                </ListItem>
                             }
                             <View style={styles.row}>
                                 <View
@@ -171,25 +181,24 @@ export class OrderList extends Component {
                                     <View>
                                         <Button 
                                             onPress={() => {
-                                                console.log("onPress:  " + item);
-                                                this.showActionSheet(item);
+                                                if (this.props.vendor)
+                                                    this.showActionSheet(item);
                                             }}
                                             small
                                             style={{
-                                            width: 70,
+                                            width: 70 * scale,
                                             justifyContent: 'center',
                                             alignItems: 'center',
                                             backgroundColor: this.getStatusButtonColor(item)
                                         }}>
                                             <Text
                                                 style={[
+                                                styles.bold,
                                                 styles.center, {
-                                                    paddingLeft:0,
-                                                    paddingRight:0,
-                                                    fontSize: 10,
-                                                    fontStyle:'italic',
-                                                    fontWeight:'bold',
-                                                    lineHeight: 12
+                                                    paddingLeft: 0,
+                                                    paddingRight: 0,
+                                                    fontSize: 10 * scale,
+                                                    lineHeight: 12 * scale
                                                 }
                                             ]}>{item.status}</Text>
                                         </Button>

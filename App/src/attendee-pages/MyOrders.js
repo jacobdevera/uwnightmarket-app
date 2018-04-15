@@ -12,20 +12,22 @@ import {
     Card,
     CardItem,
     Body,
-    Toast
+    Toast,
+    Spinner
 } from 'native-base';
 import firebase from 'firebase';
 
 import {AppHeader, OrderList} from '../components';
 import {Status, limits} from '../App';
-import styles from '../styles';
+import styles, { config } from '../styles';
 
 
 class MyOrders extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            orders: []
+            orders: [],
+            loading: true
         }
         this.orderRef = firebase
             .database()
@@ -69,11 +71,11 @@ class MyOrders extends Component {
                     Promise
                         .all(promises)
                         .then((responses) => {
-                            this.setState({orders: orderList});
+                            this.setState({orders: orderList, loading: false});
                         })
                         .catch((error) => console.log(error))
                 } else {
-                    this.setState({orders: []});
+                    this.setState({orders: [], loading: false});
                 }
             });
 
@@ -113,7 +115,7 @@ class MyOrders extends Component {
                 }
             } else {
                 Toast.show({
-                    text: `You can't remove an order older than 2 minutes`, 
+                    text: `You cannot remove an order after 2 minutes`, 
                     type: 'danger', 
                     position: 'bottom', 
                     duration: 5000
@@ -140,8 +142,9 @@ class MyOrders extends Component {
     }
 
     render() {
-        let activeOrders = this.state.orders.filter((order) => order.status !== Status.PICKED_UP);
-        let pastOrders = this.state.orders.filter((order) => order.status == Status.PICKED_UP);
+        const { orders, loading } = this.state;
+        let activeOrders = orders.filter((order) => order.status !== Status.PICKED_UP);
+        let pastOrders = orders.filter((order) => order.status === Status.PICKED_UP);
         return (
             <Container>
                 <AppHeader navigation={this.props.navigation}>
@@ -153,15 +156,17 @@ class MyOrders extends Component {
                         <Text style={ [styles.header, styles.h1] }>Active Orders</Text>
                         <OrderList 
                             asConfig={this.asConfig} 
-                            orders={this.state.orders.filter((order) => order.status !== Status.PICKED_UP)} 
+                            orders={orders.filter((order) => order.status !== Status.PICKED_UP)} 
                             vendor={false} /> 
                     </View>
-                    : <View style={[styles.column, styles.section]}>
+                    : !loading ? <View style={[styles.column, styles.section]}>
                         <Text>You have no active orders right now.</Text>
-                        <Button style={[{ alignSelf: 'center' }, styles.section]} onPress={() => this.props.navigation.navigate('VendorNavigator')}>
+                        <Button style={[{ alignSelf: 'center' }, styles.section]} 
+                            onPress={() => this.props.navigation.navigate('VendorNavigator')}
+                        >
                             <Text>Order Now</Text>
                         </Button>
-                    </View>}
+                    </View> : <Spinner color={config.colorPrimary} />}
                     {pastOrders.length > 0 &&
                     <View style={styles.section}>
                         <Text style={ [styles.header, styles.h1] }>Past Orders</Text>

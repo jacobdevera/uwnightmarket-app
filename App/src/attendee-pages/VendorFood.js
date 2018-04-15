@@ -107,7 +107,7 @@ export default class VendorFood extends Component {
         
         Alert.alert(
             'Are you sure?',
-            `When your order is ready, you must go to the vendor's booth and be prepared to pay with cash.`,
+            `When your order is ready, you must go to the vendor's booth and be prepared to pay with cash. You will be unable to delete your order after two minutes.`,
             [
                 {text: 'Cancel', style: 'cancel'},
                 {text: 'Submit', onPress: () => firebase.database().ref().update(updates).then((response) => {
