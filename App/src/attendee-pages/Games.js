@@ -8,22 +8,28 @@ import styles from '../styles';
 const Games = (props) => {
     let items = [
         {
-            name: 'Fish Scoop',
-            desc: 'Test your fishing skills with paper nets!',
-            price: '$1 for 1 net',
-            img: require('../../img/fish-scoop.jpg')
+            name: 'Sandbag Toss',
+            price: '$1 / 5 sandbags',
+            desc: 'How’s your aim? Toss all five sandbags into a bucket for rewards!',
+            img: require('../../img/sandbag-toss.png')
         },
         {
-            name: 'Ring Toss',
-            price: '$2 for 10 rings',
-            desc: 'Practice your aiming and try to throw rings onto as many bottles as you can!',
-            img: require('../../img/ring-toss.jpg')
+            name: 'Hoops Fever',
+            price: '$2 / 6 throws',
+            desc: 'You have one minute on the clock! Play against your friends for basketball stardom!',
+            img: require('../../img/hoops-fever.png')
         },
         {
-            name: 'Sumo',
-            price: '$2 for 1 round',
-            desc: 'Challenge your friends to a game of wrestling!',
-            img: require('../../img/sumo.png')
+            name: 'Bottle Fishing',
+            price: '$1 / 3 minutes',
+            desc: 'You have one minute to make all three bottles stand up! A Night Market classic!',
+            img: require('../../img/bottle-fishing.png')
+        },
+        {
+            name: 'Lucky Envelope',
+            price: '$1 / Envelope\n$2 / 3 Envelopes',
+            desc: 'Test your luck! Draw an envelope and you may win an Amazon gift card!',
+            img: require('../../img/lucky-envelope.png')
         }
     ];
 
@@ -45,8 +51,8 @@ const Games = (props) => {
                                 <Card>
                                     <CardItem>
                                         <Left>
-                                            <Thumbnail
-                                                square
+                                            <Image
+                                                resizeMode="contain"
                                                 style={styles.listImage}
                                                 source={data.img}
                                             />
