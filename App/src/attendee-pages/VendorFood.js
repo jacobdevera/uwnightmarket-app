@@ -4,6 +4,7 @@ import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon,
 import firebase from 'firebase';
 import FCM, { FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType, 
     NotificationActionType, NotificationActionOption, NotificationCategoryOption } from 'react-native-fcm';
+import { NavigationActions } from 'react-navigation';
 
 import { Status, limits } from '../App';
 import { AppHeader } from '../components';
@@ -116,7 +117,7 @@ export default class VendorFood extends Component {
                             position: 'bottom', 
                             duration: 5000
                         })
-                        this.props.navigation.goBack();
+                        this.props.navigation.navigate({ routeName: 'MyOrders' });
                     }
                 )},
             ]
@@ -153,7 +154,7 @@ export default class VendorFood extends Component {
                         <FlatList
                             data={order}
                             extraData={this.state}
-                            keyExtractor={ item => item.name }
+                            keyExtractor={(item, index) => item.name + index}
                             renderItem={({item, index}) => {
                                 return (
                                         <ListItem>

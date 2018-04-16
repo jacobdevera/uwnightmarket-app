@@ -44,7 +44,7 @@ export default styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'space-around',
         alignItems: 'center',
-        padding: 8
+        padding: Math.max(16, 16 * scale)
     },
     columnSmall: {
         flex: 1,

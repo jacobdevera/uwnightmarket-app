@@ -23,7 +23,6 @@ const AttendeeDrawerNav = DrawerNavigator(
 const VendorDrawerNav = DrawerNavigator(
     {
         VendorHome: { screen: VendorHome },
-        VendorsFood: { screen: VendorNavigator },
         VendorOrders: { screen: VendorOrders },
         Map: { screen: Map },
         VendorMenu: { screen: VendorMenu }

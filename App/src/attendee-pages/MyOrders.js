@@ -162,7 +162,10 @@ class MyOrders extends Component {
                     : !loading ? <View style={[styles.column, styles.section]}>
                         <Text>You have no active orders right now.</Text>
                         <Button style={[{ alignSelf: 'center' }, styles.section]} 
-                            onPress={() => this.props.navigation.navigate('VendorNavigator')}
+                            onPress={() => {
+                                this.props.navigation.navigate('VendorNavigator');
+                                this.props.navigation.popToTop();
+                            }}
                         >
                             <Text>Order Now</Text>
                         </Button>

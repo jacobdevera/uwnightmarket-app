@@ -96,12 +96,11 @@ export class OrderList extends Component {
 
     render() {
         return (
-            <View>
+            <View style={styles.section}>
                 <FlatList
                     data={this.props.orders}
                     extraData={this.props}
                     keyExtractor={item => `${item.time}`}
-                    
                     renderItem={({ item }) => {
                     return (
                         <Card>

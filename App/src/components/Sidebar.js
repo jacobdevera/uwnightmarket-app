@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Alert, View, Linking } from 'react-native';
 import { Content, List, ListItem, Text, Icon, Toast } from 'native-base';
+import { NavigationActions } from 'react-navigation';
 import styles from '../styles';
 
 import firebase from 'firebase';
@@ -98,8 +99,10 @@ class Sidebar extends Component {
                     renderRow={(data, index) => {
                         return (
                             <ListItem key={index} noBorder button onPress={() => {
-                                this.props.navigation.navigate(data.route, data.props);
+                                this.props.navigation.navigate({ routeName: data.route, params: data.props });
                                 this.props.navigation.setParams(data.props);
+                                if (data.route === 'VendorNavigator')
+                                    this.props.navigation.popToTop();
                             }}>
                                 <Text style={[styles.light, styles.bold]}>{data.title}</Text>
                             </ListItem>
