@@ -16,7 +16,7 @@ import {
     Badge,
 } from 'native-base';
 import { AppHeader } from '../components';
-import styles from '../styles';
+import styles, { scale } from '../styles';
 import firebase from 'firebase';
 
 const STATUS_ITEMS = ['Available', 'Sold Out', 'Cancel'];
@@ -69,7 +69,8 @@ class VendorMenu extends Component {
                                 <Text style={[styles.center, { flex: 10 }]}>${item.price}</Text>
                                 <View style={{ flex: 30 }}>
                                     <Button
-                                        style={{ alignSelf: 'center' }}
+                                        small
+                                        style={{ alignSelf: 'flex-end', width: Math.max(72, 72 * scale), justifyContent: 'center' }}
                                         onPress = {() => {
                                             ActionSheet.show(
                                                 {
@@ -84,7 +85,14 @@ class VendorMenu extends Component {
                                             );
                                         }}
                                     >
-                                        <Text>{item.traits.includes('available') ? 'Available' : 'Sold Out'}</Text>
+                                        <Text style={{ 
+                                            paddingLeft: 0, 
+                                            paddingRight: 0, 
+                                            fontSize: Math.max(10, 10 * scale),
+                                            lineHeight: Math.max(12, 12 * scale)
+                                        }}>
+                                            {item.traits.includes('available') ? 'AVAILABLE' : 'SOLD OUT'}
+                                        </Text>
                                     </Button>
                                 </View>
                             </ListItem>)

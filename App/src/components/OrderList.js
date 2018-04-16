@@ -185,7 +185,7 @@ export class OrderList extends Component {
                                             }}
                                             small
                                             style={{
-                                            width: 70 * scale,
+                                            width: 72 * scale,
                                             justifyContent: 'center',
                                             alignItems: 'center',
                                             backgroundColor: this.getStatusButtonColor(item)
@@ -196,8 +196,8 @@ export class OrderList extends Component {
                                                 styles.center, {
                                                     paddingLeft: 0,
                                                     paddingRight: 0,
-                                                    fontSize: 10 * scale,
-                                                    lineHeight: 12 * scale
+                                                    fontSize: Math.max(10, 10 * scale),
+                                                    lineHeight: Math.max(12, 12 * scale)
                                                 }
                                             ]}>{item.status}</Text>
                                         </Button>
