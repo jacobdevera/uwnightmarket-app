@@ -96,7 +96,7 @@ export class OrderList extends Component {
 
     render() {
         return (
-            <View style={styles.section}>
+            <View>
                 <FlatList
                     data={this.props.orders}
                     extraData={this.props}

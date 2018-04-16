@@ -157,7 +157,7 @@ export default class VendorFood extends Component {
                             keyExtractor={(item, index) => item.name + index}
                             renderItem={({item, index}) => {
                                 return (
-                                        <ListItem>
+                                        <ListItem style={{ marginLeft: 0 }}>
                                             {vendor.canOrder &&
                                             <Left style={{ flex: 1 }}>
                                                 <Button disabled={!item.available} onPress={() => { 

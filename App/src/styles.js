@@ -32,6 +32,7 @@ export default styles = StyleSheet.create({
     paddedContainer: {
         paddingLeft: Math.max(16, 16 * scale),
         paddingRight: Math.max(16, 16 * scale),
+        paddingBottom: Math.max(16, 16 * scale),
         flexGrow: 1,
         backgroundColor: 'white'
     },
@@ -112,6 +113,6 @@ export default styles = StyleSheet.create({
         width: '100%'
     },
     section: {
-        marginTop: Math.max(8, 8 * scale)
+        marginTop: Math.max(16, 16 * scale)
     }
 });
