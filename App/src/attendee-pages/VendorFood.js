@@ -9,7 +9,7 @@ import { NavigationActions } from 'react-navigation';
 import { Status, limits } from '../App';
 import { AppHeader } from '../components';
 import { Spinner } from '../components/common';
-import styles from '../styles';
+import styles, { scale } from '../styles';
 
 export default class VendorFood extends Component {
     constructor() {
@@ -193,7 +193,9 @@ export default class VendorFood extends Component {
                             </Button>
                         </View>
                     </View>
-                    : <Text style={[styles.section, styles.center]}>This vendor does not support mobile ordering.</Text>}
+                    : <Text style={[styles.section, styles.center, styles.last]}>
+                        This vendor does not support mobile ordering.
+                    </Text>}
                 </Content>
             </Container>
         );

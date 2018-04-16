@@ -199,7 +199,7 @@ export default class VendorList extends Component {
                     </Modal>
                     {this.state.vendors ?
                         <FlatList
-                            style={styles.section}
+                            style={[styles.section, styles.last]}
                             data={this.state.filteredVendors}
                             extraData={this.state}
                             keyExtractor={ item => item.name }

@@ -173,7 +173,7 @@ class MyOrders extends Component {
                     {pastOrders.length > 0 &&
                     <View style={styles.section}>
                         <Text style={ [styles.header, styles.h1] }>Past Orders</Text>
-                       <OrderList 
+                       <OrderList
                             asConfig={this.asConfig}
                             orders={pastOrders} 
                             vendor={false} />

@@ -114,5 +114,8 @@ export default styles = StyleSheet.create({
     },
     section: {
         marginTop: Math.max(16, 16 * scale)
+    },
+    last: {
+        paddingBottom: Math.max(16, 16 * scale)
     }
 });
