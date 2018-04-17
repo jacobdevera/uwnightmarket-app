@@ -17,7 +17,8 @@ export default class VendorFood extends Component {
         this.state = {
             vendor: {},
             order: [],
-            showToast: false
+            showToast: false,
+            subMenus: []
         }
     }
 
@@ -26,17 +27,35 @@ export default class VendorFood extends Component {
         const vendor = params ? params.vendor : null;
         let order = new Array(vendor.menu.length);
         let descs = vendor.menu.map(item => item.desc);
+
+        let subMenus = vendor.categories ? 
+            vendor.categories.map(category => {
+                return {
+                    name: category,
+                    menu: []
+                }
+            }) : [{ menu: [] }];
+
         vendor.menu.forEach((item, index) => {
             order[index] = { 
-                name: item.name, 
+                name: item.name,
+                trueIndex: index,
                 price: item.price,
                 quantity: 0, 
-                available: item.traits.includes('available') 
+                available: item.traits.includes('available')
             }
+            subMenus[item.hasOwnProperty('category') ? item.category : 0].menu.push(order[index]);
         });
+
         FCM.getFCMToken().then(token => {
             console.log(token);
-            this.setState({ vendor: vendor, order: order, token: token || "", descs: descs })
+            this.setState({ 
+                vendor: vendor, 
+                order: order, 
+                token: token || "", 
+                descs: descs, 
+                subMenus: subMenus 
+            })
         });
     }
 
@@ -125,13 +144,53 @@ export default class VendorFood extends Component {
     }
     
     render() {
-        let { vendor, order, descs } = this.state;
+        let { vendor, order, descs, subMenus } = this.state;
         let totalQuantity = 0;
         let totalPrice = 0;
         order.forEach((item) => {
             totalQuantity += item.quantity;
             totalPrice += item.quantity * item.price;
         });
+        let subMenuLists = subMenus.map((subMenu) => {
+            return (
+                <View>
+                    {subMenu.name && <Text style={[styles.section, styles.bold]}>{subMenu.name}</Text>}
+                    <FlatList
+                        data={subMenu.menu}
+                        extraData={this.state}
+                        keyExtractor={(item) => item.name + item.trueIndex}
+                        renderItem={({item, index}) => {
+                            return (
+                                    <ListItem style={{ marginLeft: 0 }}>
+                                        {vendor.canOrder &&
+                                        <Left style={{ flex: 1 }}>
+                                            <Button disabled={!item.available} onPress={() => { 
+                                                if (item.available) this.updateQuantity(item.trueIndex, false) 
+                                            }}>
+                                                <Text>-</Text>
+                                            </Button>
+                                            <Text style={[{ flex: 1, marginLeft: 0 }, styles.center]}>{order[item.trueIndex].quantity}</Text>
+                                            <Button disabled={!item.available} onPress={() => { 
+                                                if (item.available) this.updateQuantity(item.trueIndex, true) 
+                                            }}>
+                                                <Text>+</Text>
+                                            </Button>
+                                        </Left>}
+                                        <Body style={{ flex: 2 }}>
+                                            <Text>{item.name}</Text>
+                                            {descs[item.trueIndex] && <Text style={styles.menuDesc}>{descs[item.trueIndex]}</Text>}
+                                        </Body>
+                                        <Right>
+                                            <Text>${item.price}</Text>
+                                        </Right>
+                                    </ListItem>
+                            )
+                        }}
+                    />
+                </View>
+            );
+        })
+        
         return (
             <Container>
                 <AppHeader 
@@ -150,39 +209,7 @@ export default class VendorFood extends Component {
                         <View style={{flex: 1}}><Text style={[{textAlign: 'center'}, styles.bold]}>Item</Text></View>
                         <View style={{flex: 1}}><Text style={[{textAlign: 'right'}, styles.bold]}>Price</Text></View>
                     </View>
-                    {vendor &&
-                        <FlatList
-                            data={order}
-                            extraData={this.state}
-                            keyExtractor={(item, index) => item.name + index}
-                            renderItem={({item, index}) => {
-                                return (
-                                        <ListItem style={{ marginLeft: 0 }}>
-                                            {vendor.canOrder &&
-                                            <Left style={{ flex: 1 }}>
-                                                <Button disabled={!item.available} onPress={() => { 
-                                                    if (item.available) this.updateQuantity(index, false) 
-                                                }}>
-                                                    <Text>-</Text>
-                                                </Button>
-                                                <Text style={[{ flex: 1, marginLeft: 0 }, styles.center]}>{order[index].quantity}</Text>
-                                                <Button disabled={!item.available} onPress={() => { 
-                                                    if (item.available) this.updateQuantity(index, true) 
-                                                }}>
-                                                    <Text>+</Text>
-                                                </Button>
-                                            </Left>}
-                                            <Body style={{ flex: 2 }}>
-                                                <Text style={styles.bold}>{item.name}</Text>
-                                                {descs[index] && <Text style={styles.menuDesc}>{descs[index]}</Text>}
-                                            </Body>
-                                            <Right>
-                                                <Text>${item.price}</Text>
-                                            </Right>
-                                        </ListItem>
-                                )
-                            }}
-                        />}
+                    {vendor && subMenuLists}
                     {vendor.canOrder ? 
                     <View>
                         <Text style={[styles.center, styles.bold, styles.row]}>Total Due: ${totalPrice}</Text>

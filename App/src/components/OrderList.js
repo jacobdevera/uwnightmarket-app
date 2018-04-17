@@ -110,7 +110,7 @@ export class OrderList extends Component {
                                     <Text style={[styles.header, styles.cardH2, { marginTop: 8, marginLeft: 8 }]}>
                                         Vendor: {item.vendorName}
                                     </Text>
-                                    {item.status !== Status.PICKED_UP && 
+                                    {(item.status === Status.NOT_READY) && 
                                     <Button transparent
                                         style={{ height: 32 }}
                                         onPress={() => this.showActionSheet(item)}

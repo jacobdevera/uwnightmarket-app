@@ -75,7 +75,7 @@ export default styles = StyleSheet.create({
         color: 'gray'
     },
     desc: {
-        fontStyle: 'italic'
+        fontFamily: 'Montserrat-Italic'
     },
     menuItem: {
         fontWeight: 'normal',
