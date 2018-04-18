@@ -34,7 +34,7 @@ export default class VendorFood extends Component {
                     name: category,
                     menu: []
                 }
-            }) : [{ menu: [] }];
+            }) : [{ name: 'Menu', menu: [] }];
 
         vendor.menu.forEach((item, index) => {
             order[index] = { 
@@ -56,7 +56,7 @@ export default class VendorFood extends Component {
                 descs: descs, 
                 subMenus: subMenus 
             })
-        });
+        }).catch(e => console.log(e));
     }
 
     updateQuantity = (index, add) => {
@@ -153,7 +153,7 @@ export default class VendorFood extends Component {
         });
         let subMenuLists = subMenus.map((subMenu) => {
             return (
-                <View>
+                <View key={subMenu.name}>
                     {subMenu.name && <Text style={[styles.section, styles.bold]}>{subMenu.name}</Text>}
                     <FlatList
                         data={subMenu.menu}
