@@ -91,8 +91,9 @@ class MyOrders extends Component {
         if (index === 0 && selectedItem.status === Status.NOT_READY) {
             let lastTimeDeleted = parseInt(await AsyncStorage.getItem('lastTimeDeleted'));
             console.log(lastTimeDeleted);
+            console.log(Date.now());
             if (lastTimeDeleted === null || isNaN(lastTimeDeleted)) {
-                lastTimeDeleted = Date.now() + limits.orderCooldown;
+                lastTimeDeleted = Date.now() - limits.orderCooldown;
                 await AsyncStorage.setItem('lastTimeDeleted', (lastTimeDeleted).toString()).catch((e) => console.log(e));
             }
             if (Date.now() - selectedItem.time <= limits.orderAge) {
