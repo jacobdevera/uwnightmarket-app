@@ -160,7 +160,7 @@ class MyOrders extends Component {
                             orders={orders.filter((order) => order.status !== Status.PICKED_UP)} 
                             vendor={false} /> 
                     </View>
-                    : !loading ? <View style={[styles.column, styles.section]}>
+                    : !loading ? <View style={styles.section}>
                         <View>
                             <Text style={[styles.bold, styles.header, styles.h2]}>Ordering Info</Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
