@@ -209,6 +209,8 @@ class VendorOrders extends Component {
     render() {
         const { params } = this.props.navigation.state;
         const { orders } = this.state;
+        let active = params && params.active;
+        let filteredOrders = this.getFilteredOrders(Object.values(orders), active);
         return (
             <Container>
                 <AppHeader navigation={this.props.navigation}>
@@ -216,10 +218,12 @@ class VendorOrders extends Component {
                 </AppHeader>
                 <Content style={styles.paddedContainer}>
                     {orders && Object.values(orders).length > 0
-                        ? <OrderList
-                            asConfig={this.asConfig}
-                            orders={this.getFilteredOrders(Object.values(orders), params && params.active)}
-                            vendor={true}></ OrderList>
+                        ? filteredOrders.length > 0 ? 
+                            <OrderList
+                                asConfig={this.asConfig}
+                                orders={filteredOrders}
+                                vendor={true}></OrderList> 
+                            : <Text style={[styles.section, styles.center]}>You currently have no {active ? 'active' : 'completed'} orders.</Text>
                         : <Text style={[styles.section, styles.center]}>No one has ordered from you yet.</Text>}
                 </Content>
             </Container>

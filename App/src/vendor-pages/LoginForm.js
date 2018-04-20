@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { Animated, View } from 'react-native';
 import firebase from 'firebase';
 
-import { Container, Content, Left, Icon, Button, Text } from 'native-base';
-import { Card, CardSection, Input, Spinner } from '../components/common';
+import { Container, Content, Left, Icon, Button, Text, Spinner } from 'native-base';
+import { Card, CardSection, Input } from '../components/common';
 import { AppHeader } from '../components';
 import { Views } from '../App';
-import styles from '../styles';
+import styles, { config } from '../styles';
 
 class LoginForm extends Component {
   constructor(props) {
@@ -38,7 +38,7 @@ class LoginForm extends Component {
 
   renderButton() {
     if (this.state.loading) {
-      return <Spinner size="small" />;
+      return <Spinner color={config.colorPrimary} />;
     }
 
     return (

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Alert, Image, View, Modal, StyleSheet, FlatList, Platform } from 'react-native';
-import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon, Left, Right, Thumbnail, List, ListItem, Toast } from 'native-base';
+import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon, Left, Right, Thumbnail, List, ListItem, Toast, Spinner } from 'native-base';
 import firebase from 'firebase';
 import FCM, { FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType, 
     NotificationActionType, NotificationActionOption, NotificationCategoryOption } from 'react-native-fcm';
@@ -8,8 +8,7 @@ import { NavigationActions } from 'react-navigation';
 
 import { Status, limits } from '../App';
 import { AppHeader } from '../components';
-import { Spinner } from '../components/common';
-import styles, { scale } from '../styles';
+import styles, { config, scale } from '../styles';
 
 export default class VendorFood extends Component {
     constructor() {
@@ -18,7 +17,8 @@ export default class VendorFood extends Component {
             vendor: {},
             order: [],
             showToast: false,
-            subMenus: []
+            subMenus: [],
+            loading: true
         }
     }
 
@@ -54,7 +54,8 @@ export default class VendorFood extends Component {
                 order: order, 
                 token: token || "", 
                 descs: descs, 
-                subMenus: subMenus 
+                subMenus: subMenus,
+                loading: false
             })
         }).catch(e => console.log(e));
     }
@@ -144,7 +145,7 @@ export default class VendorFood extends Component {
     }
     
     render() {
-        let { vendor, order, descs, subMenus } = this.state;
+        let { vendor, order, descs, subMenus, loading } = this.state;
         let totalQuantity = 0;
         let totalPrice = 0;
         order.forEach((item) => {
@@ -190,6 +191,7 @@ export default class VendorFood extends Component {
                 </View>
             );
         })
+        console.log(config.colorPrimary);
         
         return (
             <Container>
@@ -204,25 +206,29 @@ export default class VendorFood extends Component {
                     {vendor && vendor.name}
                 </AppHeader>
                 <Content style={styles.paddedContainer}>
-                    <View style={[styles.rowSpaceBetween, styles.section]}>
-                        {vendor.canOrder && <View style={{flex: 1}}><Text style={[{textAlign: 'center'}, styles.bold]}>Qty</Text></View>}
-                        <View style={{flex: 1}}><Text style={[{textAlign: 'center'}, styles.bold]}>Item</Text></View>
-                        <View style={{flex: 1}}><Text style={[{textAlign: 'right'}, styles.bold]}>Price</Text></View>
-                    </View>
-                    {vendor && subMenuLists}
-                    {vendor.canOrder ? 
+                {!loading ?
                     <View>
-                        <Text style={[styles.center, styles.bold, styles.row]}>Total Due: ${totalPrice}</Text>
-                        <View style={styles.row}>
-                            <Button disabled={!vendor.canOrder || totalQuantity <= 0} 
-                                onPress={async () => { if (await this.lessThanMaxOrders()) this.submitOrder() }}>
-                                <Text>Submit Order</Text>
-                            </Button>
+                        <View style={[styles.rowSpaceBetween, styles.section]}>
+                            {vendor.canOrder && <View style={{flex: 1}}><Text style={[{textAlign: 'center'}, styles.bold]}>Qty</Text></View>}
+                            <View style={{flex: 1}}><Text style={[{textAlign: 'center'}, styles.bold]}>Item</Text></View>
+                            <View style={{flex: 1}}><Text style={[{textAlign: 'right'}, styles.bold]}>Price</Text></View>
                         </View>
+                        {vendor && subMenuLists}
+                        {vendor.canOrder ? 
+                        <View>
+                            <Text style={[styles.center, styles.bold, styles.row]}>Total Due: ${totalPrice}</Text>
+                            <View style={styles.row}>
+                                <Button disabled={!vendor.canOrder || totalQuantity <= 0} 
+                                    onPress={async () => { if (await this.lessThanMaxOrders()) this.submitOrder() }}>
+                                    <Text>Submit Order</Text>
+                                </Button>
+                            </View>
+                        </View>
+                        : <Text style={[styles.section, styles.center, styles.last]}>
+                            This vendor does not support mobile ordering.
+                        </Text>}
                     </View>
-                    : <Text style={[styles.section, styles.center, styles.last]}>
-                        This vendor does not support mobile ordering.
-                    </Text>}
+                    : <Spinner color={config.colorPrimary} />}
                 </Content>
             </Container>
         );

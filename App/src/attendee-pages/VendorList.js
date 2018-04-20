@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { Image, View, Modal, StyleSheet, FlatList, ScrollView } from 'react-native';
-import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon, Left, Right, List, ListItem, Radio, Badge } from 'native-base';
+import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon, Left, Right, List, ListItem, Radio, Badge, Spinner } from 'native-base';
 import { StackNavigator } from "react-navigation";
 import firebase from 'firebase'
 
 import { filters } from '../App';
 import { AppHeader, StackHeader } from '../components';
-import { Spinner } from '../components/common';
 import styles, { config, scale } from '../styles';
 
 const modalStyles = StyleSheet.create({
@@ -112,6 +111,7 @@ export default class VendorList extends Component {
     }
 
     render() {
+        let { vendors, filteredVendors, sort, filters, canOrderFilter, modalVisible } = this.state;
         return (
             <Container>
                 <AppHeader 
@@ -120,11 +120,10 @@ export default class VendorList extends Component {
                 >
                     Vendors / Food
                 </AppHeader>
-                
-                <Content style={[styles.paddedContainer]}>
+                <Content style={styles.paddedContainer}>
                     <Modal
                         transparent={true}
-                        visible={this.state.modalVisible}
+                        visible={modalVisible}
                         animationType={'fade'}
                         onRequestClose={() => this.modalClose()}
                     >
@@ -156,7 +155,7 @@ export default class VendorList extends Component {
                                     <ScrollView contentContainerStyle={{ flexGrow: 0 }}>
                                         <FlatList
                                             scrollEnabled={false}
-                                            data={this.state.filters}
+                                            data={filters}
                                             extraData={this.state}
                                             keyExtractor={ item => item.name }
                                             renderItem={({ item, index }) => {
@@ -177,7 +176,7 @@ export default class VendorList extends Component {
                                         <ListItem button onPress={() => this.toggleCanOrderFilter()}>
                                             <CheckBox 
                                                 color={'#d94d5d'}
-                                                checked={this.state.canOrderFilter} 
+                                                checked={canOrderFilter} 
                                                 onPress={() => this.toggleCanOrderFilter()}
                                             />
                                             <Body>
@@ -197,10 +196,10 @@ export default class VendorList extends Component {
                             </View>
                         </View>
                     </Modal>
-                    {this.state.vendors ?
+                    {vendors && vendors.length > 0 ?
                         <FlatList
                             style={[styles.section, styles.last]}
-                            data={this.state.filteredVendors}
+                            data={filteredVendors}
                             extraData={this.state}
                             keyExtractor={ item => item.name }
                             renderItem={({ item }) => {
@@ -236,7 +235,7 @@ export default class VendorList extends Component {
                                 )
                             }}
                         />
-                        : <Spinner size='small' />}
+                        : <Spinner color={config.colorPrimary} />}
                 </Content>
             </Container>
         );

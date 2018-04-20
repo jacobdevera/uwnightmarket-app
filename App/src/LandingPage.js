@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { Alert, Image, View } from 'react-native';
-import { Button, Container, Content, Text } from 'native-base';
+import { Button, Container, Content, Text, Spinner } from 'native-base';
 import firebase from 'firebase';
-import styles from './styles';
+import styles, { config } from './styles';
 
 import { Views } from './App';
-import { Spinner } from './components/common';
 
 class LandingPage extends Component {
     constructor(props) {
@@ -54,7 +53,7 @@ class LandingPage extends Component {
 
     render(){
         return (
-            this.state.loading ? <Spinner size='small' /> :
+            this.state.loading ? <Spinner style={{ marginTop: 'auto', marginBottom: 'auto' }} color={config.colorPrimary} /> :
             <Content contentContainerStyle={styles.column}>
                 <Image
                     style={[styles.logo, { marginTop: 88 }]}
