@@ -198,8 +198,8 @@ export default class VendorList extends Component {
                             extraData={this.state}
                             keyExtractor={ item => item.name }
                             renderItem={({ item }) => {
-                                let foodNames = [];
-                                item.menu.forEach((food) => foodNames.push(food.name));
+                                let foodNames = ['...'];
+                                item.menu.slice(0, 3).forEach((food) => foodNames.unshift(food.name));
                                 return (
                                     <Card>
                                         <CardItem 
