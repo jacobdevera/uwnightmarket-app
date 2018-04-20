@@ -85,12 +85,16 @@ class VendorOrders extends Component {
     }
 
     orderChanged = (snapshot) => {
+        console.log("child added" + snapshot.key);
         let newOrderObj = Object.assign({}, this.state.orders);
         firebase.database().ref(`/orders/${snapshot.key}`).once('value').then((orderSnapshot) => {
             let order = orderSnapshot.val();
             order.id = snapshot.key;
+            console.log(order.id);
             newOrderObj[snapshot.key] = order;
-            this.setState({ orders: newOrderObj });
+            this.setState((prevState) => {
+                return { orders: {...prevState.orders, [order.id]: order} };
+            });
         })
     }
 
