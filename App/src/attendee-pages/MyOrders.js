@@ -179,7 +179,7 @@ class MyOrders extends Component {
                                 Please arrive at the booth within 10 minutes to pick up your order and be prepared to pay with cash.</Text>
                             <Text>If you log out, ALL of your orders (active or past) will be deleted.</Text>
                         </View>
-                        <Text style={styles.section}>You have no active orders right now.</Text>
+                        <Text style={[{ alignSelf: 'center' }, styles.section]}>You have no active orders right now.</Text>
                         <Button style={[{ alignSelf: 'center' }, styles.section]} 
                             onPress={() => {
                                 this.props.navigation.navigate('VendorNavigator');

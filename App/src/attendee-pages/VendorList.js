@@ -63,21 +63,16 @@ export default class VendorList extends Component {
     }
 
     filterVendors = (filters) => {
-        let newVendors = this.state.vendors.slice();
+        let newVendors = JSON.parse(JSON.stringify(this.state.vendors));
         
         if (filters.length > 0) {
             newVendors = newVendors.filter((vendor) => {
-                let satisfiesFilters = true;
                 filters.forEach((filter) => {
-                    let filterExists = false;
-                    vendor.menu.forEach((item) => {
-                        if (item.traits.includes(filter.name))
-                            filterExists = true;
+                    vendor.menu = vendor.menu.filter((item) => {
+                        return item.traits.includes(filter.name)
                     })
-                    if (!filterExists)
-                        satisfiesFilters = false;
                 })
-                return satisfiesFilters;
+                return vendor.menu.length > 0;
             });
         }
         return newVendors;
