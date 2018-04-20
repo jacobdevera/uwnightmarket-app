@@ -15,9 +15,7 @@ export default styles = StyleSheet.create({
     },
     icon: {
         height: 24,
-        width: 16,
-        marginLeft: 8,
-        marginRight: 8
+        width: 16
     },
     logo: {
         height: 150 * scale
@@ -81,11 +79,12 @@ export default styles = StyleSheet.create({
         color: 'gray'
     },
     desc: {
-        fontFamily: 'Montserrat-Italic'
+        fontFamily: 'Montserrat-Italic',
+        fontSize: 14
     },
     menuItem: {
-        fontWeight: 'normal',
-        fontFamily: 'Montserrat-Italic'
+        fontFamily: 'Montserrat-Italic',
+        fontSize: 14
     },
     bold: {
         fontFamily: 'Montserrat-Bold'
@@ -120,6 +119,9 @@ export default styles = StyleSheet.create({
     },
     section: {
         marginTop: Math.max(16, 16 * scale)
+    },
+    smallSection: {
+        marginTop: Math.max(8, 8 * scale)
     },
     last: {
         paddingBottom: Math.max(16, 16 * scale)

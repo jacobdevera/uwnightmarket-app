@@ -200,6 +200,7 @@ export default class VendorList extends Component {
                             renderItem={({ item }) => {
                                 let foodNames = ['...'];
                                 item.menu.slice(0, 3).forEach((food) => foodNames.unshift(food.name));
+                                let bodyLeftMargin = item.img.length > 0 ? 10 : 0;
                                 return (
                                     <Card>
                                         <CardItem 
@@ -209,25 +210,27 @@ export default class VendorList extends Component {
                                             }}
                                         >
                                             <Left>
+                                                {item.img.length > 0 &&
                                                 <Image
                                                     resizeMode="contain"
                                                     style={styles.listImage}
                                                     source={{ uri: item.img }}
-                                                />
-                                                <Body style={{ alignSelf: 'flex-start' }}>
-                                                    <View style={{ flexDirection: 'row' }}>
+                                                />}
+                                                <Body style={{ marginLeft: bodyLeftMargin, alignSelf: 'flex-start' }}>
+                                                    <View style={{ flexDirection:'row' }}>
                                                         <Badge style={{ backgroundColor: config.colorPrimary, marginRight: 8}}>
                                                             <Text>{item.boothNumber}</Text>
                                                         </Badge>
-                                                        <Text style={ [styles.header, styles.cardH1] }>{item.name}</Text>
-                                                        {item.canOrder && <Image
+                                                        <Text style={ [{flex: 1 },styles.header, styles.cardH1] }>{item.name}</Text>
+                                                        {item.canOrder && 
+                                                        <Image
                                                             resizeMode="stretch"
                                                             style={styles.icon}
                                                             source={require('../../img/mobile-order-support-icon.png')}
                                                         />}
                                                     </View>
-                                                    <Text style={ [styles.desc, styles.section] }>{item.desc}</Text>
-                                                    <Text style={ [styles.bold, styles.section] }>Menu: <Text style={styles.menuItem}>{foodNames.join(', ')}</Text></Text>
+                                                    {item.desc.length > 0 && <Text style={ [styles.desc, styles.smallSection] }>{item.desc}</Text>}
+                                                    <Text style={ [styles.bold, styles.smallSection] }>Menu: <Text style={styles.menuItem}>{foodNames.join(', ')}</Text></Text>
                                                 </Body>
                                             </Left>
                                         </CardItem>

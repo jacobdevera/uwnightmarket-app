@@ -164,20 +164,20 @@ class MyOrders extends Component {
                         <View>
                             <Text style={[styles.bold, styles.header, styles.h2]}>Ordering Info</Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-                                <Text>Vendors with the</Text>
+                                <Text>{`\u2022 Vendors with the `}
                                 <Image
                                     resizeMode="stretch"
                                     style={styles.icon}
                                     source={require('../../img/mobile-order-support-icon.png')}
                                 /> 
-                                <Text>icon will be available for mobile ordering.</Text> 
+                                {` icon will be available for mobile ordering.`}</Text> 
                             </View>
-                            <Text>You can order a maxiumum of {limits.quantity} items from one vendor.</Text>
-                            <Text>You can have up to {limits.orders} orders at a time.</Text>
-                            <Text>Once you make an order, you have up to {limits.orderAge / 1000 / 60} minutes to delete the order.</Text>
-                            <Text>You will receive a notification when your order is ready for pick up. 
-                                Please arrive at the booth within 10 minutes to pick up your order and be prepared to pay with cash.</Text>
-                            <Text>If you log out, ALL of your orders (active or past) will be deleted.</Text>
+                            <Text style={styles.smallSection}>{`\u2022 You can order a maxiumum of ${limits.quantity} items from one vendor.`}</Text>
+                            <Text style={styles.smallSection}>{`\u2022 You can have up to ${limits.orders} orders at a time.`}</Text>
+                            <Text style={styles.smallSection}>{`\u2022 Once you make an order, you have up to ${limits.orderAge / 1000 / 60} minutes to delete the order.`}</Text>
+                            <Text style={styles.smallSection}>{`\u2022 You will receive a notification when your order is ready for pick up. `+
+                                `Please arrive at the booth within 10 minutes to pick up your order and be prepared to pay with cash.`}</Text>
+                            <Text style={styles.smallSection}>{`\u2022 If you log out, ALL of your orders (active or past) will be deleted.`}</Text>
                         </View>
                         <Button style={[{ alignSelf: 'center' }, styles.section]} 
                             onPress={() => {
