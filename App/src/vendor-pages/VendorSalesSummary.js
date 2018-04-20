@@ -47,14 +47,14 @@ class VendorSalesSummary extends Component {
             orders[order].items.forEach((item) => {
                 let revenue = item.quantity * item.price;
                 totalRevenue += revenue;
-                let newItem = soldItems.hasOwnProperty(item.name);
+                let newItem = !soldItems.hasOwnProperty(item.name);
                 soldItems[item.name] = { 
                     quantity: newItem ? item.quantity : soldItems[item.name].quantity + item.quantity,
                     revenue: newItem ? revenue : soldItems[item.name].revenue + revenue
                 }
             })
         });
-
+        console.log(soldItems);
         return (
             <Container>
                 <AppHeader navigation={this.props.navigation}>
@@ -62,14 +62,38 @@ class VendorSalesSummary extends Component {
                 </AppHeader>
                 <Content contentContainerStyle={styles.paddedContainer}>
                     <View style={styles.section}>
-                        <View style={styles.row}>
-                            <Text>Total Revenue: </Text>
-                            <Text style={[styles.bold, { justifyContent: 'flex-end'}]}>${totalRevenue}</Text>
+                        <View style={styles.rowSpaceBetween}>
+                            <View style={styles.column}>
+                                <Text style={{ alignSelf: 'flex-start' }}>Total Revenue: </Text>
+                                <Text style={{ alignSelf: 'flex-start' }}>Total Number of Orders Completed: </Text>
+                            </View>
+                            <View style={[styles.column]}>
+                                <Text style={[styles.bold, { alignSelf: 'flex-end'}]}>${totalRevenue}</Text>
+                                <Text style={[styles.bold, { alignSelf: 'flex-end'}]}>{Object.keys(orders).length}</Text>
+                            </View>
                         </View>
-                        <View style={styles.row}>
-                            <Text>Total Number of Orders Completed: </Text>
-                            <Text style={[styles.bold, { justifyContent: 'flex-end'}]}>{Object.keys(orders).length}}</Text>
-                        </View>
+                        {Object.keys(soldItems).length > 0 &&
+                        <View style={[styles.section, styles.last]}>
+                            <View style={styles.row}>
+                                <Text style={[styles.bold, { flex: 10 }]}>Item</Text>
+                                <Text style={[styles.bold, { flex: 2 }]}>Qty</Text>
+                                <Text style={[styles.bold, { flex: 2 }]}>Revenue</Text>
+                            </View>
+                            <FlatList
+                                data={Object.keys(soldItems)}
+                                extraData={this.state}
+                                keyExtractor={ item => item }
+                                renderItem={({ item }) => {
+                                    return (
+                                        <View style={styles.row}>
+                                            <Text style={{ flex: 10 }}>{item}</Text>
+                                            <Text style={{ flex: 2 }}>{soldItems[item].quantity}</Text>
+                                            <Text style={{ flex: 2 }}>${soldItems[item].revenue}</Text>
+                                        </View>
+                                    )
+                                }}
+                            />
+                        </View>}
                     </View>
                 </Content>
             </Container>
