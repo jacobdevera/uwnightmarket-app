@@ -13,6 +13,12 @@ export default styles = StyleSheet.create({
         alignSelf: 'center',
         color: 'red'
     },
+    icon: {
+        height: 24,
+        width: 16,
+        marginLeft: 8,
+        marginRight: 8
+    },
     logo: {
         height: 150 * scale
     },

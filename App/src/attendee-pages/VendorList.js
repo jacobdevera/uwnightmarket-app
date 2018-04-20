@@ -225,6 +225,11 @@ export default class VendorList extends Component {
                                                             <Text>{item.boothNumber}</Text>
                                                         </Badge>
                                                         <Text style={ [styles.header, styles.cardH1] }>{item.name}</Text>
+                                                        {item.canOrder && <Image
+                                                            resizeMode="stretch"
+                                                            style={styles.icon}
+                                                            source={require('../../img/mobile-order-support-icon.png')}
+                                                        />}
                                                     </View>
                                                     <Text style={ [styles.desc, styles.section] }>{item.desc}</Text>
                                                     <Text style={ [styles.bold, styles.section] }>Menu: <Text style={styles.menuItem}>{foodNames.join(', ')}</Text></Text>
