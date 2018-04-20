@@ -32,7 +32,7 @@ export default class VendorList extends Component {
                 return { name: filter, active: false }
             }),
             modalVisible: false,
-            sort: 'number',
+            sort: 'name',
             canOrderFilter: false
         }
     }
@@ -44,7 +44,7 @@ export default class VendorList extends Component {
             snapshot.forEach((vendorSnapshot) => {
                 vendorList.push(vendorSnapshot.val());
             });
-            vendorList = vendorList.sort(this.sortByBoothNumber);
+            vendorList = vendorList.sort(this.sortByName);
             this.setState({ vendors: vendorList, filteredVendors: vendorList });
         });
     }

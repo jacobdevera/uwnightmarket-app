@@ -22,7 +22,7 @@ export default class VendorFood extends Component {
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         const { params } = this.props.navigation.state;
         const vendor = params ? params.vendor : null;
         let order = new Array(vendor.menu.length);
@@ -47,17 +47,25 @@ export default class VendorFood extends Component {
             subMenus[item.hasOwnProperty('category') ? item.category : 0].menu.push(order[index]);
         });
 
-        FCM.getFCMToken().then(token => {
-            console.log(token);
-            this.setState({ 
-                vendor: vendor, 
-                order: order, 
-                token: token || "", 
-                descs: descs, 
-                subMenus: subMenus,
-                loading: false
-            })
-        }).catch(e => console.log(e));
+        let token;
+        if (vendor.canOrder) {
+            console.log('wut')
+            try {
+                let queueSnapshot = await firebase.database().ref(`/vendor-orders/${vendor.userId}/order_count`).once('value');
+                currentQueueSize = queueSnapshot.val();
+                vendor.currentQueueSize = currentQueueSize;
+                token = await FCM.getFCMToken();
+            } catch (e) { console.log(e);}
+        }
+
+        this.setState({ 
+            vendor: vendor, 
+            order: order, 
+            token: token || "", 
+            descs: descs, 
+            subMenus: subMenus,
+            loading: false
+        });
     }
 
     updateQuantity = (index, add) => {
@@ -143,6 +151,8 @@ export default class VendorFood extends Component {
             ]
         );
     }
+
+    isQueueLong = () => this.state.vendor.currentQueueSize >= limits.queue;
     
     render() {
         let { vendor, order, descs, subMenus, loading } = this.state;
@@ -191,8 +201,6 @@ export default class VendorFood extends Component {
                 </View>
             );
         })
-        console.log(config.colorPrimary);
-        
         return (
             <Container>
                 <AppHeader 
@@ -217,7 +225,13 @@ export default class VendorFood extends Component {
                         {vendor.canOrder ? 
                         <View>
                             <Text style={[styles.center, styles.bold, styles.row]}>Total Due: ${totalPrice}</Text>
-                            <View style={styles.row}>
+                            <View style={styles.column}>
+                                <Text style={{ color: this.isQueueLong() ? 'red' : null }}>
+                                    Current queue size: {vendor.currentQueueSize ? vendor.currentQueueSize : 0}
+                                </Text>
+                                {this.isQueueLong() && <Text style={{ color: 'red' }}>Your order may take a while to begin preparing.</Text>}
+                            </View>
+                            <View style={[styles.row, styles.last]}>
                                 <Button disabled={!vendor.canOrder || totalQuantity <= 0} 
                                     onPress={async () => { if (await this.lessThanMaxOrders()) this.submitOrder() }}>
                                     <Text>Submit Order</Text>
