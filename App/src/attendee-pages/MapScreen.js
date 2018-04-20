@@ -14,12 +14,6 @@ import {
 import MapView ,{ Callout, AnimatedRegion, Marker  } from "react-native-maps";
 import firebase from 'firebase';
 
-const Images = [
-  { uri: "https://s.yimg.com/ny/api/res/1.2/g7I3e.RD0ngPAwFoft5kPg--/YXBwaWQ9aGlnaGxhbmRlcjtzbT0xO3c9MTI4MDtoPTk2MA--/http://media.zenfs.com/en-US/homerun/delish_597/51abed18dd08738b233b51058275c63f" },
-  { uri: "https://www.visitstockton.org/images/made/images/remote/https_files.idssasp.com/public/C102/0740e0c3-1adc-45f6-902c-e09b99d7a4ab/4cc8d671-c1b3-4114-8448-9274ffcb5379_768_432auto_s_c1.jpg" },
-  { uri: "https://www.stpetepride.com/assets/media/bbq.jpg" },
-  { uri: "https://i.pinimg.com/736x/d0/38/85/d03885db785eca97fee927118b43aa99--tornado-potato-tornados.jpg" }
-]
 
 const { width, height } = Dimensions.get("window");
 
@@ -31,10 +25,16 @@ export default class MapScreen extends Component {
     constructor(props){
         super();
         this.centerMarker = this.centerMarker.bind(this);
-    }
-
+        this.onDragEnd = this.onDragEnd.bind(this);
+        // Animated.event([{nativeEvent: {contentOffset: { x: this.animation,},},},],{ useNativeDriver: true })
+      
+        this.intervalDiff = 137;
+        this.markers = [];
+      }
+      
   state = {
     vendors:[],
+    markers: [],
 
     region:{
       latitude: 47.655661,
@@ -44,7 +44,7 @@ export default class MapScreen extends Component {
     },
     currentCard :1,
     markerPressed: false,
-
+    calloutIsRendered:false,
   };
 
  
@@ -76,47 +76,69 @@ export default class MapScreen extends Component {
     });
 
 
+  //   this.animation.addListener(({ value }) => {
+  //     console.log("Presser?: ", this.state.markerPressed)
+  //     console.log("val     " + value)
+  //       console.log("value")
+  //       let index = Math.floor(value / CARD_WIDTH + 0.2); // animate 30% away from landing on the next item
+  //       if (index >= this.state.vendors.length) {
+  //         index = this.state.vendors.length - 1;
+  //       }
+  //       if (index <= 0) {
+  //         index = 0;
+  //       }
 
 
-
-
-    this.animation.addListener(({ value }) => {
-      console.log("Presser?: ", this.state.markerPressed)
-
-      if (!this.state.markerPressed) {
-        console.log("INSIDE")
-        let index = Math.floor(value / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item
-        if (index >= this.state.vendors.length) {
-          index = this.state.vendors.length - 1;
-        }
-        if (index <= 0) {
-          index = 0;
-        }
-  
-  
-        // clearTimeout(this.regionTimeout);
-        // this.regionTimeout = setTimeout(() => {
-        //   if (this.index !== index) {
-        //     this.index = index;
-        //     this.map.animateToRegion(
-        //       {
-        //         ...this.makeCoordinate(this.state.vendors[index]),
-        //         latitudeDelta: this.state.region.latitudeDelta,
-        //         longitudeDelta: this.state.region.longitudeDelta,
-        //       },
-        //       350
-        //     );
-        //   }
-        // }, 10);
-  
-        this.map.animateToCoordinate({
-          latitude: this.state.vendors[index].latitude,
-          longitude: this.state.vendors[index].longitude,
-        }, 300);
         
-      }
-      // this.setState({markerPressed: false});
-    });
+  //       // let marker = this.state.markers[index];
+  //       this.state.markers[index]._component.showCallout();
+        
+  //       // this.refs.marker.showCallout();
+  //       if (!this.state.markerPressed) {
+
+  //       // clearTimeout(this.regionTimeout);
+  //       // this.regionTimeout = setTimeout(() => {
+  //       //   if (this.index !== index) {
+  //       //     this.index = index;
+  //       //     this.map.animateToRegion(
+  //       //       {
+  //       //         ...this.makeCoordinate(this.state.vendors[index]),
+  //       //         latitudeDelta: this.state.region.latitudeDelta,
+  //       //         longitudeDelta: this.state.region.longitudeDelta,
+  //       //       },
+  //       //       350
+  //       //     );
+  //       //   }
+  //       // }, 10);
+  
+  //         this.map.animateToCoordinate({
+  //           latitude: this.state.vendors[index].latitude,
+  //           longitude: this.state.vendors[index].longitude,
+  //         }, 300);
+        
+  //       }
+  //     // this.setState({markerPressed: false});
+  //   });
+  }
+
+
+  onDragEnd(event) {
+    let value = event.nativeEvent.contentOffset.x;
+    console.log("value    ", value);
+    let index = (Math.floor(value / this.intervalDiff) + 1); // animate 30% away from landing on the next item
+    if (index >= this.state.vendors.length) {
+      index = this.state.vendors.length - 1;
+    }
+    if (index <= 0) {
+      index = 0;
+    }
+    
+    // let marker = this.state.markers[index];
+    this.state.markers[index]._component.showCallout();
+    this.map.animateToCoordinate({
+      latitude: this.state.vendors[index].latitude,
+      longitude: this.state.vendors[index].longitude,
+    }, 300);
   }
 
   centerMarker(key){
@@ -135,6 +157,28 @@ export default class MapScreen extends Component {
   onRegionChange(region) {
     this.setState({ region });
   }
+
+
+  addMarker(marker){
+    // this.markers.push(marker)
+    
+    this.setState((prevState) => {markers : prevState.markers.push(marker)})
+  }
+
+  setMarkerRef = (ref) => {
+    this.marker = ref
+  }
+
+  renderCallout() {
+    if(this.state.calloutIsRendered === true) return;
+    this.setState({calloutIsRendered: true});
+    this.marker.showCallout();
+    console.log(this.marker)
+    console.log(this.map)
+
+  }
+
+
 
   render() {
     const interpolations = this.state.vendors.map((marker, index) => {
@@ -156,6 +200,7 @@ export default class MapScreen extends Component {
       return { scale, opacity };
     });
 
+
     return (
       <View style={styles.container}>
         <MapView
@@ -167,6 +212,8 @@ export default class MapScreen extends Component {
           showsUserLocation={true}
           followUserLocation={true}
           showsMyLocationButton
+
+          // onRegionChangeComplete={() => this.renderCallout()}
           // showsUserLocation
         >
           {this.state.vendors.map((marker, index) => {
@@ -181,18 +228,20 @@ export default class MapScreen extends Component {
               opacity: interpolations[index].opacity,
             };
             return (
-              <MapView.Marker.Animated
-              ref={marker => { this.marker = marker }}
+              <Marker.Animated
+              ref={marker => {this.addMarker(marker)}
+              }
               coordinate={this.makeCoordinate(marker)} 
               key={index} 
               onPress={e => {
                   this.setState({markerPressed: true});
-                  console.log(marker.latitude);
+                  // console.log(marker.latitude);
                   this.centerMarker(index);
                   this.map.animateToCoordinate({
                     latitude: marker.latitude,
                     longitude: marker.longitude
                   }, 300);
+
                   setTimeout(() =>
                     this.setState({markerPressed: false})
                   , 3000);
@@ -209,29 +258,30 @@ export default class MapScreen extends Component {
                    </Callout>
                   {/* </ Animated.View> */}
                 {/* </Animated.View> */}
-              </MapView.Marker.Animated>
+              </Marker.Animated>
             );
           })}
         </MapView>
         <Animated.ScrollView 
           ref = {sv => this.sv = sv}
           horizontal
-          scrollEventThrottle={1}
+          scrollEventThrottle={10000}
           showsHorizontalScrollIndicator={false}
           snapToInterval={CARD_WIDTH}
+          snapToAlignment={"center"}
+          snapToInterval={137}
+          decelerationRate={"fast"}
+          // pagingEnabled={true}
 
-          onScroll={Animated.event(
-            [
-              {
-                nativeEvent: {
-                  contentOffset: {
-                    x: this.animation,
-                  },
-                },
-              },
-            ],
-            { useNativeDriver: true }
-          )}
+          onMomentumScrollEnd={
+            this.onDragEnd
+          }
+          onScroll={
+              Animated.event(
+                [{ nativeEvent: { contentOffset: { x: this.animation } } }],
+                { useNativeDriver: true },
+                )
+          }
           style={styles.scrollView}
           contentContainerStyle={styles.endPadding}
         >
@@ -240,7 +290,7 @@ export default class MapScreen extends Component {
                 <Image
                   source={{ uri: marker.img}}
                   style={styles.cardImage}
-                  resizeMode="cover"
+                  resizeMode="contain"
                 />
                 <View style={styles.textContent}>
                   <Text numberOfLines={1} style={styles.cardtitle}>{marker.name}</Text>
@@ -272,6 +322,7 @@ const styles = StyleSheet.create({
     height: 100,
   },
   card: {
+    borderRadius:10,
     padding: 10,
     elevation: 2,
     backgroundColor: "#FFF",
@@ -296,6 +347,9 @@ const styles = StyleSheet.create({
   cardtitle: {
     fontSize: 12,
     marginTop: 5,
+    textAlign: 'center',
+    marginBottom: 0,
+    paddingBottom: 0,
     fontWeight: "bold",
   },
   cardDescription: {
