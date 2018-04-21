@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, View, Modal, StyleSheet, FlatList, ScrollView } from 'react-native';
+import { Image, View, Modal, StyleSheet, FlatList, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon, Left, Right, List, ListItem, Radio, Badge, Spinner } from 'native-base';
 import { StackNavigator } from "react-navigation";
 import firebase from 'firebase'
@@ -122,74 +122,82 @@ export default class VendorList extends Component {
                         animationType={'fade'}
                         onRequestClose={() => this.modalClose()}
                     >
-                        <View style={modalStyles.modalContainer}>
-                            <View style={modalStyles.innerContainer}>
-                                <ListItem style={{ borderBottomWidth: 0 }}>
-                                    <Text style={[styles.bold]}>Sort</Text>
-                                </ListItem>
-                                <View style={{ flex: 1 }}>
-                                    <ListItem style={{ justifyContent: 'space-between' }} 
-                                        onPress={() => this.sort('number')}
-                                    >
-                                        <Text>Booth Number</Text>
-                                        <Right>
-                                            <Radio selected={this.state.sort === 'number'} />
-                                        </Right>
-                                    </ListItem>
-                                    <ListItem style={{ justifyContent: 'space-between' }} 
-                                        onPress={() => this.sort('name')}
-                                    >
-                                        <Text>Name</Text>
-                                        <Right>
-                                            <Radio selected={this.state.sort === 'name'} />
-                                        </Right>
-                                    </ListItem>
+                        {/*<View style={modalStyles.modalContainer}>*/}
+                        <TouchableOpacity 
+                            style={modalStyles.modalContainer} 
+                            activeOpacity={1} 
+                            onPressOut={() => {this.modalClose()}}
+                        >
+                            <TouchableWithoutFeedback>
+                                <View style={modalStyles.innerContainer}>
                                     <ListItem style={{ borderBottomWidth: 0 }}>
-                                        <Text style={[styles.bold]}>Filter</Text>
+                                        <Text style={[styles.bold]}>Sort</Text>
                                     </ListItem>
-                                    <ScrollView contentContainerStyle={{ flexGrow: 0 }}>
-                                        <FlatList
-                                            scrollEnabled={false}
-                                            data={filters}
-                                            extraData={this.state}
-                                            keyExtractor={ item => item.name }
-                                            renderItem={({ item, index }) => {
-                                                return (
-                                                    <ListItem button onPress={() => this.toggleFilter(index)}>
-                                                        <CheckBox 
-                                                            color={'#d94d5d'}
-                                                            checked={item.active} 
-                                                            onPress={() => this.toggleFilter(index)}
-                                                        />
-                                                        <Body>
-                                                            <Text>{item.name}</Text>
-                                                        </Body>
-                                                    </ListItem>
-                                                );
-                                            }}
-                                        />
-                                        <ListItem button onPress={() => this.toggleCanOrderFilter()}>
-                                            <CheckBox 
-                                                color={'#d94d5d'}
-                                                checked={canOrderFilter} 
-                                                onPress={() => this.toggleCanOrderFilter()}
-                                            />
-                                            <Body>
-                                                <Text>supports mobile ordering</Text>
-                                            </Body>
-                                        </ListItem>
-                                    </ScrollView>
-                                    <View style={styles.row}>
-                                        <Button
-                                            style={{ alignSelf: 'flex-end' }}
-                                            onPress={() => this.modalClose()}
+                                    <View style={{ flex: 1 }}>
+                                        <ListItem style={{ justifyContent: 'space-between' }} 
+                                            onPress={() => this.sort('number')}
                                         >
-                                            <Text>Close</Text>
-                                        </Button>
+                                            <Text>Booth Number</Text>
+                                            <Right>
+                                                <Radio selected={this.state.sort === 'number'} />
+                                            </Right>
+                                        </ListItem>
+                                        <ListItem style={{ justifyContent: 'space-between' }} 
+                                            onPress={() => this.sort('name')}
+                                        >
+                                            <Text>Name</Text>
+                                            <Right>
+                                                <Radio selected={this.state.sort === 'name'} />
+                                            </Right>
+                                        </ListItem>
+                                        <ListItem style={{ borderBottomWidth: 0 }}>
+                                            <Text style={[styles.bold]}>Filter</Text>
+                                        </ListItem>
+                                        <ScrollView contentContainerStyle={{ flexGrow: 0 }}>
+                                            <FlatList
+                                                scrollEnabled={false}
+                                                data={filters}
+                                                extraData={this.state}
+                                                keyExtractor={ item => item.name }
+                                                renderItem={({ item, index }) => {
+                                                    return (
+                                                        <ListItem button onPress={() => this.toggleFilter(index)}>
+                                                            <CheckBox 
+                                                                color={'#d94d5d'}
+                                                                checked={item.active} 
+                                                                onPress={() => this.toggleFilter(index)}
+                                                            />
+                                                            <Body>
+                                                                <Text>{item.name}</Text>
+                                                            </Body>
+                                                        </ListItem>
+                                                    );
+                                                }}
+                                            />
+                                            <ListItem button onPress={() => this.toggleCanOrderFilter()}>
+                                                <CheckBox 
+                                                    color={'#d94d5d'}
+                                                    checked={canOrderFilter} 
+                                                    onPress={() => this.toggleCanOrderFilter()}
+                                                />
+                                                <Body>
+                                                    <Text>supports mobile ordering</Text>
+                                                </Body>
+                                            </ListItem>
+                                        </ScrollView>
+                                        <View style={styles.row}>
+                                            <Button
+                                                style={{ alignSelf: 'flex-end' }}
+                                                onPress={() => this.modalClose()}
+                                            >
+                                                <Text>Close</Text>
+                                            </Button>
+                                        </View>
                                     </View>
                                 </View>
-                            </View>
-                        </View>
+                            </TouchableWithoutFeedback>
+                        </TouchableOpacity>
+                        {/*</View>*/}
                     </Modal>
                     {vendors && vendors.length > 0 ?
                         <FlatList

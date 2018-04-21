@@ -116,7 +116,7 @@ class MyOrders extends Component {
                 }
             } else {
                 Toast.show({
-                    text: `You cannot remove an order after 2 minutes`, 
+                    text: `You cannot remove an order after 2 minutes. Please see the vendor if you have an issue with your order.`, 
                     type: 'danger', 
                     position: 'bottom', 
                     duration: 5000
