@@ -65,19 +65,19 @@ class VendorSalesSummary extends Component {
                         <View style={styles.rowSpaceBetween}>
                             <View style={styles.column}>
                                 <Text style={{ alignSelf: 'flex-start' }}>Total Revenue: </Text>
-                                <Text style={{ alignSelf: 'flex-start' }}>Total Number of Orders Completed: </Text>
+                                <Text style={[styles.section, { alignSelf: 'flex-start' }]}>Total Number of Orders Completed: </Text>
                             </View>
                             <View style={[styles.column]}>
                                 <Text style={[styles.bold, { alignSelf: 'flex-end'}]}>${totalRevenue}</Text>
-                                <Text style={[styles.bold, { alignSelf: 'flex-end'}]}>{Object.keys(orders).length}</Text>
+                                <Text style={[styles.bold, styles.section, { alignSelf: 'flex-end'}]}>{Object.keys(orders).length}</Text>
                             </View>
                         </View>
                         {Object.keys(soldItems).length > 0 &&
                         <View style={[styles.section, styles.last]}>
                             <View style={styles.row}>
-                                <Text style={[styles.bold, { flex: 10 }]}>Item</Text>
+                                <Text style={[styles.bold, { flex: 8 }]}>Item</Text>
                                 <Text style={[styles.bold, { flex: 2 }]}>Qty</Text>
-                                <Text style={[styles.bold, { flex: 2 }]}>Revenue</Text>
+                                <Text style={[styles.bold, { flex: 5 }]}>Revenue</Text>
                             </View>
                             <FlatList
                                 data={Object.keys(soldItems)}
@@ -86,9 +86,9 @@ class VendorSalesSummary extends Component {
                                 renderItem={({ item }) => {
                                     return (
                                         <View style={styles.row}>
-                                            <Text style={{ flex: 10 }}>{item}</Text>
+                                            <Text style={{ flex: 8 }}>{item}</Text>
                                             <Text style={{ flex: 2 }}>{soldItems[item].quantity}</Text>
-                                            <Text style={{ flex: 2 }}>${soldItems[item].revenue}</Text>
+                                            <Text style={{ flex: 5 }}>${soldItems[item].revenue}</Text>
                                         </View>
                                     )
                                 }}

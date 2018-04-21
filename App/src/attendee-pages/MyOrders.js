@@ -162,7 +162,7 @@ class MyOrders extends Component {
                     </View>
                     : !loading ? <View style={styles.section}>
                         <View>
-                            <Text style={[styles.bold, styles.header, styles.h2]}>Ordering Info</Text>
+                            <Text style={[styles.bold, styles.header, styles.h1]}>Ordering Info</Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                                 <Text>{`\u2022 Vendors with the `}
                                 <Image
