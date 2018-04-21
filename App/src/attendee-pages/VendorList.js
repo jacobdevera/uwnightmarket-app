@@ -198,12 +198,11 @@ export default class VendorList extends Component {
                             extraData={this.state}
                             keyExtractor={ item => item.name }
                             renderItem={({ item }) => {
-                                let foodNames = ['...'];
-                                item.menu.slice(0, 3).forEach((food) => foodNames.unshift(food.name));
-                                let bodyLeftMargin = item.img.length > 0 ? 10 : 0;
+                                let foodNames = item.menu.slice(0, 3).map((item, index) => item.name + (index >= 2 ? '...': ''));
+                                let bodyLeftMargin = item.img.length > 0 ? 8 : 0;
                                 return (
                                     <Card>
-                                        <CardItem 
+                                        <CardItem style={{ paddingLeft: 8, paddingRight: 8 }}
                                             button onPress={() => { this.props.navigation.navigate('VendorFood', {
                                                     vendor: item
                                                 }); 
@@ -213,7 +212,7 @@ export default class VendorList extends Component {
                                                 {item.img.length > 0 &&
                                                 <Image
                                                     resizeMode="contain"
-                                                    style={styles.listImage}
+                                                    style={styles.listImage }
                                                     source={{ uri: item.img }}
                                                 />}
                                                 <Body style={{ marginLeft: bodyLeftMargin, alignSelf: 'flex-start' }}>
@@ -221,11 +220,11 @@ export default class VendorList extends Component {
                                                         <Badge style={{ backgroundColor: config.colorPrimary, marginRight: 8}}>
                                                             <Text>{item.boothNumber}</Text>
                                                         </Badge>
-                                                        <Text style={ [{flex: 1 },styles.header, styles.cardH1] }>{item.name}</Text>
+                                                        <Text style={ [{flex: 3 },styles.header, styles.cardH1] }>{item.name}</Text>
                                                         {item.canOrder && 
                                                         <Image
-                                                            resizeMode="stretch"
-                                                            style={styles.icon}
+                                                            resizeMode="contain"
+                                                            style={[styles.icon]}
                                                             source={require('../../img/mobile-order-support-icon.png')}
                                                         />}
                                                     </View>

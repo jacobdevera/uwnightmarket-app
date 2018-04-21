@@ -104,21 +104,19 @@ export class OrderList extends Component {
                     renderItem={({ item }) => {
                     return (
                         <Card>
-                            {    
-                                !this.props.vendor &&
-                                <ListItem itemDivider style={[styles.rowSpaceBetween, { alignItems: 'flex-start' }]}>
-                                    <Text style={[styles.header, styles.cardH2, { marginTop: 8, marginLeft: 8 }]}>
-                                        Vendor: {item.vendorName}
-                                    </Text>
-                                    {(item.status === Status.NOT_READY) && 
-                                    <Button transparent
-                                        style={{ height: 32 }}
-                                        onPress={() => this.showActionSheet(item)}
-                                    >
-                                        <Icon style={{ fontSize: 32, marginLeft: 8, marginRight: 8 }} name='more' />
-                                    </Button>}
-                                </ListItem>
-                            }
+                            <ListItem itemDivider style={[styles.rowSpaceBetween, { alignItems: 'flex-start' }]}>
+                                {!this.props.vendor &&
+                                <Text style={[styles.header, styles.cardH2, { marginTop: 8, marginLeft: 8 }]}>
+                                    Vendor: {item.vendorName}
+                                </Text>}
+                                {((item.status === Status.NOT_READY) || this.props.vendor) && 
+                                <Button transparent
+                                    style={{ marginLeft: 'auto', height: 32 }}
+                                    onPress={() => this.showActionSheet(item)}
+                                >
+                                    <Icon style={{ fontSize: 32, marginLeft: 8, marginRight: 8 }} name='more' />
+                                </Button>}
+                            </ListItem>
                             <View style={styles.row}>
                                 <View
                                     style={{
@@ -178,11 +176,7 @@ export class OrderList extends Component {
                                 }}>
                                     <Text style={[styles.header, styles.cardH2]}>Status</Text>
                                     <View>
-                                        <Button 
-                                            onPress={() => {
-                                                if (this.props.vendor)
-                                                    this.showActionSheet(item);
-                                            }}
+                                        <Button
                                             small
                                             style={{
                                             width: 72 * scale,

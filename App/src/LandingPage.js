@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Alert, Image, View } from 'react-native';
 import { Button, Container, Content, Text, Spinner } from 'native-base';
 import firebase from 'firebase';
-import styles, { config } from './styles';
+import styles, { config, scale } from './styles';
 
 import { Views } from './App';
 
@@ -54,7 +54,7 @@ class LandingPage extends Component {
     render(){
         return (
             this.state.loading ? <Spinner style={{ marginTop: 'auto', marginBottom: 'auto' }} color={config.colorPrimary} /> :
-            <Content contentContainerStyle={styles.column}>
+            <Content contentContainerStyle={[styles.column, { paddingLeft: Math.max(32, 32 * scale), paddingRight: Math.max(32, 32 * scale) }]}>
                 <Image
                     style={[styles.logo, { marginTop: 88 }]}
                     resizeMode='contain'

@@ -34,7 +34,7 @@ export default class VendorFood extends Component {
                     name: category,
                     menu: []
                 }
-            }) : [{ name: 'Menu', menu: [] }];
+            }) : [{ name: '', menu: [] }];
 
         vendor.menu.forEach((item, index) => {
             order[index] = { 
@@ -165,36 +165,36 @@ export default class VendorFood extends Component {
         let subMenuLists = subMenus.map((subMenu) => {
             return (
                 <View key={subMenu.name}>
-                    {subMenu.name && <Text style={[styles.section, styles.bold]}>{subMenu.name}</Text>}
+                    {subMenu.name.length > 0 && <Text style={[styles.section, styles.bold]}>{subMenu.name}</Text>}
                     <FlatList
                         data={subMenu.menu}
                         extraData={this.state}
                         keyExtractor={(item) => item.name + item.trueIndex}
                         renderItem={({item, index}) => {
                             return (
-                                    <ListItem style={{ marginLeft: 0 }}>
+                                    <View>
+                                        <ListItem style={{ borderBottomWidth: 0, marginLeft: 0 }}>
+                                            <Body style={{ flex: 2 }}>
+                                                <Text>{item.name}</Text>
+                                                {descs[item.trueIndex] && <Text style={styles.menuDesc}>{descs[item.trueIndex]}</Text>}
+                                            </Body>
+                                            {item.price > 0 && <Text>${item.price}</Text>}
+                                        </ListItem>
                                         {vendor.canOrder &&
-                                        <Left style={{ flex: 1 }}>
-                                            <Button disabled={!item.available} onPress={() => { 
+                                        <ListItem style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', marginLeft: 0 }}>
+                                            <Button style={{ width: 48 }} disabled={!item.available} transparent onPress={() => { 
                                                 if (item.available) this.updateQuantity(item.trueIndex, false) 
                                             }}>
-                                                <Text>-</Text>
+                                                <Icon style={{ color: item.available ? config.colorPrimary : 'gray' }} name='remove' />
                                             </Button>
-                                            <Text style={[{ flex: 1, marginLeft: 0 }, styles.center]}>{order[item.trueIndex].quantity}</Text>
-                                            <Button disabled={!item.available} onPress={() => { 
+                                            <Text style={[{ width: 24, marginLeft: 0 }, styles.center]}>{order[item.trueIndex].quantity}</Text>
+                                            <Button style={{ width: 48 }} disabled={!item.available} transparent onPress={() => { 
                                                 if (item.available) this.updateQuantity(item.trueIndex, true) 
                                             }}>
-                                                <Text>+</Text>
+                                                <Icon style={{ color: item.available ? config.colorPrimary : 'gray' }} name='add' />
                                             </Button>
-                                        </Left>}
-                                        <Body style={{ flex: 2 }}>
-                                            <Text>{item.name}</Text>
-                                            {descs[item.trueIndex] && <Text style={styles.menuDesc}>{descs[item.trueIndex]}</Text>}
-                                        </Body>
-                                        <Right>
-                                            <Text>${item.price}</Text>
-                                        </Right>
-                                    </ListItem>
+                                        </ListItem>}
+                                    </View>
                             )
                         }}
                     />
@@ -217,16 +217,15 @@ export default class VendorFood extends Component {
                 {!loading ?
                     <View>
                         <View style={[styles.rowSpaceBetween, styles.section]}>
-                            {vendor.canOrder && <View style={{flex: 1}}><Text style={[{textAlign: 'center'}, styles.bold]}>Qty</Text></View>}
-                            <View style={{flex: 1}}><Text style={[{textAlign: 'center'}, styles.bold]}>Item</Text></View>
-                            <View style={{flex: 1}}><Text style={[{textAlign: 'right'}, styles.bold]}>Price</Text></View>
+                            <View style={{flex: 1,}}><Text style={[{textAlign: 'left'}, styles.bold, styles.h2]}>Menu</Text></View>
+                            <View style={{flex: 1}}><Text style={[{textAlign: 'right'}, styles.bold, styles.h2]}>Price</Text></View>
                         </View>
                         {vendor && subMenuLists}
                         {vendor.canOrder ? 
                         <View>
                             <Text style={[styles.center, styles.bold, styles.row]}>Total Due: ${totalPrice}</Text>
                             <View style={styles.column}>
-                                <Text style={{ color: this.isQueueLong() ? 'red' : null }}>
+                                <Text style={{ color: this.isQueueLong() ? 'red' : config.textDark }}>
                                     Current queue size: {vendor.currentQueueSize ? vendor.currentQueueSize : 0}
                                 </Text>
                                 {this.isQueueLong() && <Text style={{ color: 'red' }}>Your order may take a while to begin preparing.</Text>}

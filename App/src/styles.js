@@ -3,7 +3,8 @@ const { height, width } = Dimensions.get('window');
 export const scale = parseInt(width) / 414; // 414: iPhone 6 Plus width
 export const config = {
     colorPrimary: '#d94d5d',
-    colorDark: '#a21334'
+    colorDark: '#a21334',
+    textDark: '#2a2a2a'
 }
 
 export default styles = StyleSheet.create({
@@ -41,8 +42,8 @@ export default styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     listImage: {
-        height: 125 * scale,
-        width: 125 * scale
+        height: 96 * scale,
+        width: 96 * scale
     },
     column: {
         flex: 1,
