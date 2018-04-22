@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Alert, Image, View, Modal, StyleSheet, FlatList, Platform } from 'react-native';
+import { Alert, Image, View, Modal, StyleSheet, FlatList, Platform, PushNotificationIOS } from 'react-native';
 import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon, Left, Right, Thumbnail, List, ListItem, Toast, Spinner } from 'native-base';
 import firebase from 'firebase';
 import FCM, { FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType, 
     NotificationActionType, NotificationActionOption, NotificationCategoryOption } from 'react-native-fcm';
 import { NavigationActions } from 'react-navigation';
 
-import { Status, limits } from '../App';
+import { Status, limits, ErrorToken } from '../App';
 import { AppHeader } from '../components';
 import styles, { config, scale } from '../styles';
 
@@ -49,12 +49,12 @@ export default class VendorFood extends Component {
 
         let token;
         if (vendor.canOrder) {
-            console.log('wut')
             try {
                 let queueSnapshot = await firebase.database().ref(`/vendor-orders/${vendor.userId}/order_count`).once('value');
                 currentQueueSize = queueSnapshot.val();
                 vendor.currentQueueSize = currentQueueSize;
                 token = await FCM.getFCMToken();
+                console.log(token);
             } catch (e) { console.log(e);}
         }
 
@@ -113,43 +113,54 @@ export default class VendorFood extends Component {
         });
     }
 
-    submitOrder = () => {
-        let newOrderKey = firebase.database().ref().child('orders').push().key;
-        let userId = firebase.auth().currentUser.uid;
-        let filtered = this.state.order.filter((item) => item.quantity > 0);
-        
-        let orderData = {
-            vendorName: this.state.vendor.name,
-            vendorId: this.state.vendor.userId,
-            userId: userId,
-            userToken: this.state.token,
-            time: firebase.database.ServerValue.TIMESTAMP,
-            items: filtered,
-            status: Status.NOT_READY,
-            platform: Platform.OS
+    submitOrder = async () => {
+        try {
+            await FCM.requestPermissions();
+            if (this.state.token.length > 0) {
+                let newOrderKey = firebase.database().ref().child('orders').push().key;
+                let userId = firebase.auth().currentUser.uid;
+                let filtered = this.state.order.filter((item) => item.quantity > 0);
+                
+                let orderData = {
+                    vendorName: this.state.vendor.name,
+                    vendorId: this.state.vendor.userId,
+                    userId: userId,
+                    userToken: this.state.token,
+                    time: firebase.database.ServerValue.TIMESTAMP,
+                    items: filtered,
+                    status: Status.NOT_READY,
+                    platform: Platform.OS
+                }
+    
+                let updates = {};
+                updates['/orders/' + newOrderKey] = orderData;
+                updates['/user-orders/' + userId + '/' + newOrderKey] = Status.NOT_READY; 
+                updates['/vendor-orders/' + this.state.vendor.userId + '/orders/' + newOrderKey] = Status.NOT_READY;
+                
+                Alert.alert(
+                    'Are you sure?',
+                    `When your order is ready, you must go to the vendor's booth and be prepared to pay with cash. You will be unable to delete your order after two minutes.`,
+                    [
+                        {text: 'Cancel', style: 'cancel'},
+                        {text: 'Submit', onPress: () => firebase.database().ref().update(updates).then((response) => {
+                                Toast.show({ 
+                                    text: `Order submitted`,
+                                    position: 'bottom', 
+                                    duration: 5000
+                                })
+                                this.props.navigation.navigate({ routeName: 'MyOrders' });
+                            }
+                        )},
+                    ]
+                );
+            } else {
+                console.log(token);
+                ErrorToken();
+            }
+        } catch (e) {
+            console.log(e);
+            ErrorToken();
         }
-
-        let updates = {};
-        updates['/orders/' + newOrderKey] = orderData;
-        updates['/user-orders/' + userId + '/' + newOrderKey] = Status.NOT_READY; 
-        updates['/vendor-orders/' + this.state.vendor.userId + '/orders/' + newOrderKey] = Status.NOT_READY;
-        
-        Alert.alert(
-            'Are you sure?',
-            `When your order is ready, you must go to the vendor's booth and be prepared to pay with cash. You will be unable to delete your order after two minutes.`,
-            [
-                {text: 'Cancel', style: 'cancel'},
-                {text: 'Submit', onPress: () => firebase.database().ref().update(updates).then((response) => {
-                        Toast.show({ 
-                            text: `Order submitted`,
-                            position: 'bottom', 
-                            duration: 5000
-                        })
-                        this.props.navigation.navigate({ routeName: 'MyOrders' });
-                    }
-                )},
-            ]
-        );
     }
 
     isQueueLong = () => this.state.vendor.currentQueueSize >= limits.queue;

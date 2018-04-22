@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AsyncStorage, StatusBar, Platform } from 'react-native';
+import { Alert, StatusBar, Platform, Linking } from 'react-native';
 import { DrawerNavigator } from "react-navigation";
 import { Container, Drawer, StyleProvider, Root } from 'native-base';
 import getTheme from './native-base-theme/components';
@@ -40,6 +40,20 @@ export const limits = {
 
 export const filters = ['food', 'beverage', 'hot', 'cold', 'savory', 'sweet', 'spicy', 'available'];
 
+export const ErrorToken = () => {
+    Alert.alert(
+        'Please allow for notifications',
+        'This is needed for vendors to notify you when your order is ready.',
+        [
+            { text: 'OK', style: 'cancel' },
+            { text: 'Open Settings', onPress: () => { 
+                Linking.openURL('app-settings:').catch((err) => {
+                console.log(err);
+              });
+            }}
+        ]
+    );
+}
 registerKilledListener();
 
 export default class App extends Component {
@@ -72,7 +86,12 @@ export default class App extends Component {
             if (user) {
                 let newView = user.isAnonymous ? Views.ATTENDEE : Views.VENDOR;
                 if (user.isAnonymous) {
-                    await FCM.requestPermissions();
+                    try {
+                        await FCM.requestPermissions();
+                    } catch (e) {
+                        console.log(e);
+                        ErrorToken();
+                    }
                 }
                 this.setState({ view: newView, loggedIn: true });
             } else {

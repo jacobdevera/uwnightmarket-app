@@ -16,8 +16,12 @@ class LandingPage extends Component {
     }
 
     onAttendeeButtonPress() {
-        this.setState({ error: '', loading: true });
-        this.attendeeSignIn();
+        if (!firebase.auth().currentUser) {
+            this.setState({ error: '', loading: true });
+            this.attendeeSignIn();
+        } else {
+            this.props.setView(Views.ATTENDEE);
+        }
     }
 
     attendeeSignIn = () => {
