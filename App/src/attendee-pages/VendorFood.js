@@ -165,7 +165,7 @@ export default class VendorFood extends Component {
         let subMenuLists = subMenus.map((subMenu) => {
             return (
                 <View key={subMenu.name}>
-                    {subMenu.name.length > 0 && <Text style={[styles.section, styles.bold]}>{subMenu.name}</Text>}
+                    {(subMenu.name.length > 0 && subMenu.menu.length > 0) &&<Text style={[styles.section, styles.bold]}>{subMenu.name}</Text>}
                     <FlatList
                         data={subMenu.menu}
                         extraData={this.state}
