@@ -62,14 +62,15 @@ class VendorSalesSummary extends Component {
                 </AppHeader>
                 <Content contentContainerStyle={styles.paddedContainer}>
                     <View style={styles.section}>
-                        <View style={styles.rowSpaceBetween}>
-                            <View style={styles.column}>
-                                <Text style={{ alignSelf: 'flex-start' }}>Total Revenue: </Text>
-                                <Text style={[styles.section, { alignSelf: 'flex-start' }]}>Total Number of Orders Completed: </Text>
+                        <View style={styles.column}>
+                            <View style={styles.row}>
+                                <Text style={{ flex: 1 }}>Total Revenue: </Text>
+                                <Text style={[styles.bold, { flex: 1, textAlign: 'center' } ]}>${totalRevenue}</Text>
+                                
                             </View>
-                            <View style={[styles.column]}>
-                                <Text style={[styles.bold, { alignSelf: 'flex-end'}]}>${totalRevenue}</Text>
-                                <Text style={[styles.bold, styles.section, { alignSelf: 'flex-end'}]}>{Object.keys(orders).length}</Text>
+                            <View style={[styles.row]}>
+                                <Text style={[styles.section, { flex: 1 }]}>Total Number of Orders Completed: </Text>
+                                <Text style={[styles.bold, styles.section, { flex: 1, textAlign: 'center' }]}>{Object.keys(orders).length}</Text>
                             </View>
                         </View>
                         {Object.keys(soldItems).length > 0 &&
@@ -80,7 +81,7 @@ class VendorSalesSummary extends Component {
                                 <Text style={[styles.bold, { flex: 5 }]}>Revenue</Text>
                             </View>
                             <FlatList
-                                data={Object.keys(soldItems)}
+                                data={Object.keys(soldItems).sort((a, b) => soldItems[b].revenue - soldItems[a].revenue)}
                                 extraData={this.state}
                                 keyExtractor={ item => item }
                                 renderItem={({ item }) => {
