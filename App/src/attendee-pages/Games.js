@@ -56,12 +56,12 @@ const Games = (props) => {
                                                 style={styles.listImage}
                                                 source={data.img}
                                             />
+                                            <Body>
+                                                <Text style={ [styles.header, styles.cardH1] }>{data.name}</Text>
+                                                <Text style={ [styles.header, styles.cardH2] }>{data.price}</Text>
+                                                <Text>{data.desc}</Text>
+                                            </Body>
                                         </Left>
-                                        <Body>
-                                            <Text style={ [styles.header, styles.cardH1] }>{data.name}</Text>
-                                            <Text style={ [styles.header, styles.cardH2] }>{data.price}</Text>
-                                            <Text>{data.desc}</Text>
-                                        </Body>
                                     </CardItem>
                                 </Card>
                             )

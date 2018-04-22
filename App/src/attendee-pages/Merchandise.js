@@ -30,10 +30,10 @@ const Merchandise = (props) => {
     let listItems = (items) => { return items.map((data, index) => {
         return (
             <Card key={index}>
-                <CardItem style={{ flex: 1, justifyContent: 'center' }}>
-                    <Thumbnail
-                        square
-                        style={styles.listImage}
+                <CardItem>
+                    <Image
+                        resizeMode="contain"
+                        style={styles.listImage }
                         source={data.img}
                     />
                 </CardItem>
