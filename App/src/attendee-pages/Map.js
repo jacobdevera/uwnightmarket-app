@@ -8,7 +8,7 @@ import MapScreen from "./MapScreen";
 
 const Map = (props) => {
     goToVendor = (vendor) => {
-        props.navigation.navigate('VendorFood', { vendor: vendor});
+        props.navigation.navigate('VendorView', { vendor: vendor});
     }
 
     return (
