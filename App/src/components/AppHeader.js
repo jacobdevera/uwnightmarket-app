@@ -1,10 +1,16 @@
 import React from 'react';
-
+import { Platform, StatusBar } from 'react-native';
 import { Header, Left, Button, Icon, Right, Body, Title } from 'native-base';
 
+import { config } from '../styles';
 const AppHeader = (props) => {
+    const headerTextColor = Platform.OS === 'ios' ? '#000' : '#fff';
+    const barStyle = Platform.OS === 'ios' ? 'dark-content' : 'light-content';
+    // hack to fix broken android header rendering on native base 
+    const marginLeft = Platform.OS === 'android' ? 24 : 0;
     return (
-        <Header>
+        <Header androidStatusBarColor={config.colorDark}>
+            <StatusBar barStyle={barStyle}/>
             {props.left ? props.left :
             <Left>
                 <Button transparent
@@ -12,15 +18,11 @@ const AppHeader = (props) => {
                 >
                     <Icon name='menu' />
                 </Button>
-            </Left>
-            }
-            <Body>
-                <Title>{props.children}</Title>
+            </Left>}
+            <Body style={{ marginLeft: marginLeft }}>
+                <Title style={{ color: headerTextColor }}>{props.children}</Title>
             </Body>
-
-            <Right>
-                {props.right}
-            </Right>
+            <Right>{props.right}</Right>
         </Header>
     );
 }

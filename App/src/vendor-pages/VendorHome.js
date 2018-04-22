@@ -28,7 +28,7 @@ class VendorHome extends Component {
                 </AppHeader>
                 <Content contentContainerStyle={styles.paddedContainer}>
                     {vendor &&
-                    <View>
+                    <View style={styles.section}>
                         <Image
                             style={styles.logo}
                             resizeMode="contain"

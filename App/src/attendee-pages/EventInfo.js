@@ -13,7 +13,7 @@ const EventInfo = (props) => {
             </AppHeader>
             <Content contentContainerStyle={styles.paddedContainer}>
                 <Image
-                    style={[styles.logo, styles.fullWidth]}
+                    style={[styles.logo, styles.fullWidth, styles.section]}
                     resizeMode='contain'
                     source={require('../../img/NMlogoblackfont.png')}
                 />

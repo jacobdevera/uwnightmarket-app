@@ -31,9 +31,9 @@ const Merchandise = (props) => {
         return (
             <Card key={index}>
                 <CardItem>
-                    <Thumbnail
-                        square
-                        style={styles.listImage}
+                    <Image
+                        resizeMode="contain"
+                        style={styles.listImage }
                         source={data.img}
                     />
                 </CardItem>

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {Image, View, FlatList} from 'react-native';
+import {Alert, Image, View, FlatList} from 'react-native';
 import {
+    ActionSheet,
     Button,
     Card,
     CardItem,
@@ -13,29 +14,25 @@ import {
     List,
     ListItem,
     Badge,
+    Icon
 } from 'native-base';
-import styles, {config} from '../styles';
+import styles, {config, scale} from '../styles';
 import StatusPicker from './StatusPicker';
 import {Status} from '../App';
 import {StackNavigator} from "react-navigation";
-import ActionSheet from 'react-native-actionsheet';
 import firebase from 'firebase';
 
 export class OrderList extends Component {
     constructor(props) {
         super(props);
-        this.state = { selectedItem : null }
     }
 
     getTotalPrice = (order) => {
-        return order
-            .items
-            .reduce((acc, curr) => {
-                return {
-                    price: (acc.price) + (curr.price * curr.quantity)
-                }
-            })
-            .price;
+        let totalPrice = 0;
+        order.items.forEach((item) => {
+            totalPrice += item.quantity * item.price;
+        });
+        return totalPrice;
     }
 
     getStatusButtonColor = (order) => {
@@ -48,18 +45,45 @@ export class OrderList extends Component {
 
             case Status.PICKED_UP:
                 return 'blue';
+            
+            case Status.CANCELED:
+                return 'black';
 
             default:
                 return config.colorPrimary;
         }
     }
 
-    showActionSheet = () => {
-        this.ActionSheet.show();
+    showActionSheet = (item) => {
+        let { title, options, cancelIndex, destructiveIndex, handleActionSelect } = this.props.asConfig;
+        ActionSheet.show(
+            {
+                options: options,
+                cancelButtonIndex: cancelIndex,
+                destructiveButtonIndex: destructiveIndex,
+                title: title
+            },
+            buttonIndex => {
+                console.log("item:   " +item);
+                if (buttonIndex === destructiveIndex) {
+                    Alert.alert(
+                        'Cancel this order?',
+                        'The attendee will be notified.',
+                        [
+                            { text: 'Cancel', style: 'cancel' },
+                            { text: 'Delete', style: 'destructive', onPress: () => handleActionSelect(buttonIndex, item) }
+                        ]
+                    );
+                } else {
+                    handleActionSelect(buttonIndex, item);
+                }
+            }
+        );
     }
+    
 
     hash = (input) => {
-        let count = 4;
+        let count = 3;
         let res = "";
         let index = 6;
         let alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -84,12 +108,19 @@ export class OrderList extends Component {
                     renderItem={({ item }) => {
                     return (
                         <Card>
-                            {
-                                this.props.vendor && 
-                                <Text style={[styles.row, styles.header, styles.cardH2]}>
+                            <ListItem itemDivider style={[styles.rowSpaceBetween, { alignItems: 'flex-start' }]}>
+                                {!this.props.vendor &&
+                                <Text style={[styles.header, styles.cardH2, { marginTop: 8, marginLeft: 8 }]}>
                                     Vendor: {item.vendorName}
-                                </Text>
-                            }
+                                </Text>}
+                                {((item.status === Status.NOT_READY) || this.props.vendor) && 
+                                <Button transparent
+                                    style={{ marginLeft: 'auto', height: 32 }}
+                                    onPress={() => this.showActionSheet(item)}
+                                >
+                                    <Icon style={{ fontSize: 32, marginLeft: 8, marginRight: 8 }} name='more' />
+                                </Button>}
+                            </ListItem>
                             <View style={styles.row}>
                                 <View
                                     style={{
@@ -98,16 +129,14 @@ export class OrderList extends Component {
                                     <Text style={[styles.center, styles.header, styles.cardH2]}>Order #</Text>
                                     <Badge
                                         width={64}
-                                        style={{
-                                        backgroundColor: config.colorPrimary
-                                    }}>
+                                        style={{ 
+                                            alignSelf: 'center',
+                                            backgroundColor: config.colorPrimary 
+                                        }}>
                                         <Text
                                           style={{
-                                            // fontSize: 12,
-                                            // paddingLeft: 4,
                                             textAlign:'center'
-                                        }}
-                                        >{this.hash(item.id)}</Text>
+                                        }}>{this.hash(item.id)}</Text>
                                     </Badge>
                                 </View>
                                 <View
@@ -124,7 +153,7 @@ export class OrderList extends Component {
                                                 style={{
                                                 fontSize: 12,
                                                 paddingLeft: 4,
-                                                textAlign:'center'
+                                                textAlign: 'center'
                                             }}>{item.quantity} {item.name}</Text>
                                         )
                                     }}/>
@@ -151,30 +180,22 @@ export class OrderList extends Component {
                                 }}>
                                     <Text style={[styles.header, styles.cardH2]}>Status</Text>
                                     <View>
-                                        <Button 
-                                            onPress={() => {
-                                                if (this.props.vendor) {
-                                                    this.showActionSheet();
-                                                    this.setState({selectedItem: item});
-                                                }
-                                            }}
+                                        <Button
                                             small
-      
                                             style={{
-                                            width: 70,
+                                            width: 72 * scale,
                                             justifyContent: 'center',
                                             alignItems: 'center',
                                             backgroundColor: this.getStatusButtonColor(item)
                                         }}>
                                             <Text
                                                 style={[
+                                                styles.bold,
                                                 styles.center, {
-                                                    paddingLeft:0,
-                                                    paddingRight:0,
-                                                    fontSize: 10,
-                                                    fontStyle:'italic',
-                                                    fontWeight:'bold',
-                                                    lineHeight: 12
+                                                    paddingLeft: 0,
+                                                    paddingRight: 0,
+                                                    fontSize: Math.max(10, 10 * scale),
+                                                    lineHeight: Math.max(12, 12 * scale)
                                                 }
                                             ]}>{item.status}</Text>
                                         </Button>
@@ -183,16 +204,6 @@ export class OrderList extends Component {
                             </View>
                         </Card>
                     )
-                }}/>
-                <ActionSheet
-                    ref={o => this.ActionSheet = o}
-                    title={'Which one do you like ?'}
-                    options={['Not Ready', 'Ready', 'Picked Up', 'Cancel']}
-                    cancelButtonIndex={3}
-                    destructiveButtonIndex={3}
-                    onPress={(index) => {
-                    var handleToUpdate = this.props.handleStatusChange;
-                    handleToUpdate(index, this.state.selectedItem);
                 }}/>
             </View>
         );

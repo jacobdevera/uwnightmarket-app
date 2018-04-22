@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import { Image, View, Modal, StyleSheet, FlatList } from 'react-native';
-import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon, Left, Right, Thumbnail, List, ListItem, Radio, Badge } from 'native-base';
+import { Image, View, Modal, StyleSheet, FlatList, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon, Left, Right, List, ListItem, Radio, Badge, Spinner } from 'native-base';
 import { StackNavigator } from "react-navigation";
 import firebase from 'firebase'
 
 import { filters } from '../App';
 import { AppHeader, StackHeader } from '../components';
-import { Spinner } from '../components/common';
-import styles, { config } from '../styles';
+import styles, { config, scale } from '../styles';
 
 const modalStyles = StyleSheet.create({
     modalContainer: {
@@ -16,8 +15,10 @@ const modalStyles = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,0.3)'
     },
     innerContainer: {
-        margin: 16,
-        backgroundColor: 'white'
+        flex: 1,
+        margin: Math.max(32, 32 * scale),
+        backgroundColor: 'white',
+        borderRadius: 8
     },
 });
 
@@ -31,7 +32,8 @@ export default class VendorList extends Component {
                 return { name: filter, active: false }
             }),
             modalVisible: false,
-            sort: 'number'
+            sort: 'name',
+            canOrderFilter: false
         }
     }
     
@@ -42,6 +44,7 @@ export default class VendorList extends Component {
             snapshot.forEach((vendorSnapshot) => {
                 vendorList.push(vendorSnapshot.val());
             });
+            vendorList = vendorList.sort(this.sortByName);
             this.setState({ vendors: vendorList, filteredVendors: vendorList });
         });
     }
@@ -52,48 +55,50 @@ export default class VendorList extends Component {
     toggleFilter = (index) => {
         let newFilters = this.state.filters.slice();
         newFilters[index].active = !newFilters[index].active;
+        let newVendors = this.filterVendors(newFilters.filter(filter => filter.active));
 
-        let newVendors = this.state.vendors.slice();
-        let activeFilters = newFilters.filter((filter) => filter.active);
-
-        if (activeFilters.length > 0) {
-            newVendors = newVendors.filter((vendor) => {
-                let satisfiesFilters = false;
-                vendor.menu.forEach((item) => {
-                    activeFilters.forEach((filter) => {
-                        if (item.traits.includes(filter.name)) {
-                            satisfiesFilters = true;
-                        }
-                    });
-                });
-                return satisfiesFilters;
-            });
-        }
+        newVendors = this.state.canOrderFilter ? newVendors.filter(vendor => vendor.canOrder) : newVendors;
 
         this.setState({ filteredVendors: newVendors, filters: newFilters });
     }
+
+    filterVendors = (filters) => {
+        let newVendors = JSON.parse(JSON.stringify(this.state.vendors));
+        
+        if (filters.length > 0) {
+            newVendors = newVendors.filter((vendor) => {
+                filters.forEach((filter) => {
+                    vendor.menu = vendor.menu.filter((item) => {
+                        return item.traits.includes(filter.name)
+                    })
+                })
+                return vendor.menu.length > 0;
+            });
+        }
+        return newVendors;
+    }
+
+    toggleCanOrderFilter = () => {
+        let canOrderFilter = !this.state.canOrderFilter;
+        let newVendors = this.filterVendors(this.state.filters.filter(filter => filter.active));
+        newVendors = canOrderFilter ? newVendors.filter(vendor => vendor.canOrder) : newVendors;
+
+        this.setState({ canOrderFilter: canOrderFilter, filteredVendors: newVendors });
+    }
+
+    sortByBoothNumber = (a, b) => a.boothNumber - b.boothNumber;
+
+    sortByName = (a, b) => a.name.localeCompare(b.name);
 
     sort = (type) => {
         let sortToPerform;
         switch (type) {
             case 'number': 
-            sortToPerform = (a, b) => {
-                return a.boothNumber - b.boothNumber;
-            }
+            sortToPerform = this.sortByBoothNumber;
             break;
 
             case 'name':
-            sortToPerform = (a, b) => {
-                let nameA = a.name.toLowerCase();
-                let nameB = b.name.toLowerCase();
-                if (nameA < nameB) {
-                    return -1;
-                }
-                if (nameA > nameB) {
-                    return 1;
-                }
-                return 0;
-            }
+            sortToPerform = this.sortByName;
             break;
         }
         let sortedVendors = this.state.filteredVendors.sort(sortToPerform);
@@ -101,6 +106,7 @@ export default class VendorList extends Component {
     }
 
     render() {
+        let { vendors, filteredVendors, sort, filters, canOrderFilter, modalVisible } = this.state;
         return (
             <Container>
                 <AppHeader 
@@ -109,101 +115,137 @@ export default class VendorList extends Component {
                 >
                     Vendors / Food
                 </AppHeader>
-                
                 <Content style={styles.paddedContainer}>
                     <Modal
                         transparent={true}
-                        visible={this.state.modalVisible}
+                        visible={modalVisible}
                         animationType={'fade'}
                         onRequestClose={() => this.modalClose()}
                     >
-                        <View style={modalStyles.modalContainer}>
-                            <View style={modalStyles.innerContainer}>
-                                <ListItem itemDivider>
-                                    <Text style={[styles.bold, styles.cardH1]}>Sort</Text>
-                                </ListItem>
-                                    <ListItem onPress={() => this.sort('number')}>
-                                        <Text>Booth Number</Text>
-                                        <Right>
-                                        <Radio selected={this.state.sort === 'number'} />
-                                        </Right>
+                        {/*<View style={modalStyles.modalContainer}>*/}
+                        <TouchableOpacity 
+                            style={modalStyles.modalContainer} 
+                            activeOpacity={1} 
+                            onPressOut={() => {this.modalClose()}}
+                        >
+                            <TouchableWithoutFeedback>
+                                <View style={modalStyles.innerContainer}>
+                                    <ListItem style={{ borderBottomWidth: 0 }}>
+                                        <Text style={[styles.bold]}>Sort</Text>
                                     </ListItem>
-                                    <ListItem onPress={() => this.sort('name')}>
-                                        <Text>Name</Text>
-                                        <Right>
-                                        <Radio selected={this.state.sort === 'name'} />
-                                        </Right>
-                                    </ListItem>
-                                <ListItem itemDivider>
-                                    <Text style={[styles.bold, styles.cardH1]}>Filter</Text>
-                                </ListItem>
-                                <FlatList
-                                    data={this.state.filters}
-                                    extraData={this.state}
-                                    keyExtractor={ item => item.name }
-                                    renderItem={({ item, index }) => {
-                                        return (
-                                            <ListItem>
+                                    <View style={{ flex: 1 }}>
+                                        <ListItem style={{ justifyContent: 'space-between' }} 
+                                            onPress={() => this.sort('number')}
+                                        >
+                                            <Text>Booth Number</Text>
+                                            <Right>
+                                                <Radio selected={this.state.sort === 'number'} />
+                                            </Right>
+                                        </ListItem>
+                                        <ListItem style={{ justifyContent: 'space-between' }} 
+                                            onPress={() => this.sort('name')}
+                                        >
+                                            <Text>Name</Text>
+                                            <Right>
+                                                <Radio selected={this.state.sort === 'name'} />
+                                            </Right>
+                                        </ListItem>
+                                        <ListItem style={{ borderBottomWidth: 0 }}>
+                                            <Text style={[styles.bold]}>Filter</Text>
+                                        </ListItem>
+                                        <ScrollView contentContainerStyle={{ flexGrow: 0 }}>
+                                            <FlatList
+                                                scrollEnabled={false}
+                                                data={filters}
+                                                extraData={this.state}
+                                                keyExtractor={ item => item.name }
+                                                renderItem={({ item, index }) => {
+                                                    return (
+                                                        <ListItem button onPress={() => this.toggleFilter(index)}>
+                                                            <CheckBox 
+                                                                color={'#d94d5d'}
+                                                                checked={item.active} 
+                                                                onPress={() => this.toggleFilter(index)}
+                                                            />
+                                                            <Body>
+                                                                <Text>{item.name}</Text>
+                                                            </Body>
+                                                        </ListItem>
+                                                    );
+                                                }}
+                                            />
+                                            <ListItem button onPress={() => this.toggleCanOrderFilter()}>
                                                 <CheckBox 
                                                     color={'#d94d5d'}
-                                                    checked={item.active} 
-                                                    onPress={() => this.toggleFilter(index)} />
+                                                    checked={canOrderFilter} 
+                                                    onPress={() => this.toggleCanOrderFilter()}
+                                                />
                                                 <Body>
-                                                    <Text>{item.name}</Text>
+                                                    <Text>supports mobile ordering</Text>
                                                 </Body>
                                             </ListItem>
-                                        );
-                                    }}
-                                />
-                                <View style={styles.row}>
-                                    <Button
-                                        onPress={() => this.modalClose()}
-                                    >
-                                        <Text>Close</Text>
-                                    </Button>
+                                        </ScrollView>
+                                        <View style={styles.row}>
+                                            <Button
+                                                style={{ alignSelf: 'flex-end' }}
+                                                onPress={() => this.modalClose()}
+                                            >
+                                                <Text>Close</Text>
+                                            </Button>
+                                        </View>
+                                    </View>
                                 </View>
-                            </View>
-                        </View>
+                            </TouchableWithoutFeedback>
+                        </TouchableOpacity>
+                        {/*</View>*/}
                     </Modal>
-                    {this.state.vendors ?
+                    {vendors && vendors.length > 0 ?
                         <FlatList
-                            data={this.state.filteredVendors}
+                            style={[styles.section, styles.last]}
+                            data={filteredVendors}
                             extraData={this.state}
                             keyExtractor={ item => item.name }
                             renderItem={({ item }) => {
-                                let foodNames = [];
-                                item.menu.forEach((food) => foodNames.push(food.name));
+                                let foodNames = item.menu.slice(0, 3).map((item, index) => item.name + (index >= 2 ? '...': ''));
+                                let bodyLeftMargin = item.img.length > 0 ? 8 : 0;
                                 return (
                                     <Card>
-                                        <CardItem 
+                                        <CardItem style={{ paddingLeft: 8, paddingRight: 8 }}
                                             button onPress={() => { this.props.navigation.navigate('VendorFood', {
                                                     vendor: item
                                                 }); 
                                             }}
                                         >
                                             <Left>
-                                                <Thumbnail
-                                                    square
-                                                    style={styles.listImage}
+                                                {item.img.length > 0 &&
+                                                <Image
+                                                    resizeMode="contain"
+                                                    style={styles.listImage }
                                                     source={{ uri: item.img }}
-                                                />
+                                                />}
+                                                <Body style={{ marginLeft: bodyLeftMargin, alignSelf: 'flex-start' }}>
+                                                    <View style={{ flexDirection:'row' }}>
+                                                        <Badge style={{ backgroundColor: config.colorPrimary, marginRight: 8}}>
+                                                            <Text>{item.boothNumber}</Text>
+                                                        </Badge>
+                                                        <Text style={ [{flex: 3 },styles.header, styles.cardH1] }>{item.name}</Text>
+                                                        {item.canOrder && 
+                                                        <Image
+                                                            resizeMode="contain"
+                                                            style={[styles.icon]}
+                                                            source={require('../../img/mobile-order-support-icon.png')}
+                                                        />}
+                                                    </View>
+                                                    {item.desc.length > 0 && <Text style={ [styles.desc, styles.smallSection] }>{item.desc}</Text>}
+                                                    <Text style={ [styles.bold, styles.smallSection] }>Menu:</Text><Text style={styles.menuItem}>{foodNames.join(', ')}</Text>
+                                                </Body>
                                             </Left>
-                                            <Body>
-                                                <View style={styles.rowSmall}>
-                                                    <Badge style={{ backgroundColor: config.colorPrimary, marginRight: 8}}>
-                                                        <Text>{item.boothNumber}</Text>
-                                                    </Badge>
-                                                    <Text style={ [styles.header, styles.cardH1] }>{item.name}</Text>
-                                                </View>
-                                                <Text style={ [styles.desc] }>{item.desc}</Text>
-                                                <Text style={styles.bold}>Menu: <Text style={styles.menuItem}>{foodNames.join(', ')}</Text></Text>
-                                            </Body>
                                         </CardItem>
                                     </Card>
                                 )
                             }}
                         />
-                        : <Spinner size='small' />}
+                        : <Spinner color={config.colorPrimary} />}
                 </Content>
             </Container>
         );

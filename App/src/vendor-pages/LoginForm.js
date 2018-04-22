@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { Animated, View } from 'react-native';
 import firebase from 'firebase';
 
-import { Container, Content, Left, Icon, Button, Text } from 'native-base';
-import { Card, CardSection, Input, Spinner } from '../components/common';
+import { Container, Content, Left, Icon, Button, Text, Spinner } from 'native-base';
+import { Card, CardSection, Input } from '../components/common';
 import { AppHeader } from '../components';
 import { Views } from '../App';
-import styles from '../styles';
+import styles, { config } from '../styles';
 
 class LoginForm extends Component {
   constructor(props) {
@@ -16,17 +16,11 @@ class LoginForm extends Component {
 
   onButtonPress = () => {
     const { email, password } = this.state;
-
     this.setState({ error: '', loading: true });
 
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then()//this.onLoginSuccess.bind(this))
-      .catch(() => {
-        firebase.auth().createUserWithEmailAndPassword(email, password)
-          .then((user) => this.props.addUserToDatabase(user))
-          .catch(this.onLoginFail.bind(this));
-        }
-      );
+      .catch(this.onLoginFail.bind(this));
   }
 
   onLoginFail() {
@@ -44,7 +38,7 @@ class LoginForm extends Component {
 
   renderButton() {
     if (this.state.loading) {
-      return <Spinner size="small" />;
+      return <Spinner color={config.colorPrimary} />;
     }
 
     return (
@@ -58,46 +52,46 @@ class LoginForm extends Component {
 
   render() {
     return (
-      <Container>
-        <AppHeader 
-          left={<Left>
-              <Button transparent
-                onPress={() => this.props.setView(Views.INITIAL)}
-              >
-                <Icon name='arrow-back' />
-              </Button>
-          </Left>}
-        > 
-          Log In
-        </AppHeader>
-        <Content>
-          <Card>
-            <CardSection>
-              <Input
-                placeholder="user@gmail.com"
-                label="Email"
-                value={this.state.email}
-                autoCapitalize='none'
-                onChangeText={email => this.setState({ email })}
-              />
-            </CardSection>
+        <Container>
+          <AppHeader 
+            left={<Left>
+                <Button transparent
+                  onPress={() => this.props.setView(Views.INITIAL)}
+                >
+                  <Icon name='arrow-back' />
+                </Button>
+            </Left>}
+          > 
+            Log In
+          </AppHeader>
+          <Content>
+            <Card>
+              <CardSection>
+                <Input
+                  placeholder="user@gmail.com"
+                  label="Email"
+                  value={this.state.email}
+                  autoCapitalize='none'
+                  onChangeText={email => this.setState({ email })}
+                />
+              </CardSection>
 
-            <CardSection>
-              <Input
-                secureTextEntry
-                placeholder="password"
-                label="Password"
-                value={this.state.password}
-                onChangeText={password => this.setState({ password })}
-              />
-            </CardSection>
-          </Card>
-          <Text style={styles.errorTextStyle}>
-              {this.state.error}
-          </Text>
-          {this.renderButton()}
-        </Content>
-      </Container>
+              <CardSection>
+                <Input
+                  secureTextEntry
+                  placeholder="password"
+                  label="Password"
+                  value={this.state.password}
+                  onChangeText={password => this.setState({ password })}
+                />
+              </CardSection>
+            </Card>
+            <Text style={styles.errorTextStyle}>
+                {this.state.error}
+            </Text>
+            {this.renderButton()}
+          </Content>
+        </Container>
     );
   }
 }

@@ -1,29 +1,38 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 
+const Status = {
+    READY: "READY",
+    NOT_READY: "NOT READY",
+    PICKED_UP: "PICKED UP"
+}
+
 admin.initializeApp(functions.config().firebase);
 
-// get attendee-specific orders using their token to get their id
-exports.getOrders = functions.https.onRequest((req, res) => {
-    let ordersRef = admin.database().ref('/orders');
-    const idToken = req.get('Authorization').split('Bearer ')[1];
-
-    return admin.auth().verifyIdToken(idToken).then((decodedToken) => {
-        let uid = decodedToken.uid;
-        return ordersRef.once('value', (snapshot) => {
-            let orders = [];
-            snapshot.forEach((vendorSnapshot) => {
-                vendorSnapshot.forEach((orderSnapshot) => {
-                    let order = orderSnapshot.val();
-                    if (order.userId === uid) {
-                        orders.push(order);
-                    }
-                });
-            });
-            return res.status(200).send(orders);
-        });
-        }).catch((error) => {
-            console.log(error);
-        }
-    );
+exports.updateNumActiveOrders = functions.database.ref('/vendor-orders/{vendorId}/orders/{orderId}').onWrite(
+    event => {
+        let whichData = event.data.previous.exists() ? event.data.previous : event.data;
+        let ref = whichData.ref.parent.parent.child('order_count');
+        console.log(event.data.previous.val());
+        console.log(event.data.val());
+        return ref.once('value').then((snap) => {
+            let orderCount = snap.val();
+            console.log(snap.val());
+            orderCount = orderCount ? orderCount : 0;
+            if (event.data.previous.exists() && event.data.exists()) { // already existing order
+                console.log('update')
+                if (event.data.previous.val() === Status.NOT_READY && event.data.val() !== Status.NOT_READY) {
+                    return ref.set(orderCount - 1);
+                } else if (event.data.previous.val() !== Status.NOT_READY && event.data.val() === Status.NOT_READY) {
+                    return ref.set(orderCount + 1);
+                }
+            } else if (event.data.previous.exists() && !event.data.exists()) { // delete order
+                console.log('delete')
+                if (event.data.previous.val() === Status.NOT_READY)
+                    return ref.set(orderCount - 1);
+            } else {
+                console.log('new')
+                return ref.set(orderCount + 1);
+            }
+    });
 })

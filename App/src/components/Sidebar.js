@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { View, Linking } from 'react-native';
+import { Alert, View, Linking } from 'react-native';
 import { Content, List, ListItem, Text, Icon, Toast } from 'native-base';
-import ActionSheet from 'react-native-actionsheet';
+import { NavigationActions } from 'react-navigation';
 import styles from '../styles';
 
 import firebase from 'firebase';
@@ -65,7 +65,7 @@ class Sidebar extends Component {
                         promises.push(firebase.database().ref(`/orders/${key}`).once('value').then((orderSnapshot) => {
                             let order = orderSnapshot.val();
                             updates[`/user-orders/${order.userId}/${key}`] = null;
-                            updates[`/vendor-orders/${order.vendorId}/${key}`] = null;
+                            updates[`/vendor-orders/${order.vendorId}/orders/${key}`] = null;
                             updates[`/orders/${key}`] = null;
                         }))
                     })
@@ -99,36 +99,37 @@ class Sidebar extends Component {
                     renderRow={(data, index) => {
                         return (
                             <ListItem key={index} noBorder button onPress={() => {
-                                this.props.navigation.navigate(data.route, data.props);
+                                this.props.navigation.navigate({ routeName: data.route, params: data.props });
                                 this.props.navigation.setParams(data.props);
+                                if (data.route === 'VendorNavigator')
+                                    this.props.navigation.popToTop();
                             }}>
-                                <Text style={styles.light}>{data.title}</Text>
+                                <Text style={[styles.light, styles.bold]}>{data.title}</Text>
                             </ListItem>
                         );
                     }}
                 />
                 <ListItem key={this.state.routes.length} noBorder button onPress={() => {
                     if (firebase.auth().currentUser.isAnonymous)
-                        this.ActionSheet.show();
+                        Alert.alert(
+                            'Are you sure you want to sign out?',
+                            'Any existing orders will be deleted.',
+                            [
+                                { text: 'Cancel', style: 'cancel' },
+                                { text: 'Sign Out', onPress: () => this.handleSignOut(0) },
+                            ]
+                        );
                     else
                         this.handleSignOut(0);
                     }}     
                 >
-                    <Text style={styles.light}>Log Out</Text>
+                    <Text style={[styles.light, styles.bold]}>Log Out</Text>
                 </ListItem>
                 <View style={styles.row}>
                     <Icon name='logo-facebook' onPress={ ()=>{ Linking.openURL('https://www.facebook.com/TheUWNightMarket')}} style={styles.iconWhite}/>
                     <Icon name='logo-instagram' onPress={ ()=>{ Linking.openURL('https://www.instagram.com/uwnightmarket/')} } style={styles.iconWhite}/>
                     <Icon name='logo-twitter' onPress={ ()=>{ Linking.openURL('https://twitter.com/uwnightmarket')} } style={styles.iconWhite}/>
                 </View>
-                <ActionSheet
-                    style={{ textAlign: 'center' }}
-                    ref={o => this.ActionSheet = o}
-                    title={'Any existing orders will be deleted.'}
-                    options={['Sign Out', 'Cancel']}
-                    cancelButtonIndex={1}
-                    destructiveButtonIndex={0}
-                    onPress={(index) => this.handleSignOut(index) }/>
             </Content>
         );
     }

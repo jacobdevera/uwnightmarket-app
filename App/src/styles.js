@@ -1,20 +1,28 @@
-import { StyleSheet } from "react-native";
-
+import { StyleSheet, Dimensions } from "react-native";
+const { height, width } = Dimensions.get('window');
+export const scale = parseInt(width) / 414; // 414: iPhone 6 Plus width
 export const config = {
-    colorPrimary: '#d94d5d'
+    colorPrimary: '#d94d5d',
+    colorDark: '#a21334',
+    textDark: '#2a2a2a'
 }
 
 export default styles = StyleSheet.create({
     errorTextStyle: {
+        marginTop: 8,
         fontSize: 20,
         alignSelf: 'center',
         color: 'red'
     },
+    icon: {
+        height: 24,
+        width: 16
+    },
     logo: {
-        height: 150
+        height: 150 * scale
     },
     logoSmall: {
-        height: 75
+        height: 75 * scale
     },
     sideBar: {
         paddingTop: 20,
@@ -23,21 +31,26 @@ export default styles = StyleSheet.create({
     light: {
         color: '#fff'
     },
+    lightGrey: {
+        color: '#666666'
+    },
     paddedContainer: {
-        paddingLeft: 8,
-        paddingRight: 8,
+        paddingLeft: Math.max(16, 16 * scale),
+        paddingRight: Math.max(16, 16 * scale),
+        paddingBottom: Math.max(16, 16 * scale),
+        flexGrow: 1,
         backgroundColor: 'white'
     },
     listImage: {
-        height: 125,
-        width: 125
+        height: 96 * scale,
+        width: 96 * scale
     },
     column: {
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'space-around',
         alignItems: 'center',
-        padding: 8
+        padding: Math.max(16, 16 * scale)
     },
     columnSmall: {
         flex: 1,
@@ -63,19 +76,22 @@ export default styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center'
     },
+    menuDesc: {
+        color: 'gray'
+    },
     desc: {
-        fontStyle: 'italic',
-        paddingBottom: 8
+        fontFamily: 'Montserrat-Italic',
+        fontSize: 14
     },
     menuItem: {
-        fontWeight: 'normal',
-        fontStyle: 'italic'
+        fontFamily: 'Montserrat-Italic',
+        fontSize: 14
     },
     bold: {
-        fontWeight: 'bold'
+        fontFamily: 'Montserrat-Bold'
     },
     header: {
-        fontWeight: 'bold',
+        fontFamily: 'Montserrat-Bold',
         paddingBottom: 4
     },
     cardH1: {
@@ -103,6 +119,12 @@ export default styles = StyleSheet.create({
         width: '100%'
     },
     section: {
-        marginTop: 8
+        marginTop: Math.max(16, 16 * scale)
+    },
+    smallSection: {
+        marginTop: Math.max(8, 8 * scale)
+    },
+    last: {
+        paddingBottom: Math.max(16, 16 * scale)
     }
 });
