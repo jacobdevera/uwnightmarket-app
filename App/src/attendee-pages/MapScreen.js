@@ -11,10 +11,10 @@ import {
   Animated
 } from "react-native";
 
+import { Icon } from 'native-base';
+
 import MapView ,{ Callout, AnimatedRegion, Marker  } from "react-native-maps";
 import firebase from 'firebase';
-
-
 
 const { width, height } = Dimensions.get("window");
 const scale = parseInt(width) / 375; // 375 is default iphone 6 width
@@ -25,14 +25,14 @@ const CARD_WIDTH = CARD_HEIGHT - 50;
 export default class MapScreen extends Component {
 
     constructor(props){
-        super();
-        this.centerMarker = this.centerMarker.bind(this);
-        this.onDragEnd = this.onDragEnd.bind(this);
-      
-        this.intervalLen = CARD_WIDTH * scale;
-        this.intervalDiff = 21 * scale
-        this.markers = [];
-      }
+      super(props);
+      this.centerMarker = this.centerMarker.bind(this);
+      this.onDragEnd = this.onDragEnd.bind(this);
+    
+      this.intervalLen = CARD_WIDTH * scale;
+      this.intervalDiff = 21 * scale
+      this.markers = [];
+    }
       
   state = {
     vendors:[],
@@ -65,19 +65,19 @@ export default class MapScreen extends Component {
     // We should detect when scrolling has stopped then animate
     // We should just debounce the event listener here
     let vendorRef = firebase.database().ref('/vendors/').orderByKey();
-            vendorRef.once('value').then((snapshot) => {
-              // console.log("map snapshot:    ", snapshot.val());
-            let vendorList = [];
-            snapshot.forEach((vendorSnapshot) => {
-              let each = vendorSnapshot.val();
-              if(each.latitude !==  0 &&each.longitude !==  0){
-                vendorList.push(each);
-              }
-            });
-            console.log(vendorList);
+    vendorRef.once('value').then((snapshot) => {
+        // console.log("map snapshot:    ", snapshot.val());
+      let vendorList = [];
+      snapshot.forEach((vendorSnapshot) => {
+        let each = vendorSnapshot.val();
+        if(each.latitude !==  0 &&each.longitude !==  0){
+          vendorList.push(each);
+        }
+      });
+      console.log(vendorList);
 
-            // vendorList = vendorList.sort(this.sortByBoothNumber);
-            this.setState({ vendors: vendorList});
+      // vendorList = vendorList.sort(this.sortByBoothNumber);
+      this.setState({ vendors: vendorList });
     });
 
   }
@@ -244,13 +244,15 @@ export default class MapScreen extends Component {
                     /> */}
                   <Callout
                     style = {{
-                      flexDirection: 'column',
+                      flexDirection: 'row',
                       flex: 1,
                       elevation: 5,
-                      justifyContent        : 'center',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
                       // width:100,
                       // textAlign:"center"
                     }}
+                    onPress={() => { this.props.onCalloutPress(marker) }}
                   >
                         <Text>{marker.boothNumber}. {marker.name}</ Text>
                    </Callout>
@@ -304,7 +306,8 @@ export default class MapScreen extends Component {
                 />
                 <View style={styles.textContent}>
                   <Text numberOfLines={1} style={
-                    styles.cardtitle}>{marker.name}</Text>
+                    styles.cardtitle}>{marker.name}
+                    </Text>
                 </View>
               </View>);
           })}

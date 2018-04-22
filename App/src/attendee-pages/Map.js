@@ -7,12 +7,16 @@ import styles from '../styles';
 import MapScreen from "./MapScreen";
 
 const Map = (props) => {
+    goToVendor = (vendor) => {
+        props.navigation.navigate('VendorFood', { vendor: vendor});
+    }
+
     return (
         <Container>
             <AppHeader navigation={props.navigation}>
                 Map
             </AppHeader>
-            <MapScreen />
+            <MapScreen onCalloutPress={goToVendor}/>
         </Container>);
 }
 
