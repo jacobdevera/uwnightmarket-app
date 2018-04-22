@@ -43,9 +43,10 @@ class Sidebar extends Component {
         if (index === 0) {
             let user = firebase.auth().currentUser;
             if (user.isAnonymous) { // is attendee
-                if (await this.deleteUserOrders(user)) {
+                /*if (await this.deleteUserOrders(user)) {
                     user.delete();
-                }
+                }*/
+                this.props.screenProps.setView(Views.INITIAL);
             } else {
                 firebase.auth().signOut().catch((error) => {
                     this.signOutError(error);
@@ -113,7 +114,7 @@ class Sidebar extends Component {
                     if (firebase.auth().currentUser.isAnonymous)
                         Alert.alert(
                             'Are you sure you want to sign out?',
-                            'Any existing orders will be deleted.',
+                            'Your orders will be saved.',
                             [
                                 { text: 'Cancel', style: 'cancel' },
                                 { text: 'Sign Out', onPress: () => this.handleSignOut(0) },

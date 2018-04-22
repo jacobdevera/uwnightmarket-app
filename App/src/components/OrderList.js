@@ -65,18 +65,7 @@ export class OrderList extends Component {
             },
             buttonIndex => {
                 console.log("item:   " +item);
-                if (buttonIndex === destructiveIndex) {
-                    Alert.alert(
-                        'Cancel this order?',
-                        'The attendee will be notified.',
-                        [
-                            { text: 'Cancel', style: 'cancel' },
-                            { text: 'Delete', style: 'destructive', onPress: () => handleActionSelect(buttonIndex, item) }
-                        ]
-                    );
-                } else {
-                    handleActionSelect(buttonIndex, item);
-                }
+                handleActionSelect(buttonIndex, item);
             }
         );
     }

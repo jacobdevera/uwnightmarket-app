@@ -170,7 +170,6 @@ class MyOrders extends Component {
                             <Text style={styles.smallSection}>{`\u2022 Once you make an order, you have up to ${limits.orderAge / 1000 / 60} minutes to delete the order.`}</Text>
                             <Text style={styles.smallSection}>{`\u2022 You will receive a notification when your order is ready for pick up. `+
                                 `Please arrive at the booth within 10 minutes to pick up your order and be prepared to pay with cash.`}</Text>
-                            <Text style={styles.smallSection}>{`\u2022 If you log out, ALL of your orders (active or past) will be deleted.`}</Text>
                         </View>
                         <Button style={[{ alignSelf: 'center' }, styles.section]} 
                             onPress={() => {

@@ -17,6 +17,7 @@ class LandingPage extends Component {
 
     onAttendeeButtonPress() {
         if (!firebase.auth().currentUser) {
+            console.log('new user');
             this.setState({ error: '', loading: true });
             this.attendeeSignIn();
         } else {
