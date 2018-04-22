@@ -181,18 +181,22 @@ export default class VendorFood extends Component {
                                             {item.price > 0 && <Text>${item.price}</Text>}
                                         </ListItem>
                                         {vendor.canOrder &&
-                                        <ListItem style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', marginLeft: 0 }}>
-                                            <Button style={{ width: 48 }} disabled={!item.available} transparent onPress={() => { 
-                                                if (item.available) this.updateQuantity(item.trueIndex, false) 
-                                            }}>
-                                                <Icon style={{ color: item.available ? config.colorPrimary : 'gray' }} name='remove' />
-                                            </Button>
-                                            <Text style={[{ width: 24, marginLeft: 0 }, styles.center]}>{order[item.trueIndex].quantity}</Text>
-                                            <Button style={{ width: 48 }} disabled={!item.available} transparent onPress={() => { 
-                                                if (item.available) this.updateQuantity(item.trueIndex, true) 
-                                            }}>
-                                                <Icon style={{ color: item.available ? config.colorPrimary : 'gray' }} name='add' />
-                                            </Button>
+                                        <ListItem style={{ marginLeft: 0 }}>
+                                            {item.available ? 
+                                            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
+                                                <Button style={{ width: 48 }} disabled={!item.available} transparent onPress={() => { 
+                                                    if (item.available) this.updateQuantity(item.trueIndex, false) 
+                                                }}>
+                                                    <Icon style={{ color: item.available ? config.colorPrimary : 'gray' }} name='remove' />
+                                                </Button>
+                                                <Text style={[{ width: 24, marginLeft: 0 }, styles.center]}>{order[item.trueIndex].quantity}</Text>
+                                                <Button style={{ width: 48 }} disabled={!item.available} transparent onPress={() => { 
+                                                    if (item.available) this.updateQuantity(item.trueIndex, true) 
+                                                }}>
+                                                    <Icon style={{ color: item.available ? config.colorPrimary : 'gray' }} name='add' />
+                                                </Button>
+                                            </View>
+                                            : <Text style={{ marginLeft: 'auto', color: 'gray' }}>SOLD OUT</Text>}
                                         </ListItem>}
                                     </View>
                             )

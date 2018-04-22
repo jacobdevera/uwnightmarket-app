@@ -26,7 +26,8 @@ export const Views = {
 export const Status = {
     READY: "READY",
     NOT_READY: "NOT READY",
-    PICKED_UP: "PICKED UP"
+    PICKED_UP: "PICKED UP",
+    CANCELED: "CANCELED"
 }
 
 export const limits = {
@@ -103,15 +104,10 @@ export default class App extends Component {
             }
             this.showLocalNotification(notif);
         });
-
-        this.refreshTokenListener = FCM.on(FCMEvent.RefreshToken, token => {
-            console.log("TOKEN (refreshUnsubscribe)", token);
-        });
     }
 
     componentWillUnmount() {
         this.notificationListener.remove();
-        this.refreshTokenListener.remove();
     }
 
     showLocalNotification = (notif) => {

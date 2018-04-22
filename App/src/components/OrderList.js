@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Image, View, FlatList} from 'react-native';
+import {Alert, Image, View, FlatList} from 'react-native';
 import {
     ActionSheet,
     Button,
@@ -32,16 +32,6 @@ export class OrderList extends Component {
         order.items.forEach((item) => {
             totalPrice += item.quantity * item.price;
         });
-        /*let totalPrice = order.items.length > 1 ? order
-            .items
-            .reduce((acc, curr) => {
-                return {
-                    price: (acc.price) + (curr.price * curr.quantity)
-                }
-            })
-            .price 
-            : order.items.length > 0 ? order.items[0].price * order.items[0].quantity 
-            : 0;*/
         return totalPrice;
     }
 
@@ -55,6 +45,9 @@ export class OrderList extends Component {
 
             case Status.PICKED_UP:
                 return 'blue';
+            
+            case Status.CANCELED:
+                return 'black';
 
             default:
                 return config.colorPrimary;
@@ -72,7 +65,18 @@ export class OrderList extends Component {
             },
             buttonIndex => {
                 console.log("item:   " +item);
-                handleActionSelect(buttonIndex, item);
+                if (buttonIndex === destructiveIndex) {
+                    Alert.alert(
+                        'Cancel this order?',
+                        'The attendee will be notified.',
+                        [
+                            { text: 'Cancel', style: 'cancel' },
+                            { text: 'Delete', style: 'destructive', onPress: () => handleActionSelect(buttonIndex, item) }
+                        ]
+                    );
+                } else {
+                    handleActionSelect(buttonIndex, item);
+                }
             }
         );
     }

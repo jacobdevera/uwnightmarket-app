@@ -81,7 +81,7 @@ class VendorOrders extends Component {
         });
         this.orderRef.on('child_added', this.orderChanged);
         this.orderRef.on('child_changed', this.orderChanged);
-        this.orderRef.on('child_removed', this.orderRemoved);
+        this.orderRef.on('child_removed', this.orderRemoved); // TODO: remove canceled orders?
     }
 
     orderChanged = (snapshot) => {
@@ -111,43 +111,53 @@ class VendorOrders extends Component {
     // determine which orders to display whether on active or completed screen
     getFilteredOrders = (orders, active) => {
         return orders.filter((order) => {
-            return (order && ((active && order.status !== Status.PICKED_UP)
-                || (!active && order.status === Status.PICKED_UP)))
+            return (order && ((active && ![Status.PICKED_UP,Status.CANCELED].includes(order.status))
+                || (!active && [Status.PICKED_UP,Status.CANCELED].includes(order.status))))
         });
     }
 
-    handleStatusChange = (index, selectedItem) => {
+    handleStatusChange = async (index, selectedItem) => {
         let { id, userId, vendorId, status, vendorName } = selectedItem;
-        if (index <= 2) {
-            let statuses = ['NOT READY', 'READY', 'PICKED UP'];
-            let updates = {};
-            updates[`/orders/${id}/status`] = statuses[index];
-            updates['/user-orders/' + userId + '/' + id] = statuses[index];
-            updates['/vendor-orders/' + vendorId + '/orders/' + id] = statuses[index];
-            firebase.database().ref().update(updates);
-            if (statuses[index] === Status.READY) {
-                let title = 'Order ready!';
-                let body = `Please head to ${vendorName} to pick it up.`
-                let notif = this.buildNotification(selectedItem, title, body);
+        let statuses = [Status.NOT_READY, Status.READY, Status.PICKED_UP, Status.CANCELED];
+        if (await this.updateOrder(statuses[index], selectedItem)) {
+            let title, body = '';
+            let notif = {};
+            switch (statuses[index]) {
+                case Status.READY:
+                title = 'Order ready!';
+                body = `Please head to ${vendorName} to pick it up.`
+                notif = this.buildNotification(selectedItem, title, body);
                 this.sendNotification(JSON.stringify(notif));
-            }
-        } else if (index === 3) {
-            let updates = {};
-            updates[`/orders/${id}`] = null;
-            updates['/user-orders/' + userId + '/' + id] = null;
-            updates['/vendor-orders/' + vendorId + '/orders/' + id] = null;
-            firebase.database().ref().update(updates).then((res) => {
-                let title = 'Order canceled';
-                let body = `Unfortunately, ${vendorName} could not fulfill your order.`
-                let notif = this.buildNotification(selectedItem, title, body);
+                break;
+                
+                case Status.CANCELED:
+                title = 'Order canceled';
+                body = `Unfortunately, ${vendorName} could not fulfill your order.`
+                notif = this.buildNotification(selectedItem, title, body);
                 this.sendNotification(JSON.stringify(notif));
                 Toast.show({
-                    text: `Order removed`,
+                    text: `Order canceled`,
                     position: 'bottom',
                     duration: 5000
                 })
-            }).catch(e => console.log(e));
+                break;
+            }
         }
+    }
+
+    updateOrder = (status, order) => {
+        return new Promise((resolve) => {
+            let updates = {};
+            updates[`/orders/${order.id}/status`] = status;
+            updates['/user-orders/' + order.userId + '/' + order.id] = status;
+            updates['/vendor-orders/' + order.vendorId + '/orders/' + order.id] = status;
+            firebase.database().ref().update(updates).then((res) => {
+                resolve(true)
+            }).catch(e => { 
+                console.log(e)
+                resolve(false);
+            });
+        })
     }
 
     buildNotification = (order, title, body) => {

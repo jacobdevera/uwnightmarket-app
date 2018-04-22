@@ -115,8 +115,8 @@ class Sidebar extends Component {
                             'Are you sure you want to sign out?',
                             'Any existing orders will be deleted.',
                             [
-                                {text: 'Cancel', style: 'cancel'},
-                                {text: 'Sign Out', onPress: () => this.handleSignOut(0) },
+                                { text: 'Cancel', style: 'cancel' },
+                                { text: 'Sign Out', onPress: () => this.handleSignOut(0) },
                             ]
                         );
                     else

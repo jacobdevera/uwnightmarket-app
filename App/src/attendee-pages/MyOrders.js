@@ -59,13 +59,6 @@ class MyOrders extends Component {
                                 order.id = key;
                                 orderList.push(order);
                                 console.log("each order" + order);
-
-                                // let count = 0;
-                                // firebase.database().ref(`/vendor-orders/${order.vendorId}`).on('value',
-                                // (snapshot) => {     if (snapshot.val()) {
-                                // Object.keys(snapshot.val()).forEach((key) => {             if (key !=
-                                // order.id) {                 count++;             } else { break; }         })
-                                //     } }); order.numberOfOrderAhead = count;
                             }))
                         })
                     Promise
@@ -144,8 +137,8 @@ class MyOrders extends Component {
 
     render() {
         const { orders, loading } = this.state;
-        let activeOrders = orders.filter((order) => order.status !== Status.PICKED_UP);
-        let pastOrders = orders.filter((order) => order.status === Status.PICKED_UP);
+        let activeOrders = orders.filter((order) => ![Status.PICKED_UP, Status.CANCELED].includes(order.status));
+        let pastOrders = orders.filter((order) => [Status.PICKED_UP, Status.CANCELED].includes(order.status));
         return (
             <Container>
                 <AppHeader navigation={this.props.navigation}>
@@ -172,8 +165,8 @@ class MyOrders extends Component {
                                 /> 
                                 {` icon will be available for mobile ordering.`}</Text> 
                             </View>
-                            <Text style={styles.smallSection}>{`\u2022 You can order a maxiumum of ${limits.quantity} items from one vendor.`}</Text>
-                            <Text style={styles.smallSection}>{`\u2022 You can have up to ${limits.orders} orders at a time.`}</Text>
+                            <Text style={styles.smallSection}>{`\u2022 You can order a maximum of ${limits.quantity} items from one vendor.`}</Text>
+                            <Text style={styles.smallSection}>{`\u2022 You can have up to ${limits.orders} active orders at a time.`}</Text>
                             <Text style={styles.smallSection}>{`\u2022 Once you make an order, you have up to ${limits.orderAge / 1000 / 60} minutes to delete the order.`}</Text>
                             <Text style={styles.smallSection}>{`\u2022 You will receive a notification when your order is ready for pick up. `+
                                 `Please arrive at the booth within 10 minutes to pick up your order and be prepared to pay with cash.`}</Text>
