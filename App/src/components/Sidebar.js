@@ -28,9 +28,8 @@ class Sidebar extends Component {
             case Views.VENDOR:
             routes = [
                 { route: 'VendorHome', title: 'Home' },
-                { route: 'VendorOrders', title: 'Orders', props: { active: true } },
-                { route: 'VendorOrders', title: '\tActive', props: { active: true } },
-                { route: 'VendorOrders', title: '\tCompleted', props: { active: false } },
+                { route: 'VendorOrders', title: 'Orders - Active', props: { active: true } },
+                { route: 'VendorOrders', title: 'Orders - Completed', props: { active: false } },
                 { route: 'VendorMenu', title: 'Menu' },
                 { route: 'VendorSalesSummary', title: 'Sales Summary' },
                 { route: 'Map', title: 'Map' },

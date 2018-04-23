@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
+    "dayjs": "^1.5.10",
     "firebase": "^4.10.1",
     "native-base": "^2.3.9",
     "react": "16.2.0",

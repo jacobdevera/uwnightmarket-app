@@ -99,6 +99,9 @@ export default styles = StyleSheet.create({
     cardH2: {
         fontSize: 14
     },
+    cardH3: {
+        fontSize: 12
+    },
     h1: {
         fontSize: 24 
     },

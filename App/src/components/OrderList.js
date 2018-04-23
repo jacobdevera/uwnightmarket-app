@@ -21,6 +21,7 @@ import StatusPicker from './StatusPicker';
 import {Status} from '../App';
 import {StackNavigator} from "react-navigation";
 import firebase from 'firebase';
+import dayjs from 'dayjs';
 
 export class OrderList extends Component {
     constructor(props) {
@@ -95,13 +96,17 @@ export class OrderList extends Component {
                     extraData={this.props}
                     keyExtractor={item => `${item.time}`}
                     renderItem={({ item }) => {
+                    let timeDiff = Math.floor(dayjs().diff(dayjs(item.time), 'seconds') / 60);
                     return (
                         <Card>
                             <ListItem itemDivider style={[styles.rowSpaceBetween, { alignItems: 'flex-start' }]}>
-                                {!this.props.vendor &&
-                                <Text style={[styles.header, styles.cardH2, { marginTop: 8, marginLeft: 8 }]}>
-                                    Vendor: {item.vendorName}
-                                </Text>}
+                                <View style={{ marginTop: 8, marginLeft: 8 }}>
+                                    {!this.props.vendor &&
+                                    <Text style={[styles.header, styles.cardH2]}>
+                                        Vendor: {item.vendorName}
+                                    </Text>}
+                                    <Text style={[{ color: 'gray', alignSelf: 'flex-start' }, styles.cardH3]}>{timeDiff < 1 ? 'just now' : `${timeDiff} minute${timeDiff > 1 ? 's' : ''} ago`}</Text>
+                                </View>
                                 {((item.status === Status.NOT_READY) || this.props.vendor) && 
                                 <Button transparent
                                     style={{ marginLeft: 'auto', height: 32 }}
