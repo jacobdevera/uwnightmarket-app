@@ -73,8 +73,7 @@ export default styles = StyleSheet.create({
     rowSmall: {
         width: '100%',
         flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center'
+        alignItems: 'flex-start'
     },
     menuDesc: {
         color: 'gray'
@@ -108,6 +107,9 @@ export default styles = StyleSheet.create({
     },
     h3: {
         fontSize: 16
+    },
+    link: {
+        color: config.colorPrimary
     },
     center: {
         textAlign: 'center'

@@ -6,42 +6,26 @@ import { AppHeader } from '../components';
 import styles from '../styles';
 
 const Merchandise = (props) => {
-    let shirts = [
+    let merch = [
         {
-            color: 'blue',
-            price: ['1 for $15', '2 for $25'],
-            img: require('../../img/shirt.png')
+            name: 'Crewneck and Hoodie',
+            price: '$25 (Crewneck), $30 (Hoodie)',
+            desc: 'Hoodie has same design',
+            img: require('../../img/crewneck.png')
         },
         {
-            color: 'pink',
-            price: ['1 for $15', '2 for $25'],
-            img: require('../../img/shirt.png')
-        }
-    ];
-
-    let pins = [
+            name: 'T-Shirt',
+            price: '$15',
+            desc: 'Colors: white, gold, violet',
+            img: require('../../img/crewneck.png')
+        },
         {
-            color: 'varied',
-            price: ['1 for $1', '7 for $5'],
-            img: require('../../img/shirt.png')
+            name: 'Button',
+            price: '$1',
+            desc: 'Visit the Info Booth to see various button designs.',
+            img: require('../../img/crewneck.png')
         }
     ];
-
-    let listItems = (items) => { return items.map((data, index) => {
-        return (
-            <Card key={index}>
-                <CardItem>
-                    <Image
-                        resizeMode="contain"
-                        style={styles.listImage }
-                        source={data.img}
-                    />
-                </CardItem>
-                <CardItem><Text style={ [styles.menuItem] }>Color: {data.color}</Text></CardItem>
-                <CardItem><Text style={ [styles.menuItem] }>Price: {data.price.join(', ')}</Text></CardItem>
-            </Card>)
-        })
-    }
     
     return (
         <Container>
@@ -50,17 +34,35 @@ const Merchandise = (props) => {
             </AppHeader>
             <Content contentContainerStyle={styles.paddedContainer}>
                 <View style={styles.section}>
-                    <Text>Night Market T-shirts and pins are exclusively sold at the info booth
-                        (next to Odegaard Library)! Come while supplies last!
+                    <Text>Visit us at the <Text style={styles.bold}>Information Booth</Text> in 
+                        the middle of Red Square behind TSA Food Booth for Night Market Merchandise!
                     </Text>
                 </View>
                 <View style={styles.section}>
-                    <Text style={ [styles.header, styles.h1] }>T-Shirts</Text>
-                    <View style={styles.rowSmall}>{listItems(shirts)}</View>
-                </View>
-                <View style={styles.section}>
-                    <Text style={ [styles.header, styles.h1] }>Pins</Text>
-                    <View>{listItems(pins)}</View>
+                    <Text style={ [styles.header, styles.h1] }>Merchandise</Text>
+                    <List
+                        dataArray={merch}
+                        renderRow={(data, index) => {
+                            return (
+                                <Card>
+                                    <CardItem>
+                                        <Left>
+                                            <Image
+                                                resizeMode="contain"
+                                                style={styles.listImage}
+                                                source={data.img}
+                                            />
+                                            <Body>
+                                                <Text style={ [styles.header, styles.cardH1] }>{data.name}</Text>
+                                                <Text style={ [styles.header, styles.cardH2] }>{data.price}</Text>
+                                                {data.desc && <Text>{data.desc}</Text>}
+                                            </Body>
+                                        </Left>
+                                    </CardItem>
+                                </Card>
+                            )
+                        }}
+                    />
                 </View>
             </Content>
         </Container>);

@@ -1,11 +1,49 @@
 import React from 'react';
-import { Image, View } from 'react-native';
+import { Image, View, FlatList } from 'react-native';
 import { Container, Content, Text, Thumbnail } from 'native-base';
 
 import { AppHeader } from '../components';
 import styles from '../styles';
 
 const EventInfo = (props) => {
+    let sponsors = [
+        {
+            key: 'GPSS',
+            uri: require('../../img/GPSS.png')
+        },
+        {
+            key: 'HUB',
+            uri: require('../../img/HUB.png')
+        },
+        {
+            key: 'LIV',
+            uri: require('../../img/LIV.png')
+        },
+        {
+            key: 'sparkling-ice',
+            uri: require('../../img/sparkling-ice.png')
+        },
+        {
+            key: 'TECO',
+            uri: require('../../img/TECO.png')
+        },
+        {
+            key: 'uwbookstore',
+            uri: require('../../img/uwbookstore.png')
+        },
+        {
+            key: 'UWOMAD',
+            uri: require('../../img/UWOMAD.png')
+        },
+        {
+            key: 'weichuan',
+            uri: require('../../img/weichuan.png')
+        },
+        {
+            key: 'wells-fargo',
+            uri: require('../../img/wells-fargo.png')
+        }
+    ]
     return (
         <Container>
             <AppHeader navigation={props.navigation}>
@@ -17,20 +55,44 @@ const EventInfo = (props) => {
                     resizeMode='contain'
                     source={require('../../img/NMlogoblackfont.png')}
                 />
-                <Text style={styles.section}>UW Night Market is FREE to attend, but please bring CASH for food and activities!</Text>
-                <Text style={styles.section}>This event is pet-friendly, but please have them leashed.</Text>
-                <Text style={styles.section}>This is a non-smoking and family-friendly event.</Text>
+                <Text style={styles.section}>
+                    Welcome to UW Night Market! Established in 2001, 
+                    the UW Night Market has been held by UW's Taiwanese Student Association for 
+                    the past 17 years, and this is now our 18th Night Market. We're so happy you 
+                    are here to join us, and have fun today! Event is from 5:30PM-10:30PM.
+                </Text>
 
                 <View style={styles.section}>
                     <Text style={[styles.header, styles.h2, styles.center]}>Parking</Text>
-                    <Text>Free parking available at E1, E12, E18, E19 parking lots (East campus). Limited paid
-                        parking available at the Central Plaza Parking Garage.
+                    <Text>Central Parking Garage - free parking for public (Central Plaza Garage, Seattle, WA 98105)</Text>
+                </View>
+
+                <View style={styles.section}>
+                    <Text style={[styles.header, styles.h2, styles.center]}>Questions</Text>
+                    <Text>If you have any questions, feel free to find us at 
+                        the <Text style={styles.bold}>Information Booth</Text> located in front 
+                        of the staircase from Campus Parkway and in the middle of Red Square 
+                        behind TSA Food Booth. You can also message the Taiwanese Student 
+                        Association Facebook page or contact our TSA phone number: <Text style={styles.bold}>(281) 698-7289</Text>.
                     </Text>
                 </View>
 
                 <View style={styles.section}>
-                    <Text style={[styles.header, styles.h2, styles.center]}>Questions?</Text>
-                    <Text>Come find us at the Info Booth (located next to Odegaard Undergraduate Library)!</Text>
+                    <Text style={[styles.header, styles.h2, styles.center]}>Sponsors</Text>
+                    <Text>We would like to thank the following sponsors for supporting the UW Night Market this year:</Text>
+                    <FlatList
+                        data={sponsors}
+                        extraData={props}
+                        renderItem={({item}) => {
+                            return (
+                                <Image
+                                    style={[styles.listImage, styles.fullWidth, styles.section]}
+                                    resizeMode='contain'
+                                    source={item.uri}
+                                />
+                            );
+                        }}
+                    />
                 </View>
             </Content>
         </Container>
