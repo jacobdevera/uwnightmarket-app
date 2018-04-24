@@ -147,17 +147,17 @@ export default class App extends Component {
 
     render() {
         return (
-                <StyleProvider style={getTheme(commonColor)}>
-                    <Root>
-                        <Container>
-                            {this.state.view === Views.INITIAL ?
-                                <LandingPage setView={this.setView} /> : this.state.view === Views.ATTENDEE ?
-                                    <AttendeeDrawerNav screenProps={{ state: this.state, setView: this.setView }} /> : this.state.view === Views.LOGIN ?
-                                        <LoginForm setView={this.setView} /> :
-                                        <VendorDrawerNav screenProps={{ state: this.state, setView: this.setView }} />}
-                        </Container>
-                    </Root>
-                </StyleProvider>
+            <StyleProvider style={getTheme(commonColor)}>
+                <Root>
+                    <Container>
+                        {this.state.view === Views.INITIAL ?
+                            <LandingPage setView={this.setView} /> : this.state.view === Views.ATTENDEE ?
+                                <AttendeeDrawerNav screenProps={{ state: this.state, setView: this.setView }} /> : this.state.view === Views.LOGIN ?
+                                    <LoginForm setView={this.setView} /> :
+                                    <VendorDrawerNav screenProps={{ state: this.state, setView: this.setView }} />}
+                    </Container>
+                </Root>
+            </StyleProvider>
         );
     }
 }

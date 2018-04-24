@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, View, Linking } from 'react-native';
+import { Alert, View, Linking, ScrollView } from 'react-native';
 import { Content, List, ListItem, Text, Icon, Toast } from 'native-base';
 import { NavigationActions } from 'react-navigation';
 import styles from '../styles';
@@ -93,44 +93,46 @@ class Sidebar extends Component {
 
     render() {
         return (
-            <Content style={styles.sideBar}>
-                <List
-                    dataArray={this.state.routes}
-                    renderRow={(data, index) => {
-                        return (
-                            <ListItem key={index} noBorder button onPress={() => {
-                                this.props.navigation.navigate({ routeName: data.route, params: data.props });
-                                this.props.navigation.setParams(data.props);
-                                if (data.route === 'VendorNavigator')
-                                    this.props.navigation.popToTop();
-                            }}>
-                                <Text style={[styles.light, styles.bold]}>{data.title}</Text>
-                            </ListItem>
-                        );
-                    }}
-                />
-                <ListItem key={this.state.routes.length} noBorder button onPress={() => {
-                    if (firebase.auth().currentUser.isAnonymous)
-                        Alert.alert(
-                            'Are you sure you want to sign out?',
-                            'Your orders will be saved.',
-                            [
-                                { text: 'Cancel', style: 'cancel' },
-                                { text: 'Sign Out', onPress: () => this.handleSignOut(0) },
-                            ]
-                        );
-                    else
-                        this.handleSignOut(0);
-                    }}     
-                >
-                    <Text style={[styles.light, styles.bold]}>Log Out</Text>
-                </ListItem>
-                <View style={styles.row}>
+            <View style={styles.sideBar}>
+                <ScrollView>
+                    <List
+                        dataArray={this.state.routes}
+                        renderRow={(data, index) => {
+                            return (
+                                <ListItem key={index} noBorder button onPress={() => {
+                                    this.props.navigation.navigate({ routeName: data.route, params: data.props });
+                                    this.props.navigation.setParams(data.props);
+                                    if (data.route === 'VendorNavigator')
+                                        this.props.navigation.popToTop();
+                                }}>
+                                    <Text style={[styles.light, styles.bold]}>{data.title}</Text>
+                                </ListItem>
+                            );
+                        }}
+                    />
+                    <ListItem key={this.state.routes.length} noBorder button onPress={() => {
+                        if (firebase.auth().currentUser.isAnonymous)
+                            Alert.alert(
+                                'Are you sure you want to sign out?',
+                                'Your orders will be saved.',
+                                [
+                                    { text: 'Cancel', style: 'cancel' },
+                                    { text: 'Sign Out', onPress: () => this.handleSignOut(0) },
+                                ]
+                            );
+                        else
+                            this.handleSignOut(0);
+                        }}     
+                    >
+                        <Text style={[styles.light, styles.bold]}>Log Out</Text>
+                    </ListItem>
+                </ScrollView>
+                <View style={[styles.row, { flex: 1, alignItems: 'flex-end', marginBottom: 16 }]}>
                     <Icon name='logo-facebook' onPress={ ()=>{ Linking.openURL('https://www.facebook.com/TheUWNightMarket')}} style={styles.iconWhite}/>
                     <Icon name='logo-instagram' onPress={ ()=>{ Linking.openURL('https://www.instagram.com/uwnightmarket/')} } style={styles.iconWhite}/>
                     <Icon name='logo-twitter' onPress={ ()=>{ Linking.openURL('https://twitter.com/uwnightmarket')} } style={styles.iconWhite}/>
                 </View>
-            </Content>
+            </View>
         );
     }
 }

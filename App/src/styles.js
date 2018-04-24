@@ -29,7 +29,8 @@ export default styles = StyleSheet.create({
     },
     sideBar: {
         paddingTop: isIphoneX ? 39 : 20,
-        backgroundColor: config.colorPrimary
+        backgroundColor: config.colorPrimary,
+        flex: 1
     },
     light: {
         color: '#fff'
