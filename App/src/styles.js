@@ -7,7 +7,8 @@ export const scale = parseInt(width) / 414; // 414: iPhone 6 Plus width
 export const config = {
     colorPrimary: '#d94d5d',
     colorDark: '#a21334',
-    textDark: '#2a2a2a'
+    textDark: '#2a2a2a',
+    textLight: '#666666'
 }
 
 export default styles = StyleSheet.create({
@@ -48,6 +49,10 @@ export default styles = StyleSheet.create({
     listImage: {
         height: 96 * scale,
         width: 96 * scale
+    },
+    listImageLarge: {
+        height: 144 * scale,
+        width: 144 * scale
     },
     column: {
         flex: 1,

@@ -11,21 +11,30 @@ const Merchandise = (props) => {
             name: 'Crewneck and Hoodie',
             price: '$25 (Crewneck), $30 (Hoodie)',
             desc: 'Hoodie has same design',
-            img: require('../../img/crewneck.png')
+            img: [require('../../img/crewneck.png')]
         },
         {
             name: 'T-Shirt',
             price: '$15',
             desc: 'Colors: white, gold, violet',
-            img: require('../../img/crewneck.png')
+            img: [require('../../img/tshirt-front.png'), require('../../img/tshirt-back.png')]
         },
         {
             name: 'Button',
             price: '$1',
             desc: 'Visit the Info Booth to see various button designs.',
-            img: require('../../img/crewneck.png')
+            img: []
         }
     ];
+
+    let imageList = (images) => images.map((image) => 
+        <Image
+            key={image}
+            resizeMode="contain"
+            style={styles.listImageLarge}
+            source={image}
+        />
+    );
     
     return (
         <Container>
@@ -45,13 +54,12 @@ const Merchandise = (props) => {
                         renderRow={(data, index) => {
                             return (
                                 <Card>
+                                    {data.img.length > 0 && 
+                                    <CardItem style={{ justifyContent: 'center' }}>
+                                        {imageList(data.img)}
+                                    </CardItem>}
                                     <CardItem>
                                         <Left>
-                                            <Image
-                                                resizeMode="contain"
-                                                style={styles.listImage}
-                                                source={data.img}
-                                            />
                                             <Body style={{ alignSelf: 'flex-start' }}>
                                                 <Text style={ [styles.header, styles.cardH1] }>{data.name}</Text>
                                                 <Text style={ [styles.header, styles.cardH2] }>{data.price}</Text>
