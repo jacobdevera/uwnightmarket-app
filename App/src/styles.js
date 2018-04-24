@@ -88,7 +88,7 @@ export default styles = StyleSheet.create({
         color: 'gray'
     },
     desc: {
-        fontFamily: 'Montserrat-Italic',
+        color: config.textLight,
         fontSize: 14
     },
     menuItem: {

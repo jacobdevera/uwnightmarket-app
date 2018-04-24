@@ -194,7 +194,7 @@ export default class VendorList extends Component {
                                 let bodyLeftMargin = item.img.length > 0 ? 8 : 0;
                                 return (
                                     <Card>
-                                        <CardItem style={{ paddingLeft: 8, paddingRight: 8 }}
+                                        <CardItem style={{ paddingLeft: 10, paddingRight: 10 }}
                                             button onPress={() => { this.props.navigation.navigate('VendorFood', {
                                                     vendor: item
                                                 }); 
