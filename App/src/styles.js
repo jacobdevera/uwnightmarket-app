@@ -1,5 +1,8 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions, Platform } from "react-native";
+
 const { height, width } = Dimensions.get('window');
+const isIphoneX = Platform.OS === "ios" && height === 812 && width === 375;
+
 export const scale = parseInt(width) / 414; // 414: iPhone 6 Plus width
 export const config = {
     colorPrimary: '#d94d5d',
@@ -25,7 +28,7 @@ export default styles = StyleSheet.create({
         height: 75 * scale
     },
     sideBar: {
-        paddingTop: 20,
+        paddingTop: isIphoneX ? 39 : 20,
         backgroundColor: config.colorPrimary
     },
     light: {
@@ -131,5 +134,25 @@ export default styles = StyleSheet.create({
     },
     last: {
         paddingBottom: Math.max(16, 16 * scale)
+    },
+    orderNumberLarge: {
+        fontSize: Math.max(96, scale * 96)
     }
+});
+
+export const modalStyles = StyleSheet.create({
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0,0,0,0.3)'
+    },
+    innerContainer: {
+        flex: 1,
+        marginLeft: Math.max(32, 32 * scale),
+        marginRight: Math.max(32, 32 * scale),
+        marginTop: Math.max(128, 128 * scale),
+        marginBottom: Math.max(128, 128 * scale),
+        backgroundColor: 'white',
+        borderRadius: 8
+    },
 });

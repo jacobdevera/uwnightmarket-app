@@ -22,6 +22,7 @@ import {Status} from '../App';
 import {StackNavigator} from "react-navigation";
 import firebase from 'firebase';
 import dayjs from 'dayjs';
+import { hash } from '../utils/order';
 
 export class OrderList extends Component {
     constructor(props) {
@@ -70,23 +71,6 @@ export class OrderList extends Component {
             }
         );
     }
-    
-
-    hash = (input) => {
-        let count = 3;
-        let res = "";
-        let index = 6;
-        let alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        while (count > 0 && index < input.length) {
-            let c = input[index];
-            if (alphabet.indexOf(c) != -1) {
-                res += c;
-                count--;
-            }
-            index++;
-        }
-        return res;
-    }
 
     render() {
         return (
@@ -105,7 +89,9 @@ export class OrderList extends Component {
                                     <Text style={[styles.header, styles.cardH2]}>
                                         Vendor: {item.vendorName}
                                     </Text>}
-                                    <Text style={[{ color: 'gray', alignSelf: 'flex-start' }, styles.cardH3]}>{timeDiff < 1 ? 'just now' : `${timeDiff} minute${timeDiff > 1 ? 's' : ''} ago`}</Text>
+                                    <Text style={[{ color: 'gray', alignSelf: 'flex-start' }, styles.cardH3]}>
+                                        {timeDiff < 1 ? 'just now' : `${timeDiff} minute${timeDiff > 1 ? 's' : ''} ago`}
+                                    </Text>
                                 </View>
                                 {((item.status === Status.NOT_READY) || this.props.vendor) && 
                                 <Button transparent
@@ -121,17 +107,25 @@ export class OrderList extends Component {
                                     flex: 20
                                 }}>
                                     <Text style={[styles.center, styles.header, styles.cardH2]}>Order #</Text>
-                                    <Badge
-                                        width={64}
+                                    <Button 
+                                        onPress={() => this.props.orderOnPress(item)}
+                                        transparent 
                                         style={{ 
-                                            alignSelf: 'center',
-                                            backgroundColor: config.colorPrimary 
-                                        }}>
-                                        <Text
-                                          style={{
-                                            textAlign:'center'
-                                        }}>{this.hash(item.id)}</Text>
-                                    </Badge>
+                                            alignSelf: 'center'
+                                        }}
+                                    >
+                                        <Badge
+                                            width={64}
+                                            style={{ 
+                                                alignSelf: 'center',
+                                                backgroundColor: config.colorPrimary 
+                                            }}>
+                                            <Text
+                                            style={{
+                                                textAlign:'center'
+                                            }}>{hash(item.id)}</Text>
+                                        </Badge>
+                                    </Button>
                                 </View>
                                 <View
                                     style={{

@@ -56,7 +56,7 @@ const Games = (props) => {
                                                 style={styles.listImage}
                                                 source={data.img}
                                             />
-                                            <Body>
+                                            <Body style={{ alignSelf: 'flex-start' }}>
                                                 <Text style={ [styles.header, styles.cardH1] }>{data.name}</Text>
                                                 <Text style={ [styles.header, styles.cardH2] }>{data.price}</Text>
                                                 <Text>{data.desc}</Text>

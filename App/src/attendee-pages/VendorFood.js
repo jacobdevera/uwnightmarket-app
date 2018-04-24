@@ -232,7 +232,7 @@ export default class VendorFood extends Component {
                 {!loading ?
                     <View>
                         <View style={[styles.rowSpaceBetween, styles.section]}>
-                            <View style={{flex: 1,}}><Text style={[{textAlign: 'left'}, styles.bold, styles.h2]}>Menu</Text></View>
+                            <View style={{flex: 1}}><Text style={[{textAlign: 'left'}, styles.bold, styles.h2]}>Item</Text></View>
                             <View style={{flex: 1}}><Text style={[{textAlign: 'right'}, styles.bold, styles.h2]}>Price</Text></View>
                         </View>
                         {vendor && subMenuLists}

@@ -6,21 +6,7 @@ import firebase from 'firebase'
 
 import { filters } from '../App';
 import { AppHeader, StackHeader } from '../components';
-import styles, { config, scale } from '../styles';
-
-const modalStyles = StyleSheet.create({
-    modalContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        backgroundColor: 'rgba(0,0,0,0.3)'
-    },
-    innerContainer: {
-        flex: 1,
-        margin: Math.max(32, 32 * scale),
-        backgroundColor: 'white',
-        borderRadius: 8
-    },
-});
+import styles, { config, scale, modalStyles } from '../styles';
 
 export default class VendorList extends Component {
     constructor(props) {
@@ -122,7 +108,6 @@ export default class VendorList extends Component {
                         animationType={'fade'}
                         onRequestClose={() => this.modalClose()}
                     >
-                        {/*<View style={modalStyles.modalContainer}>*/}
                         <TouchableOpacity 
                             style={modalStyles.modalContainer} 
                             activeOpacity={1} 
@@ -154,6 +139,16 @@ export default class VendorList extends Component {
                                             <Text style={[styles.bold]}>Filter</Text>
                                         </ListItem>
                                         <ScrollView contentContainerStyle={{ flexGrow: 0 }}>
+                                            <ListItem button onPress={() => this.toggleCanOrderFilter()}>
+                                                <CheckBox 
+                                                    color={'#d94d5d'}
+                                                    checked={canOrderFilter} 
+                                                    onPress={() => this.toggleCanOrderFilter()}
+                                                />
+                                                <Body>
+                                                    <Text>supports mobile ordering</Text>
+                                                </Body>
+                                            </ListItem>
                                             <FlatList
                                                 scrollEnabled={false}
                                                 data={filters}
@@ -174,16 +169,6 @@ export default class VendorList extends Component {
                                                     );
                                                 }}
                                             />
-                                            <ListItem button onPress={() => this.toggleCanOrderFilter()}>
-                                                <CheckBox 
-                                                    color={'#d94d5d'}
-                                                    checked={canOrderFilter} 
-                                                    onPress={() => this.toggleCanOrderFilter()}
-                                                />
-                                                <Body>
-                                                    <Text>supports mobile ordering</Text>
-                                                </Body>
-                                            </ListItem>
                                         </ScrollView>
                                         <View style={styles.row}>
                                             <Button
@@ -197,7 +182,6 @@ export default class VendorList extends Component {
                                 </View>
                             </TouchableWithoutFeedback>
                         </TouchableOpacity>
-                        {/*</View>*/}
                     </Modal>
                     {vendors && vendors.length > 0 ?
                         <FlatList
@@ -228,7 +212,7 @@ export default class VendorList extends Component {
                                                         <Badge style={{ backgroundColor: config.colorPrimary, marginRight: 8}}>
                                                             <Text>{item.boothNumber}</Text>
                                                         </Badge>
-                                                        <Text style={ [{flex: 3 },styles.header, styles.cardH1] }>{item.name}</Text>
+                                                        <Text style={ [{flex: 3 }, styles.bold, styles.cardH1] }>{item.name}</Text>
                                                         {item.canOrder && 
                                                         <Image
                                                             resizeMode="contain"

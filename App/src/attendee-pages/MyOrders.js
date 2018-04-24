@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, AsyncStorage, Image, View} from 'react-native';
+import {Alert, AsyncStorage, Image, View, Modal, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 import {
     Button,
     Container,
@@ -19,7 +19,8 @@ import firebase from 'firebase';
 
 import {AppHeader, OrderList} from '../components';
 import {Status, limits} from '../App';
-import styles, { config } from '../styles';
+import styles, { config, modalStyles } from '../styles';
+import { hash } from '../utils/order';
 
 
 class MyOrders extends Component {
@@ -27,7 +28,9 @@ class MyOrders extends Component {
         super(props);
         this.state = {
             orders: [],
-            loading: true
+            loading: true,
+            modalVisible: false,
+            selectedOrder: null
         }
         this.orderRef = firebase
             .database()
@@ -135,8 +138,11 @@ class MyOrders extends Component {
             .catch(e => console.log(e));
     }
 
+    orderOnPress = (order) => { this.setState({ selectedOrder: order, modalVisible: true }) }
+    modalClose = () => { this.setState({ modalVisible: false }) }
+
     render() {
-        const { orders, loading } = this.state;
+        const { orders, loading, modalVisible, selectedOrder } = this.state;
         let activeOrders = orders.filter((order) => ![Status.PICKED_UP, Status.CANCELED].includes(order.status));
         let pastOrders = orders.filter((order) => [Status.PICKED_UP, Status.CANCELED].includes(order.status));
         return (
@@ -145,10 +151,41 @@ class MyOrders extends Component {
                     My Orders
                 </AppHeader>
                 <Content contentContainerStyle={styles.paddedContainer}>
+                    <Modal
+                        transparent={true}
+                        visible={modalVisible}
+                        animationType={'fade'}
+                        onRequestClose={() => this.modalClose()}
+                    >
+                        <TouchableOpacity 
+                            style={modalStyles.modalContainer} 
+                            activeOpacity={1} 
+                            onPressOut={() => {this.modalClose()}}
+                        >
+                            <TouchableWithoutFeedback>
+                                <View style={modalStyles.innerContainer}>
+                                    <Text style={[
+                                        styles.h1, 
+                                        styles.section, 
+                                        styles.fullWidth, 
+                                        { textAlign: 'center' }
+                                    ]}>
+                                        Order number:
+                                    </Text>
+                                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                                    <Text style={[styles.bold, styles.orderNumberLarge]}>
+                                        {selectedOrder && hash(selectedOrder.id)}
+                                    </Text>
+                                    </View>
+                                </View>
+                            </TouchableWithoutFeedback>
+                        </TouchableOpacity>
+                    </Modal>
                     {activeOrders.length > 0 ?
                     <View style={styles.section}>
                         <Text style={ [styles.header, styles.h1] }>Active Orders</Text>
-                        <OrderList 
+                        <OrderList
+                            orderOnPress={this.orderOnPress}
                             asConfig={this.asConfig} 
                             orders={orders.filter((order) => order.status !== Status.PICKED_UP)} 
                             vendor={false} /> 
