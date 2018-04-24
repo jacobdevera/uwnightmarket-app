@@ -20,7 +20,7 @@ const { width, height } = Dimensions.get("window");
 const scale = parseInt(width) / 375; // 375 is default iphone 6 width
 
 const CARD_HEIGHT = height / 4;
-const CARD_WIDTH = CARD_HEIGHT - 50;
+const CARD_WIDTH = (width / 3);
 
 export default class MapScreen extends Component {
 
@@ -29,8 +29,8 @@ export default class MapScreen extends Component {
       this.centerMarker = this.centerMarker.bind(this);
       this.onDragEnd = this.onDragEnd.bind(this);
     
-      this.intervalLen = CARD_WIDTH * scale;
-      this.intervalDiff = 21 * scale
+      this.intervalLen = CARD_WIDTH;
+      this.intervalDiff = 20;
       this.markers = [];
     }
       
@@ -203,7 +203,6 @@ export default class MapScreen extends Component {
           showsUserLocation={true}
           followUserLocation={true}
           showsMyLocationButton
-
 
         >
           {this.state.vendors.map((marker, index) => {
