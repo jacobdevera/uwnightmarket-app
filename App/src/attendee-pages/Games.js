@@ -63,16 +63,14 @@ const Games = (props) => {
                                                     <Text style={ [styles.bold, styles.cardH1, styles.badgeHeader] }>{data.name}</Text>
                                                 </View>
                                                 <Text style={ [styles.bold, styles.cardH2, styles.smallSection] }>{data.price}</Text>
-                                                <Text>{data.desc}</Text>
+                                                <Text style={styles.smallSection}>{data.desc}</Text>
                                             </Body>
-                                        </Left>
-                                        <Right>
                                             <Image
                                                 resizeMode="contain"
                                                 style={styles.listImage}
                                                 source={data.img}
                                             />
-                                        </Right>
+                                        </Left>
                                     </CardItem>
                                 </Card>
                             )
