@@ -212,7 +212,7 @@ export default class VendorList extends Component {
                                                         <Badge style={{ backgroundColor: config.colorPrimary, marginRight: 8}}>
                                                             <Text>{item.boothNumber}</Text>
                                                         </Badge>
-                                                        <Text style={ [{flex: 3 }, styles.bold, styles.cardH1] }>{item.name}</Text>
+                                                        <Text style={ [{flex: 3}, styles.bold, styles.cardH1, styles.badgeHeader] }>{item.name}</Text>
                                                         {item.canOrder && 
                                                         <Image
                                                             resizeMode="contain"

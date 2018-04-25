@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Image, View } from 'react-native';
-import { Button, Card, CardItem, Container, Content, Text, Thumbnail, Body, Left, List, Badge } from 'native-base';
+import { Button, Card, CardItem, Container, Content, Text, Thumbnail, Body, Left, List, Badge, Right } from 'native-base';
 
 import { AppHeader } from '../components';
 import styles, { config } from '../styles';
@@ -55,22 +55,24 @@ const Games = (props) => {
                                 <Card>
                                     <CardItem style={{ paddingLeft: 10, paddingRight: 10 }}>
                                         <Left>
+                                            <Body style={{ alignSelf: 'flex-start' }}>
+                                                <View style={[{flexDirection: 'row', justifyContent: 'flex-start'}]}>
+                                                    <Badge style={{ backgroundColor: config.colorPrimary, marginRight: 8}}>
+                                                        <Text>{data.boothNumber}</Text>
+                                                    </Badge>
+                                                    <Text style={ [styles.bold, styles.cardH1, styles.badgeHeader] }>{data.name}</Text>
+                                                </View>
+                                                <Text style={ [styles.bold, styles.cardH2, styles.smallSection] }>{data.price}</Text>
+                                                <Text>{data.desc}</Text>
+                                            </Body>
+                                        </Left>
+                                        <Right>
                                             <Image
                                                 resizeMode="contain"
                                                 style={styles.listImage}
                                                 source={data.img}
                                             />
-                                            <Body style={{ alignSelf: 'flex-start' }}>
-                                                <View style={[styles.row, {justifyContent: 'flex-start'}]}>
-                                                    <Badge style={{ backgroundColor: config.colorPrimary, marginRight: 8}}>
-                                                        <Text>{data.boothNumber}</Text>
-                                                    </Badge>
-                                                    <Text style={ [styles.header, styles.cardH1] }>{data.name}</Text>
-                                                </View>
-                                                <Text style={ [styles.header, styles.cardH2] }>{data.price}</Text>
-                                                <Text>{data.desc}</Text>
-                                            </Body>
-                                        </Left>
+                                        </Right>
                                     </CardItem>
                                 </Card>
                             )

@@ -120,6 +120,9 @@ export default styles = StyleSheet.create({
     h3: {
         fontSize: 16
     },
+    badgeHeader: {
+        paddingTop: 1
+    },
     link: {
         color: config.colorPrimary
     },
@@ -156,8 +159,8 @@ export const modalStyles = StyleSheet.create({
         flex: 1,
         marginLeft: Math.max(32, 32 * scale),
         marginRight: Math.max(32, 32 * scale),
-        marginTop: Math.max(128, 128 * scale),
-        marginBottom: Math.max(128, 128 * scale),
+        marginTop: Math.max(98, 98 * scale),
+        marginBottom: Math.max(98, 98 * scale),
         backgroundColor: 'white',
         borderRadius: 8
     },

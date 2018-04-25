@@ -13,7 +13,7 @@ const Donate = (props) => {
             </AppHeader>
             <Content contentContainerStyle={styles.paddedContainer}>
                 <View style={styles.section}>
-                    <Text style={[styles.header, styles.h2, styles.center]}>We Need Your Help!</Text>
+                    <Text style={[styles.bold, styles.h2, styles.center]}>We Need Your Help!</Text>
                     <Text>Every year, our hardworking officers spend months on months of planning for 
                         the day of the event. Kind of like a part-time job! However, we cannot do this 
                         without the help of the public. The costs include tens of thousands on facilities, 

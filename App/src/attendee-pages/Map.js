@@ -7,7 +7,7 @@ import styles from '../styles';
 import MapScreen from "./MapScreen";
 
 const Map = (props) => {
-    goToVendor = (vendor) => {
+    const goToVendor = (vendor) => {
         props.navigation.navigate('VendorView', { vendor: vendor});
     }
 

@@ -19,8 +19,10 @@ import firebase from 'firebase';
 const { width, height } = Dimensions.get("window");
 const scale = parseInt(width) / 375; // 375 is default iphone 6 width
 
+const cardsOnScreen = 3;
+const distanceBetweenCards = 20;
 const CARD_HEIGHT = height / 4;
-const CARD_WIDTH = (width / 3);
+const CARD_WIDTH = (width / cardsOnScreen);
 
 export default class MapScreen extends Component {
 
@@ -30,7 +32,7 @@ export default class MapScreen extends Component {
       this.onDragEnd = this.onDragEnd.bind(this);
     
       this.intervalLen = CARD_WIDTH;
-      this.intervalDiff = 20;
+      this.intervalDiff = distanceBetweenCards;
       this.markers = [];
     }
       
@@ -94,14 +96,15 @@ export default class MapScreen extends Component {
     console.log("this.intervalDiff     ", this.intervalDiff)
     console.log("scale", scale)
 
-    let index = (Math.floor(value / (this.intervalLen+ this.intervalDiff) + 1)); // animate 30% away from landing on the next item
+    let index = (Math.round((value + width / 2 - (this.intervalLen + this.intervalDiff) / 2) / (this.intervalLen + this.intervalDiff))); // animate 30% away from landing on the next item
     if (index >= this.state.vendors.length) {
       index = this.state.vendors.length - 1;
     }
     if (index <= 0) {
       index = 0;
     }
-    
+     /*y = x * (il+id) - (w/2) + (il id)/2
+     y/(il+id) + w/2 - (il+id)/2*/
     console.log("index    ", index)
     this.setState({centeredIndex : index})
 
@@ -120,7 +123,7 @@ export default class MapScreen extends Component {
   centerMarker(key){
     console.log(this.sv)
     console.log(key)
-    this.sv._component.scrollTo({x:  (key - 1) * 140});
+    this.sv._component.scrollTo({x:  (key) * (this.intervalLen + this.intervalDiff) - (width / 2) + (this.intervalLen + this.intervalDiff) / 2});
   }
 
   makeCoordinate(vendor){
@@ -265,7 +268,7 @@ export default class MapScreen extends Component {
           horizontal
           scrollEventThrottle={10000}
           showsHorizontalScrollIndicator={false}
-          snapToInterval={this.intervalLen+ this.intervalDiff } // works
+          snapToInterval={this.intervalLen + this.intervalDiff} // works
           snapToAlignment={"center"}
           // snapToInterval={this.intervalDiff}
           decelerationRate={"fast"}
@@ -339,7 +342,7 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 2,
     backgroundColor: "#FFF",
-    marginHorizontal: 10,
+    marginHorizontal: distanceBetweenCards / 2,
     marginBottom: 0,
     paddingBottom: 0,
     shadowColor: "#000",
@@ -357,7 +360,7 @@ const styles = StyleSheet.create({
     borderColor:"#D94C5D",
     backgroundColor: "#FFF",
     borderWidth: 2,
-    marginHorizontal: 10,
+    marginHorizontal: distanceBetweenCards / 2,
     marginBottom: 0,
     paddingBottom: 0,
     shadowColor: "#000",
