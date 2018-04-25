@@ -15,6 +15,7 @@ import { Icon } from 'native-base';
 
 import MapView ,{ Callout, AnimatedRegion, Marker  } from "react-native-maps";
 import firebase from 'firebase';
+import Carousel from 'react-native-snap-carousel';
 
 const { width, height } = Dimensions.get("window");
 const scale = parseInt(width) / 375; // 375 is default iphone 6 width
@@ -120,10 +121,14 @@ export default class MapScreen extends Component {
     console.log("state center index    " + this.state.centeredCard)
   }
 
-  centerMarker(key){
-    console.log(this.sv)
-    console.log(key)
-    this.sv._component.scrollTo({x:  (key) * (this.intervalLen + this.intervalDiff) - (width / 2) + (this.intervalLen + this.intervalDiff) / 2});
+  centerMarker(index){
+    console.log(this.state.vendors)
+    {/*this.map.animateToCoordinate({
+      latitude: this.state.vendors[index].latitude,
+      longitude: this.state.vendors[index].longitude
+    }, 300);*/}
+    this.state.markers[index]._component.showCallout();
+    // this.sv._component.scrollTo({x:  (key) * (this.intervalLen + this.intervalDiff) - (width / 2) + (this.intervalLen + this.intervalDiff) / 2});
   }
 
   makeCoordinate(vendor){
@@ -172,7 +177,29 @@ export default class MapScreen extends Component {
 
   }
 
-
+  _renderItem = ({item, index}) => {
+    return (
+    <View  
+      style={styles.card}
+      key={index}
+        
+        >
+        <Text style = {styles.cardtitle}>
+        
+        Booth: {item.boothNumber}</Text>
+        <Image
+          source={{ uri: item.img}}
+          style={styles.cardImage}
+          resizeMode="contain"
+        />
+        <View style={styles.textContent}>
+          <Text numberOfLines={1} style={
+            styles.cardtitle}>{item.name}
+            </Text>
+        </View>
+      </View>
+    );
+  }
 
   render() {
     const interpolations = this.state.vendors.map((marker, index) => {
@@ -227,11 +254,12 @@ export default class MapScreen extends Component {
               key={index} 
               onPress={e => {
                   this.setState({markerPressed: true});
+                  this._carousel.snapToItem(index);
                   this.centerMarker(index);
-                  this.map.animateToCoordinate({
+                  {/*this.map.animateToCoordinate({
                     latitude: marker.latitude,
                     longitude: marker.longitude
-                  }, 300);
+                  }, 300);*/}
 
                   setTimeout(() =>
                     this.setState({markerPressed: false})
@@ -263,6 +291,7 @@ export default class MapScreen extends Component {
             );
           })}
         </MapView>
+        {/*
         <Animated.ScrollView 
           ref = {sv => this.sv = sv}
           horizontal
@@ -313,7 +342,17 @@ export default class MapScreen extends Component {
                 </View>
               </View>);
           })}
-        </Animated.ScrollView>
+        </Animated.ScrollView>*/}
+        <Carousel
+          ref={(c) => { this._carousel = c; }}
+          containerCustomStyle={styles.scrollView}
+          data={this.state.vendors}
+          renderItem={this._renderItem}
+          sliderHeight={height / 4}
+          sliderWidth={width}
+          itemWidth={width / 3}
+          onBeforeSnapToItem={(index) => this.centerMarker(index)}
+        />
       </View>
     );
   }
@@ -350,7 +389,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowOffset: { x: 2, y: -2 },
     height: CARD_HEIGHT,
-    width: CARD_WIDTH,
     overflow: "hidden",
   },
   centeredCard: {
