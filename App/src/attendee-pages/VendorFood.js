@@ -138,7 +138,7 @@ export default class VendorFood extends Component {
                 updates['/vendor-orders/' + this.state.vendor.userId + '/orders/' + newOrderKey] = Status.NOT_READY;
                 
                 Alert.alert(
-                    'Are you sure?',
+                    'Submit order?',
                     `When your order is ready, you must go to the vendor's booth and be prepared to pay with cash. You will be unable to delete your order after two minutes.`,
                     [
                         {text: 'Cancel', style: 'cancel'},

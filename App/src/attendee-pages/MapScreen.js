@@ -17,6 +17,8 @@ import MapView ,{ Callout, AnimatedRegion, Marker  } from "react-native-maps";
 import firebase from 'firebase';
 import Carousel from 'react-native-snap-carousel';
 
+import { sortByName } from '../utils/vendor';
+
 const { width, height } = Dimensions.get("window");
 const scale = parseInt(width) / 375; // 375 is default iphone 6 width
 
@@ -56,10 +58,6 @@ export default class MapScreen extends Component {
     calloutIsRendered:false,
   };
 
- 
-  
-
-
   componentWillMount() {
     this.index = 0;
     this.animation = new Animated.Value(0);
@@ -77,6 +75,7 @@ export default class MapScreen extends Component {
           vendorList.push(each);
         }
       });
+      vendorList.sort(sortByName);
       console.log(vendorList);
 
       // vendorList = vendorList.sort(this.sortByBoothNumber);
@@ -89,7 +88,6 @@ export default class MapScreen extends Component {
   onDragEnd(event) {
     let value = event.nativeEvent.contentOffset.x;
     console.log("value    ", value);
-
 
     let { height, width } = Dimensions.get('window');
 
@@ -104,8 +102,7 @@ export default class MapScreen extends Component {
     if (index <= 0) {
       index = 0;
     }
-     /*y = x * (il+id) - (w/2) + (il id)/2
-     y/(il+id) + w/2 - (il+id)/2*/
+
     console.log("index    ", index)
     this.setState({centeredIndex : index})
 
@@ -123,12 +120,15 @@ export default class MapScreen extends Component {
 
   centerMarker(index){
     console.log(this.state.vendors)
-    {/*this.map.animateToCoordinate({
+    this.map.animateToCoordinate({
       latitude: this.state.vendors[index].latitude,
       longitude: this.state.vendors[index].longitude
-    }, 300);*/}
-    this.state.markers[index]._component.showCallout();
+    }, 300);
     // this.sv._component.scrollTo({x:  (key) * (this.intervalLen + this.intervalDiff) - (width / 2) + (this.intervalLen + this.intervalDiff) / 2});
+  }
+
+  showMarkerCallout = (index) => {
+    this.state.markers[index]._component.showCallout();
   }
 
   makeCoordinate(vendor){
@@ -351,7 +351,10 @@ export default class MapScreen extends Component {
           sliderHeight={height / 4}
           sliderWidth={width}
           itemWidth={width / 3}
-          onBeforeSnapToItem={(index) => this.centerMarker(index)}
+          onBeforeSnapToItem={(index) => {
+            this.centerMarker(index);
+            this.showMarkerCallout(index);
+          }}
         />
       </View>
     );

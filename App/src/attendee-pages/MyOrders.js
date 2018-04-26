@@ -95,7 +95,7 @@ class MyOrders extends Component {
             if (Date.now() - selectedItem.time <= limits.orderAge) {
                 if (Date.now() - lastTimeDeleted >= limits.orderCooldown) {
                     Alert.alert(
-                        'Are you sure?',
+                        'Delete order?',
                         `You must wait a short time before being able to delete another order.`,
                         [
                             {text: 'Cancel', style: 'cancel'},

@@ -113,7 +113,7 @@ class Sidebar extends Component {
                     <ListItem key={this.state.routes.length} noBorder button onPress={() => {
                         if (firebase.auth().currentUser.isAnonymous)
                             Alert.alert(
-                                'Are you sure you want to sign out?',
+                                'Sign out?',
                                 'Your orders will be saved.',
                                 [
                                     { text: 'Cancel', style: 'cancel' },

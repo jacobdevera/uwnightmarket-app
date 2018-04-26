@@ -55,7 +55,7 @@ const Games = (props) => {
                                 <Card>
                                     <CardItem style={{ paddingLeft: 10, paddingRight: 10 }}>
                                         <Left>
-                                            <Body style={{ alignSelf: 'flex-start' }}>
+                                            <Body style={{ alignSelf: 'flex-start', marginRight: 8 }}>
                                                 <View style={[{flexDirection: 'row', justifyContent: 'flex-start'}]}>
                                                     <Badge style={{ backgroundColor: config.colorPrimary, marginRight: 8}}>
                                                         <Text>{data.boothNumber}</Text>

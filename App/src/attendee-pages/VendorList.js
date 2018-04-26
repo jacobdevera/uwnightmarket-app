@@ -5,6 +5,7 @@ import { StackNavigator } from "react-navigation";
 import firebase from 'firebase'
 
 import { filters } from '../App';
+import { sortByBoothNumber, sortByName } from '../utils/vendor';
 import { AppHeader, StackHeader } from '../components';
 import styles, { config, scale, modalStyles } from '../styles';
 
@@ -30,7 +31,7 @@ export default class VendorList extends Component {
             snapshot.forEach((vendorSnapshot) => {
                 vendorList.push(vendorSnapshot.val());
             });
-            vendorList = vendorList.sort(this.sortByName);
+            vendorList = vendorList.sort(sortByName);
             this.setState({ vendors: vendorList, filteredVendors: vendorList });
         });
     }
@@ -72,19 +73,15 @@ export default class VendorList extends Component {
         this.setState({ canOrderFilter: canOrderFilter, filteredVendors: newVendors });
     }
 
-    sortByBoothNumber = (a, b) => a.boothNumber - b.boothNumber;
-
-    sortByName = (a, b) => a.name.localeCompare(b.name);
-
     sort = (type) => {
         let sortToPerform;
         switch (type) {
             case 'number': 
-            sortToPerform = this.sortByBoothNumber;
+            sortToPerform = sortByBoothNumber;
             break;
 
             case 'name':
-            sortToPerform = this.sortByName;
+            sortToPerform = sortByName;
             break;
         }
         let sortedVendors = this.state.filteredVendors.sort(sortToPerform);
