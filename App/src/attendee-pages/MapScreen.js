@@ -56,6 +56,7 @@ export default class MapScreen extends Component {
     currentCard :1,
     markerPressed: false,
     calloutIsRendered:false,
+    marginTopHack: 1 // get map view to re-render to show location button
   };
 
   componentWillMount() {
@@ -81,7 +82,6 @@ export default class MapScreen extends Component {
       // vendorList = vendorList.sort(this.sortByBoothNumber);
       this.setState({ vendors: vendorList });
     });
-
   }
 
 
@@ -105,8 +105,6 @@ export default class MapScreen extends Component {
 
     console.log("index    ", index)
     this.setState({centeredIndex : index})
-
-
 
     // let marker = this.state.markers[index];
     this.state.markers[index]._component.showCallout();
@@ -221,7 +219,6 @@ export default class MapScreen extends Component {
       return { scale, opacity };
     });
 
-
     return (
       <View style={styles.container}>
         <MapView
@@ -229,10 +226,10 @@ export default class MapScreen extends Component {
           loadingEnabled
           
           initialRegion={this.state.region}
-          style={styles.container}
+          style={[styles.container, { marginTop: this.state.marginTopHack }]}
           showsUserLocation={true}
-          followUserLocation={true}
-          showsMyLocationButton
+          showsMyLocationButton={true}
+          onMapReady={()=>this.setState({ marginTopHack: 0 })}
 
         >
           {this.state.vendors.map((marker, index) => {
