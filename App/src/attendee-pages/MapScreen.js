@@ -31,8 +31,7 @@ export default class MapScreen extends Component {
 
     constructor(props){
       super(props);
-      this.centerMarker = this.centerMarker.bind(this);
-      this.onDragEnd = this.onDragEnd.bind(this);
+      //this.onDragEnd = this.onDragEnd.bind(this);
     
       this.intervalLen = CARD_WIDTH;
       this.intervalDiff = distanceBetweenCards;
@@ -53,16 +52,19 @@ export default class MapScreen extends Component {
       latitudeDelta: 0.0014,
       longitudeDelta: 0.0014,    
     },
-    currentCard :1,
+    currentCard: 1,
     markerPressed: false,
-    calloutIsRendered:false,
-    marginTopHack: 1 // get map view to re-render to show location button
+    calloutIsRendered: false,
+    marginTopHack: 1, // get map view to re-render to show location button
+    selectedVendorId: -1,
+    finishedScrollingToVendor: false
   };
 
   componentWillMount() {
     this.index = 0;
     this.animation = new Animated.Value(0);
   }
+
   componentDidMount() {
     // We should detect when scrolling has stopped then animate
     // We should just debounce the event listener here
@@ -72,20 +74,48 @@ export default class MapScreen extends Component {
       let vendorList = [];
       snapshot.forEach((vendorSnapshot) => {
         let each = vendorSnapshot.val();
-        if(each.latitude !==  0 &&each.longitude !==  0){
+        if(each.latitude !==  0 && each.longitude !==  0){
           vendorList.push(each);
         }
       });
-      vendorList.sort(sortByName);
-      console.log(vendorList);
+      vendorList = vendorList.sort(sortByName);
 
-      // vendorList = vendorList.sort(this.sortByBoothNumber);
-      this.setState({ vendors: vendorList });
+      let vendorPropIndex = this.getVendorPropIndex(vendorList);
+      this.markers = new Array(vendorList.length);
+      this.setState({ vendors: vendorList, selectedVendorId: vendorPropIndex });
     });
   }
 
+  componentDidUpdate() {
+    const { selectedVendorId, vendors, finishedScrollingToVendor } = this.state;
+    if (selectedVendorId >= 0) {
+      let marker = this.markers[selectedVendorId];
+      if (selectedVendorId > -1 && vendors[selectedVendorId] !== null && marker !== undefined && !finishedScrollingToVendor) {
+        console.log('well shit')
+          this.centerMarker(selectedVendorId);
+          // hack to show callout until react-native-maps fixed
+          setTimeout(() => marker._component.showCallout(), 100);
+          this.setState({ finishedScrollingToVendor: true });
+      }
+    }
+  }
 
-  onDragEnd(event) {
+  hasVendorParam = () => this.props && this.props.params
+
+  getVendorPropIndex = (vendors) => {
+    if (this.hasVendorParam()) {
+      let vendorIndex = -1;
+      console.log(this.props.params.vendorId);
+      vendors.forEach((vendor, index) => {
+        if (vendor.userId === this.props.params.vendorId) {
+          vendorIndex = index; 
+        }
+      });
+      return vendorIndex;
+    }
+  }
+
+  /*onDragEnd(event) {
     let value = event.nativeEvent.contentOffset.x;
     console.log("value    ", value);
 
@@ -114,10 +144,9 @@ export default class MapScreen extends Component {
     }, 300);
 
     console.log("state center index    " + this.state.centeredCard)
-  }
+  }*/
 
-  centerMarker(index){
-    console.log(this.state.vendors)
+  centerMarker = (index) => {
     this.map.animateToCoordinate({
       latitude: this.state.vendors[index].latitude,
       longitude: this.state.vendors[index].longitude
@@ -126,7 +155,7 @@ export default class MapScreen extends Component {
   }
 
   showMarkerCallout = (index) => {
-    this.state.markers[index]._component.showCallout();
+    this.markers[index]._component.showCallout();
   }
 
   makeCoordinate(vendor){
@@ -147,32 +176,20 @@ export default class MapScreen extends Component {
     }
   }
 
-
-  addMarker(marker){
-    // this.markers.push(marker)
-    
+  /*addMarker(marker){
     this.setState((prevState) => {markers : prevState.markers.push(marker)})
-  }
+  }*/
 
+  /*setMarkerRef = (marker, index) => {
+    this.setState((prevState) => {
+      const markers = prevState.markers.slice();
+      markers.splice(index, 1, marker);
+      return { markers };
+    });
+  }*/
 
   addCard(card){
-    
-    // this.markers.push(marker)
     this.setState((prevState) => {card : prevState.cards.push(card)})
-  }
-
-
-  setMarkerRef = (ref) => {
-    this.marker = ref
-  }
-
-  renderCallout() {
-    if(this.state.calloutIsRendered === true) return;
-    this.setState({calloutIsRendered: true});
-    this.marker.showCallout();
-    console.log(this.marker)
-    console.log(this.map)
-
   }
 
   _renderItem = ({item, index}) => {
@@ -224,12 +241,13 @@ export default class MapScreen extends Component {
         <MapView
           ref={map => this.map = map}
           loadingEnabled
-          
           initialRegion={this.state.region}
           style={[styles.container, { marginTop: this.state.marginTopHack }]}
           showsUserLocation={true}
           showsMyLocationButton={true}
-          onMapReady={()=>this.setState({ marginTopHack: 0 })}
+          onMapReady={()=>{
+            this.setState({ marginTopHack: 0 });
+          }}
 
         >
           {this.state.vendors.map((marker, index) => {
@@ -245,19 +263,13 @@ export default class MapScreen extends Component {
             };
             return (
               <Marker.Animated
-              ref={marker => {this.addMarker(marker)}
-              }
+              ref={marker => { this.markers[index] = marker; }}
               coordinate={this.makeCoordinate(marker)} 
               key={index} 
               onPress={e => {
                   this.setState({markerPressed: true});
                   this._carousel.snapToItem(index);
                   this.centerMarker(index);
-                  {/*this.map.animateToCoordinate({
-                    latitude: marker.latitude,
-                    longitude: marker.longitude
-                  }, 300);*/}
-
                   setTimeout(() =>
                     this.setState({markerPressed: false})
                   , 3000);
@@ -275,9 +287,7 @@ export default class MapScreen extends Component {
                       flex: 1,
                       elevation: 5,
                       justifyContent: 'space-between',
-                      alignItems: 'center',
-                      // width:100,
-                      // textAlign:"center"
+                      alignItems: 'center'
                     }}
                     onPress={() => { this.props.onCalloutPress(marker) }}
                   >
@@ -352,6 +362,7 @@ export default class MapScreen extends Component {
             this.centerMarker(index);
             this.showMarkerCallout(index);
           }}
+          firstItem={this.state.selectedVendorId > -1 ? this.state.selectedVendorId : 0}
         />
       </View>
     );

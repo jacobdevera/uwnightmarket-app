@@ -192,7 +192,8 @@ class VendorOrders extends Component {
                         "priority": "high",
                         "icon": "ic_notif",
                         "show_in_foreground": true,
-                        "sound": "default"
+                        "sound": "default",
+                        "vendorId": order.vendorId
                     }
                 }
             }
@@ -204,8 +205,8 @@ class VendorOrders extends Component {
                     "body": body,
                     "sound": "default"
                 },
-                data: {
-                    targetScreen: 'detail'
+                "data": {
+                    "vendorId": order.vendorId
                 },
                 "priority": 10
             };

@@ -10,13 +10,13 @@ const Map = (props) => {
     const goToVendor = (vendor) => {
         props.navigation.navigate('VendorView', { vendor: vendor});
     }
-
+    
     return (
         <Container>
             <AppHeader navigation={props.navigation}>
                 Map
             </AppHeader>
-            <MapScreen onCalloutPress={goToVendor}/>
+            <MapScreen params={props.navigation.state.params} onCalloutPress={goToVendor}/>
         </Container>);
 }
 

@@ -108,7 +108,7 @@ export class OrderList extends Component {
                                 }}>
                                     <Text style={[styles.center, styles.header, styles.cardH2]}>Order #</Text>
                                     <Button 
-                                        onPress={() => this.props.orderOnPress(item)}
+                                        onPress={() => { if (this.props.orderOnPress) this.props.orderOnPress(item) }}
                                         transparent 
                                         style={{ 
                                             alignSelf: 'center'

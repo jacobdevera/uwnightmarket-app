@@ -16,6 +16,8 @@ import FCM, { FCMEvent, RemoteNotificationResult, WillPresentNotificationResult,
 import { registerKilledListener } from "./Listeners";
 import { API_KEY } from './FirebaseConstants';
 
+import NavigationService from './utils/NavigationService';
+
 export const Views = {
     INITIAL: 0,
     LOGIN: 1,
@@ -105,6 +107,7 @@ export default class App extends Component {
                 return;
             }
             if (notif.opened_from_tray) {
+                NavigationService.navigate('MapView', { vendorId: notif.vendorId });
                 return;
             }
 
@@ -152,9 +155,13 @@ export default class App extends Component {
                     <Container>
                         {this.state.view === Views.INITIAL ?
                             <LandingPage setView={this.setView} /> : this.state.view === Views.ATTENDEE ?
-                                <AttendeeDrawerNav screenProps={{ state: this.state, setView: this.setView }} /> : this.state.view === Views.LOGIN ?
-                                    <LoginForm setView={this.setView} /> :
-                                    <VendorDrawerNav screenProps={{ state: this.state, setView: this.setView }} />}
+                                <AttendeeDrawerNav 
+                                    ref={navigatorRef => {
+                                        NavigationService.setTopLevelNavigator(navigatorRef);
+                                    }}
+                                    screenProps={{ state: this.state, setView: this.setView }} /> : this.state.view === Views.LOGIN ?
+                                <LoginForm setView={this.setView} /> :
+                                <VendorDrawerNav screenProps={{ state: this.state, setView: this.setView }} />}
                     </Container>
                 </Root>
             </StyleProvider>
