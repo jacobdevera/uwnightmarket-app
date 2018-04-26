@@ -111,6 +111,9 @@ export default styles = StyleSheet.create({
     cardH3: {
         fontSize: 12
     },
+    mapText: {
+        fontSize: Math.max(12, 12 * scale)
+    },
     h1: {
         fontSize: 24 
     },
