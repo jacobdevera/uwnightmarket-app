@@ -128,7 +128,7 @@ class Sidebar extends Component {
                     </ListItem>
                 </ScrollView>
                 <View style={[styles.row, { flex: 1, alignItems: 'flex-end', marginBottom: 16 }]}>
-                    <Icon name='logo-facebook' onPress={ ()=>{ Linking.openURL('https://www.facebook.com/TheUWNightMarket')}} style={styles.iconWhite}/>
+                    <Icon name='logo-facebook' onPress={ ()=>{ Linking.openURL('https://www.facebook.com/TheUWNightMarket')} } style={styles.iconWhite}/>
                     <Icon name='logo-instagram' onPress={ ()=>{ Linking.openURL('https://www.instagram.com/uwnightmarket/')} } style={styles.iconWhite}/>
                     <Icon name='logo-twitter' onPress={ ()=>{ Linking.openURL('https://twitter.com/uwnightmarket')} } style={styles.iconWhite}/>
                 </View>

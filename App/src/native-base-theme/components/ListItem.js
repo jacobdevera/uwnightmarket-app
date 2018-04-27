@@ -380,7 +380,7 @@ export default (variables = variable) => {
         alignSelf: "stretch",
         height: 44,
         justifyContent: "flex-end",
-        borderBottomWidth: 1 / PixelRatio.getPixelSizeForLayoutSize(1),
+        borderBottomWidth: StyleSheet.hairlineWidth,
         borderColor: variables.listBorderColor,
         paddingRight: variables.listItemPadding + 5
       },
@@ -398,7 +398,7 @@ export default (variables = variable) => {
     paddingRight: variables.listItemPadding + 5,
     paddingVertical: variables.listItemPadding + 3,
     marginLeft: variables.listItemPadding + 5,
-    borderBottomWidth: 1 / PixelRatio.getPixelSizeForLayoutSize(1),
+    borderBottomWidth: StyleSheet.hairlineWidth,
     backgroundColor: variables.listBg,
     borderColor: variables.listBorderColor
   };

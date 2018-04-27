@@ -217,6 +217,10 @@ class MyOrders extends Component {
                                 <Text style={{ flex: 1, flexWrap: 'wrap' }}>{`You will receive a notification when your order is ready for pick up. `+
                                 `Please arrive at the booth within 10 minutes to pick up your order and be prepared to pay with cash.`}</Text>
                             </View>
+                            <View style={[{ flexDirection: 'row' }, styles.smallSection]}>
+                                <Icon name='dot-single' type='Entypo' style={{ fontSize: 16, paddingTop: 2  }}/>
+                                <Text style={{ flex: 1, flexWrap: 'wrap' }}>{`The vendors have the right to cancel your order at any time if and only if they are unable to fulfill your order.`}</Text>
+                            </View>
                         </View>
                         <Button style={[{ alignSelf: 'center' }, styles.section]} 
                             onPress={() => {

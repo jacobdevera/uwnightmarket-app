@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Alert, Image, View } from 'react-native';
+import { Alert, Image, View, Linking } from 'react-native';
 import { Button, Container, Content, Text, Spinner } from 'native-base';
 import firebase from 'firebase';
 import styles, { config, scale } from './styles';
 
 import { Views } from './App';
-import { isStatusActive } from './utils/event';
+import { isStatusActive, acceptTermsAndConditions } from './utils/event';
 
 class LandingPage extends Component {
     constructor(props) {
@@ -19,8 +19,27 @@ class LandingPage extends Component {
     onAttendeeButtonPress() {
         if (!firebase.auth().currentUser) {
             console.log('new user');
-            this.setState({ error: '', loading: true });
-            this.attendeeSignIn();
+            Alert.alert(
+                'Terms and Conditions',
+                `Please review the terms and conditions to coninue.`,
+                [
+                    {text: 'Skip', style: 'cancel', onPress: () => { 
+                            acceptTermsAndConditions(() => {
+                                this.setState({ error: '', loading: true });
+                                this.attendeeSignIn();
+                            })
+                        }
+                    },
+                    {text: 'Review', onPress: () => {
+                            Linking.openURL('https://kchen73.github.io/uwnightmarket/')
+                            acceptTermsAndConditions(() => {
+                                this.setState({ error: '', loading: true });
+                                this.attendeeSignIn();          
+                            })
+                        }
+                    },
+                ]
+            );
         } else {
             this.props.setView(Views.ATTENDEE);
         }
@@ -31,8 +50,8 @@ class LandingPage extends Component {
             .then((response) => {
                 isStatusActive();
             }).catch( err =>{
-                console.log(error.code);
-                console.log(error.message);
+                console.log(err.code);
+                console.log(err.message);
                 this.onLoginFail.bind(this);
             }
         );

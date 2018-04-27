@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import { Alert } from 'react-native';
 
 export const isEventActive = async () => {
     let snapshot = await firebase.database().ref(`/status/`).once('value');
@@ -13,4 +14,15 @@ export const isEventActive = async () => {
         );
     }
     return status.active;
+}
+
+export const acceptTermsAndConditions = (acceptCallback) => {
+    Alert.alert(
+        'Do you accept the terms and conditions?',
+        'You must accept to continue',
+        [
+            {text: 'Decline', style: 'cancel'},
+            {text: 'Accept', onPress: acceptCallback}
+        ]
+    );
 }
