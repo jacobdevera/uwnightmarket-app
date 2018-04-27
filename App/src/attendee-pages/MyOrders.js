@@ -192,18 +192,31 @@ class MyOrders extends Component {
                             vendor={false} /> 
                     </View>
                     : !loading ? <View style={styles.section}>
-                        <View>
+                        <View style={{ flex: 1 }}>
                             <Text style={[styles.bold, styles.header, styles.h1]}>Ordering Info</Text>
-                            <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-                                <Text>{`\u2022 Vendors with the `}
-                                <Icon name='mobile' type='Entypo' style={{ fontSize: 24, color: config.colorPrimary }}/>
-                                {` icon will be available for mobile ordering.`}</Text> 
+                            <View style={{ flexDirection: 'row' }}>
+                                    <Icon name='dot-single' type='Entypo' style={{ fontSize: 16, paddingTop: 8 }}/>
+                                    <Text  style={{ flex: 1, flexWrap: 'wrap' }}>{`Vendors with the `}
+                                    <Icon name='mobile' type='Entypo' style={{ fontSize: 24, color: config.colorPrimary }}/>
+                                    {` icon will be available for mobile ordering.`}</Text>
                             </View>
-                            <Text style={styles.smallSection}>{`\u2022 You can order a maximum of ${limits.quantity} items from one vendor.`}</Text>
-                            <Text style={styles.smallSection}>{`\u2022 You can have up to ${limits.orders} active orders at a time.`}</Text>
-                            <Text style={styles.smallSection}>{`\u2022 Once you make an order, you have up to ${limits.orderAge / 1000 / 60} minutes to delete the order.`}</Text>
-                            <Text style={styles.smallSection}>{`\u2022 You will receive a notification when your order is ready for pick up. `+
+                            <View style={[{ flexDirection: 'row' }, styles.smallSection]}>
+                                <Icon name='dot-single' type='Entypo' style={{ fontSize: 16, paddingTop: 2 }}/>
+                                <Text style={{ flex: 1, flexWrap: 'wrap' }}>{`You can order a maximum of ${limits.quantity} items from one vendor.`}</Text>
+                            </View>
+                            <View style={[{ flexDirection: 'row' }, styles.smallSection]}>
+                                <Icon name='dot-single' type='Entypo' style={{ fontSize: 16, paddingTop: 2  }}/>
+                                <Text style={{ flex: 1, flexWrap: 'wrap' }}>{`You can have up to ${limits.orders} active orders at a time.`}</Text>
+                            </View>
+                            <View style={[{ flexDirection: 'row' }, styles.smallSection]}>
+                                <Icon name='dot-single' type='Entypo' style={{ fontSize: 16, paddingTop: 2  }}/>
+                                <Text style={{ flex: 1, flexWrap: 'wrap' }}>{`Once you make an order, you have up to ${limits.orderAge / 1000 / 60} minutes to delete the order.`}</Text>
+                            </View>
+                            <View style={[{ flexDirection: 'row' }, styles.smallSection]}>
+                                <Icon name='dot-single' type='Entypo' style={{ fontSize: 16, paddingTop: 2  }}/>    
+                                <Text style={{ flex: 1, flexWrap: 'wrap' }}>{`You will receive a notification when your order is ready for pick up. `+
                                 `Please arrive at the booth within 10 minutes to pick up your order and be prepared to pay with cash.`}</Text>
+                            </View>
                         </View>
                         <Button style={[{ alignSelf: 'center' }, styles.section]} 
                             onPress={() => {
