@@ -60,10 +60,14 @@ const Games = (props) => {
                                                     <Badge style={{ backgroundColor: config.colorPrimary, marginRight: 8}}>
                                                         <Text>{data.boothNumber}</Text>
                                                     </Badge>
-                                                    <Text style={ [styles.bold, styles.cardH1, styles.badgeHeader] }>{data.name}</Text>
+                                                    <Text style={ [styles.bold, styles.cardH1, styles.badgeHeader] }>{`${data.name}\n`}
+                                                        <Text style={ [styles.cardH2, styles.smallSection, { color: config.colorPrimary }]}>
+                                                            {data.price}
+                                                        </Text>
+                                                    </Text>
                                                 </View>
-                                                <Text style={ [styles.bold, styles.cardH2, styles.smallSection] }>{data.price}</Text>
-                                                <Text style={styles.smallSection}>{data.desc}</Text>
+            
+                                                <Text style={[styles.smallSection, { color: config.textDark }]}>{data.desc}</Text>
                                             </Body>
                                             <Image
                                                 resizeMode="contain"

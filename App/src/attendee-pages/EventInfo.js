@@ -42,6 +42,10 @@ const EventInfo = (props) => {
         {
             key: 'wells-fargo',
             uri: require('../../img/wells-fargo.png')
+        },
+        {
+            key: 'uwajimaya',
+            uri: require('../../img/uwajimaya.jpg')
         }
     ]
     return (
@@ -64,14 +68,14 @@ const EventInfo = (props) => {
 
                 <View style={styles.section}>
                     <Text style={[styles.header, styles.h2, styles.center]}>Parking</Text>
-                    <Text>Central Parking Garage - free parking for public (Central Plaza Garage, Seattle, WA 98105)</Text>
+                    <Text>Central Parking Garage - free parking for public (Central Plaza Garage, Seattle, WA 98105). Parking is first come, first served.</Text>
                 </View>
 
                 <View style={styles.section}>
                     <Text style={[styles.header, styles.h2, styles.center]}>Questions</Text>
                     <Text>If you have any questions, feel free to find us at 
                         the <Text style={styles.bold}>Information Booth</Text> located in front 
-                        of the staircase from Campus Parkway and in the middle of Red Square 
+                        of Odegaard Library and in the middle of Red Square 
                         behind TSA Food Booth. You can also message the Taiwanese Student 
                         Association Facebook page or contact our TSA phone number: <Text style={styles.bold}>(281) 698-7289</Text>.
                     </Text>

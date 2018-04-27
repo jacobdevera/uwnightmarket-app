@@ -4,7 +4,7 @@ import { Header, Left, Button, Icon, Right, Body, Title } from 'native-base';
 
 import { config } from '../styles';
 const AppHeader = (props) => {
-    const headerTextColor = Platform.OS === 'ios' ? '#000' : '#fff';
+    const headerTextColor = Platform.OS === 'ios' ? config.textDark : '#fff';
     const barStyle = Platform.OS === 'ios' ? 'dark-content' : 'light-content';
     // hack to fix broken android header rendering on native base 
     const marginLeft = Platform.OS === 'android' ? 24 : 0;

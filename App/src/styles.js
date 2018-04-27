@@ -3,10 +3,12 @@ import { StyleSheet, Dimensions, Platform } from "react-native";
 const { height, width } = Dimensions.get('window');
 const isIphoneX = Platform.OS === "ios" && height === 812 && width === 375;
 
-export const scale = parseInt(width) / 414; // 414: iPhone 6 Plus width
+export const scale = parseInt(width) / 414; // iPhone 6 Plus dimensions
+export const scaleVert = parseInt(width) / 736;
 export const config = {
     colorPrimary: '#d94d5d',
     colorDark: '#a21334',
+    backgroundDark: '#aeaeae',
     textDark: '#2a2a2a',
     textLight: '#666666'
 }
@@ -33,6 +35,11 @@ export default styles = StyleSheet.create({
         backgroundColor: config.colorPrimary,
         flex: 1
     },
+    bgContainer: { 
+        flex: 1, 
+        width: null, 
+        height: null 
+    },
     light: {
         color: '#fff'
     },
@@ -51,8 +58,8 @@ export default styles = StyleSheet.create({
         width: 96 * scale
     },
     listImageLarge: {
-        height: 144 * scale,
-        width: 144 * scale
+        height: 200 * scale,
+        width: 200 * scale
     },
     column: {
         flex: 1,
@@ -126,9 +133,6 @@ export default styles = StyleSheet.create({
     badgeHeader: {
         paddingTop: 1
     },
-    link: {
-        color: config.colorPrimary
-    },
     center: {
         textAlign: 'center'
     },
@@ -162,8 +166,8 @@ export const modalStyles = StyleSheet.create({
         flex: 1,
         marginLeft: Math.max(32, 32 * scale),
         marginRight: Math.max(32, 32 * scale),
-        marginTop: Math.max(98, 98 * scale),
-        marginBottom: Math.max(98, 98 * scale),
+        marginTop: Math.max(98, 98 * scaleVert),
+        marginBottom: Math.max(98, 98 * scaleVert),
         backgroundColor: 'white',
         borderRadius: 8
     },

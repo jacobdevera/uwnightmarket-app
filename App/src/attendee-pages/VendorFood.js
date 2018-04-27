@@ -165,6 +165,15 @@ export default class VendorFood extends Component {
 
     isQueueLong = () => this.state.vendor.currentQueueSize >= limits.queue;
     
+    hasPrice = () => {
+        let hasPrice = false;
+        this.state.order.forEach((item) => {
+            if (item.price > 0)
+                hasPrice = true;
+        });
+        return true;
+    }
+
     render() {
         let { vendor, order, descs, subMenus, loading } = this.state;
         let totalQuantity = 0;
@@ -184,7 +193,7 @@ export default class VendorFood extends Component {
                         renderItem={({item, index}) => {
                             return (
                                     <View>
-                                        <ListItem style={{ borderBottomWidth: 0, marginLeft: 0 }}>
+                                        <ListItem style={{ borderBottomWidth: vendor.canOrder ? 0 : StyleSheet.hairlineWidth, marginLeft: 0 }}>
                                             <Body style={{ flex: 2 }}>
                                                 <Text>{item.name}</Text>
                                                 {descs[item.trueIndex] && <Text style={styles.menuDesc}>{descs[item.trueIndex]}</Text>}

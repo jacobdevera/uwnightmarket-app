@@ -1,4 +1,4 @@
-import { Platform, PixelRatio } from "react-native";
+import { Platform, PixelRatio, StyleSheet } from "react-native";
 
 import pickerTheme from "./Picker";
 import variable from "./../variables/platform";
@@ -344,7 +344,7 @@ export default (variables = variable) => {
         flex: 1,
         height: 44,
         justifyContent: "center",
-        borderBottomWidth: 1 / PixelRatio.getPixelSizeForLayoutSize(1),
+        borderBottomWidth: StyleSheet.hairlineWidth,
         borderColor: variables.listBorderColor
       },
       "NativeBase.Right": {

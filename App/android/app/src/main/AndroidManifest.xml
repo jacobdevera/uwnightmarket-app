@@ -33,7 +33,7 @@
         android:name="com.google.android.geo.API_KEY"
         android:value="AIzaSyAkKg92tzxb7WgEgjpS8P9e3BmBOQkTMkM"/>
 
-      <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@mipmap/ic_notif"/>
+      <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@drawable/ic_notif"/>
 
       <service android:name="com.evollu.react.fcm.MessagingService" android:enabled="true" android:exported="true">
         <intent-filter>

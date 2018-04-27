@@ -3,7 +3,7 @@ import { Image, View } from 'react-native';
 import { Button, Card, CardItem, Container, Content, Text, Thumbnail, Body, Left, List } from 'native-base';
 
 import { AppHeader } from '../components';
-import styles from '../styles';
+import styles, { config } from '../styles';
 
 const Merchandise = (props) => {
     let merch = [
@@ -17,7 +17,11 @@ const Merchandise = (props) => {
             name: 'T-Shirt',
             price: '$15',
             desc: 'Colors: white, gold, violet',
-            img: [require('../../img/tshirt-front.png'), require('../../img/tshirt-back.png')]
+            img: [
+                require('../../img/tshirt-white.png'),
+                require('../../img/tshirt-gold.png'), 
+                require('../../img/tshirt-violet.png')
+            ]
         },
         {
             name: 'Button',
@@ -30,8 +34,8 @@ const Merchandise = (props) => {
     let imageList = (images) => images.map((image) => 
         <Image
             key={image}
-            resizeMode="contain"
-            style={styles.listImageLarge}
+            resizeMode='contain'
+            style={styles.listImageLarge} 
             source={image}
         />
     );
@@ -54,19 +58,17 @@ const Merchandise = (props) => {
                         renderRow={(data, index) => {
                             return (
                                 <Card>
+                                    <CardItem bordered>
+                                            <Body style={{ alignSelf: 'flex-start' }}>
+                                                <Text style={ [styles.bold, styles.cardH1] }>{data.name}</Text>
+                                                <Text style={ [styles.cardH2, { color: config.colorPrimary }]}>{data.price}</Text>
+                                                {data.desc && <Text style={[styles.smallSection, { color: config.textLight }]}>{data.desc}</Text>}
+                                            </Body>
+                                    </CardItem>
                                     {data.img.length > 0 && 
-                                    <CardItem style={{ justifyContent: 'center' }}>
+                                    <CardItem bordered style={{ flexDirection: 'column', justifyContent: 'center'}}>
                                         {imageList(data.img)}
                                     </CardItem>}
-                                    <CardItem>
-                                        <Left>
-                                            <Body style={{ alignSelf: 'flex-start' }}>
-                                                <Text style={ [styles.header, styles.cardH1] }>{data.name}</Text>
-                                                <Text style={ [styles.header, styles.cardH2] }>{data.price}</Text>
-                                                {data.desc && <Text>{data.desc}</Text>}
-                                            </Body>
-                                        </Left>
-                                    </CardItem>
                                 </Card>
                             )
                         }}

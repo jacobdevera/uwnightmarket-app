@@ -191,25 +191,35 @@ export default class VendorList extends Component {
                                 let bodyLeftMargin = item.img.length > 0 ? 8 : 0;
                                 return (
                                     <Card>
-                                        <CardItem style={{ paddingLeft: 10, paddingRight: 10 }}
+                                        <CardItem style={{ paddingLeft: 8, paddingRight: 8, paddingTop: 0, paddingBottom: 0 }}
                                             button onPress={() => { this.props.navigation.navigate('VendorFood', {
                                                     vendor: item
                                                 }); 
                                             }}
-                                        >
-                                            <Left>
-                                                {item.img.length > 0 &&
+                                        > 
+                                            {item.img.length > 0 &&
+                                            <View style={{paddingTop: 8, paddingBottom: 8 }}>
                                                 <Image
                                                     resizeMode="contain"
-                                                    style={styles.listImage }
+                                                    style={[styles.listImage]}
                                                     source={{ uri: item.img }}
-                                                />}
-                                                <Body style={{ marginLeft: bodyLeftMargin, alignSelf: 'flex-start' }}>
+                                                />
+                                            </View>}
+                                            <Body style={{ 
+                                                paddingLeft: 8, 
+                                                marginLeft: bodyLeftMargin, 
+                                                alignSelf: 'flex-start', 
+                                                borderLeftWidth: StyleSheet.hairlineWidth, 
+                                                borderLeftColor: '#ccc', 
+                                                paddingTop: 10, 
+                                                paddingBottom: 10
+                                            }}>
+                                                <View style={{ flex: 1 }}>
                                                     <View style={{ flexDirection:'row' }}>
                                                         <Badge style={{ backgroundColor: config.colorPrimary, marginRight: 8}}>
                                                             <Text>{item.boothNumber}</Text>
                                                         </Badge>
-                                                        <Text style={ [{flex: 3}, styles.bold, styles.cardH1, styles.badgeHeader] }>{item.name}</Text>
+                                                        <Text style={ [{flex: 1, marginRight: 8}, styles.bold, styles.cardH1, styles.badgeHeader] }>{item.name}</Text>
                                                         {item.canOrder && 
                                                         <Image
                                                             resizeMode="contain"
@@ -218,9 +228,9 @@ export default class VendorList extends Component {
                                                         />}
                                                     </View>
                                                     {item.desc.length > 0 && <Text style={ [styles.desc, styles.smallSection] }>{item.desc}</Text>}
-                                                    <Text style={ [styles.bold, styles.smallSection] }>Menu:</Text><Text style={styles.menuItem}>{foodNames.join(', ')}</Text>
-                                                </Body>
-                                            </Left>
+                                                    <Text style={ [styles.bold, styles.smallSection] }>Menu:</Text><Text style={[styles.menuItem]}>{foodNames.join(', ')}</Text>
+                                                </View>
+                                            </Body>
                                         </CardItem>
                                     </Card>
                                 )

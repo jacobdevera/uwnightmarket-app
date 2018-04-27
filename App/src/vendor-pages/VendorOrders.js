@@ -49,7 +49,7 @@ class VendorOrders extends Component {
         this.orderRef = firebase.database().ref(`/vendor-orders/${firebase.auth().currentUser.uid}/orders/`).orderByKey();
         this.asConfig = {
             title: 'Set Order Status',
-            options: ['Not Ready', 'Ready', 'Picked Up', 'Delete Order', 'Cancel'],
+            options: ['Not Ready', 'Ready', 'Picked Up', 'Cancel Order', 'Cancel'],
             cancelIndex: 4,
             destructiveIndex: 3,
             handleActionSelect: this.handleStatusChange
@@ -124,8 +124,8 @@ class VendorOrders extends Component {
                 'Cancel this order?',
                 'The attendee will be notified.',
                 [
-                    { text: 'Cancel', style: 'cancel'},
-                    { text: 'Delete', style: 'destructive', onPress: async () =>  {
+                    { text: 'No', style: 'cancel'},
+                    { text: 'Cancel Order', style: 'destructive', onPress: async () =>  {
                         if (await this.updateOrder(statuses[index], selectedItem)) {
                             this.buildAndSendNotification(statuses[index], selectedItem);
                         }
