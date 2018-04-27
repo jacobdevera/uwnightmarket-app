@@ -58,7 +58,7 @@ const Merchandise = (props) => {
                         renderRow={(data, index) => {
                             return (
                                 <Card>
-                                    <CardItem bordered>
+                                    <CardItem bordered={data.img.length > 0}>
                                             <Body style={{ alignSelf: 'flex-start' }}>
                                                 <Text style={ [styles.bold, styles.cardH1] }>{data.name}</Text>
                                                 <Text style={ [styles.cardH2, { color: config.colorPrimary }]}>{data.price}</Text>
@@ -66,7 +66,7 @@ const Merchandise = (props) => {
                                             </Body>
                                     </CardItem>
                                     {data.img.length > 0 && 
-                                    <CardItem bordered style={{ flexDirection: 'column', justifyContent: 'center'}}>
+                                    <CardItem style={{ flexDirection: 'column', justifyContent: 'center'}}>
                                         {imageList(data.img)}
                                     </CardItem>}
                                 </Card>

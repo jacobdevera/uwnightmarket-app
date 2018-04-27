@@ -191,14 +191,14 @@ export default class VendorList extends Component {
                                 let bodyLeftMargin = item.img.length > 0 ? 8 : 0;
                                 return (
                                     <Card>
-                                        <CardItem style={{ paddingLeft: 8, paddingRight: 8, paddingTop: 0, paddingBottom: 0 }}
+                                        <CardItem style={{ paddingLeft: 10, paddingRight: 10, paddingTop: 0, paddingBottom: 0 }}
                                             button onPress={() => { this.props.navigation.navigate('VendorFood', {
                                                     vendor: item
                                                 }); 
                                             }}
                                         > 
                                             {item.img.length > 0 &&
-                                            <View style={{paddingTop: 8, paddingBottom: 8 }}>
+                                            <View style={{paddingTop: 10, paddingBottom: 10 }}>
                                                 <Image
                                                     resizeMode="contain"
                                                     style={[styles.listImage]}
@@ -206,7 +206,7 @@ export default class VendorList extends Component {
                                                 />
                                             </View>}
                                             <Body style={{ 
-                                                paddingLeft: 8, 
+                                                paddingLeft: 10, 
                                                 marginLeft: bodyLeftMargin, 
                                                 alignSelf: 'flex-start', 
                                                 borderLeftWidth: StyleSheet.hairlineWidth, 
@@ -216,10 +216,10 @@ export default class VendorList extends Component {
                                             }}>
                                                 <View style={{ flex: 1 }}>
                                                     <View style={{ flexDirection:'row' }}>
-                                                        <Badge style={{ backgroundColor: config.colorPrimary, marginRight: 8}}>
+                                                        <Badge style={{ backgroundColor: config.colorPrimary, marginRight: 10}}>
                                                             <Text>{item.boothNumber}</Text>
                                                         </Badge>
-                                                        <Text style={ [{flex: 1, marginRight: 8}, styles.bold, styles.cardH1, styles.badgeHeader] }>{item.name}</Text>
+                                                        <Text style={ [{flex: 1, marginRight: 8}, styles.bold, styles.cardH1] }>{item.name}</Text>
                                                         {item.canOrder && 
                                                         <Image
                                                             resizeMode="contain"

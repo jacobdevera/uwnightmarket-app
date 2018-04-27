@@ -152,7 +152,7 @@ export default class App extends Component {
         return (
             <StyleProvider style={getTheme(commonColor)}>
                 <Root>
-                    <Container>
+                    <Container style={{ backgroundColor: 'white' }}>
                         {this.state.view === Views.INITIAL ?
                             <LandingPage setView={this.setView} /> : this.state.view === Views.ATTENDEE ?
                                 <AttendeeDrawerNav 

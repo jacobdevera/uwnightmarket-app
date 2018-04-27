@@ -16,7 +16,7 @@ import MapView ,{ Callout, AnimatedRegion, Marker  } from "react-native-maps";
 import firebase from 'firebase';
 import Carousel from 'react-native-snap-carousel';
 
-import { sortByName } from '../utils/vendor';
+import { sortByName, sortByBoothNumber } from '../utils/vendor';
 import mainStyles, { config, scale as mainScale } from '../styles';
 
 const { width, height } = Dimensions.get("window");
@@ -66,7 +66,7 @@ export default class MapScreen extends Component {
           vendorList.push(each);
         }
       });
-      vendorList = vendorList.sort(sortByName);
+      vendorList = vendorList.sort(sortByBoothNumber);
 
       let vendorPropIndex = this.getVendorPropIndex(vendorList);
       this.markers = new Array(vendorList.length);

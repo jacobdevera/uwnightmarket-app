@@ -1,6 +1,6 @@
 import color from "color";
 
-import { Platform, Dimensions, PixelRatio } from "react-native";
+import { Platform, Dimensions, PixelRatio, StyleSheet } from "react-native";
 
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
@@ -235,7 +235,7 @@ export default {
 
   // Other
   borderRadiusBase: platform === "ios" ? 5 : 2,
-  borderWidth: 1 / PixelRatio.getPixelSizeForLayoutSize(1),
+  borderWidth: StyleSheet.hairlineWidth,
   contentPadding: 10,
   dropdownLinkColor: "#414142",
   inputLineHeight: 24,

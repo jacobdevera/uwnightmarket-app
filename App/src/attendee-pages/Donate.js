@@ -16,7 +16,7 @@ const Donate = (props) => {
                     <Text style={[styles.header, styles.h2, styles.center]}>We Need Your Help!</Text>
                     <View style={{ flex: 1, flexDirection: 'row' }}>
                         <Image
-                            style={[{ flex: 1, resizeMode: "stretch", width: null, height: null, borderRadius: 8 }]}
+                            style={[{ flex: 1, resizeMode: "contain", width: null, height: null, borderRadius: 8 }]}
                             source={require('../../img/donate.jpg')}
                         />
                     </View>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, View } from 'react-native';
+import { Image, View, StyleSheet } from 'react-native';
 import { Button, Card, CardItem, Container, Content, Text, Thumbnail, Body, Left, List, Badge, Right } from 'native-base';
 
 import { AppHeader } from '../components';
@@ -53,28 +53,27 @@ const Games = (props) => {
                         renderRow={(data, index) => {
                             return (
                                 <Card>
-                                    <CardItem style={{ paddingLeft: 10, paddingRight: 10 }}>
-                                        <Left>
-                                            <Body style={{ alignSelf: 'flex-start', marginRight: 8 }}>
+                                    <CardItem style={{ paddingLeft: 10, paddingRight: 10, paddingTop: 0, paddingBottom: 0 }}>
+                                        <Body style={{ alignSelf: 'flex-start', paddingRight: 10, marginRight: 10, borderRightWidth: StyleSheet.hairlineWidth, borderRightColor: '#ccc', paddingTop: 10, paddingBottom: 10 }}>
+                                            <View style={{ flex: 1 }}>
                                                 <View style={[{flexDirection: 'row', justifyContent: 'flex-start'}]}>
                                                     <Badge style={{ backgroundColor: config.colorPrimary, marginRight: 8}}>
                                                         <Text>{data.boothNumber}</Text>
                                                     </Badge>
-                                                    <Text style={ [styles.bold, styles.cardH1, styles.badgeHeader] }>{`${data.name}\n`}
+                                                    <Text style={ [styles.bold, styles.cardH1] }>{`${data.name}\n`}
                                                         <Text style={ [styles.cardH2, styles.smallSection, { color: config.colorPrimary }]}>
                                                             {data.price}
                                                         </Text>
                                                     </Text>
                                                 </View>
-            
-                                                <Text style={[styles.smallSection, { color: config.textDark }]}>{data.desc}</Text>
-                                            </Body>
-                                            <Image
-                                                resizeMode="contain"
-                                                style={styles.listImage}
-                                                source={data.img}
-                                            />
-                                        </Left>
+                                                <Text style={[styles.smallSection, { fontSize: 14, color: config.textDark }]}>{data.desc}</Text>
+                                            </View>
+                                        </Body>
+                                        <Image
+                                            resizeMode="contain"
+                                            style={[styles.listImage, { paddingTop: 10, paddingBottom: 10 }]}
+                                            source={data.img}
+                                        />
                                     </CardItem>
                                 </Card>
                             )

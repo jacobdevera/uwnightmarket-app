@@ -130,9 +130,6 @@ export default styles = StyleSheet.create({
     h3: {
         fontSize: 16
     },
-    badgeHeader: {
-        paddingTop: 1
-    },
     center: {
         textAlign: 'center'
     },
