@@ -7,6 +7,7 @@ import {
     H1,
     H2,
     H3,
+    Icon,
     Text,
     FlatList,
     Card,
@@ -195,11 +196,7 @@ class MyOrders extends Component {
                             <Text style={[styles.bold, styles.header, styles.h1]}>Ordering Info</Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                                 <Text>{`\u2022 Vendors with the `}
-                                <Image
-                                    resizeMode="stretch"
-                                    style={styles.icon}
-                                    source={require('../../img/mobile-order-support-icon.png')}
-                                /> 
+                                <Icon name='mobile' type='Entypo' style={{ fontSize: 24, color: config.colorPrimary }}/>
                                 {` icon will be available for mobile ordering.`}</Text> 
                             </View>
                             <Text style={styles.smallSection}>{`\u2022 You can order a maximum of ${limits.quantity} items from one vendor.`}</Text>

@@ -91,9 +91,6 @@ export default styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'flex-start'
     },
-    menuDesc: {
-        color: 'gray'
-    },
     desc: {
         color: config.textLight,
         fontSize: 14

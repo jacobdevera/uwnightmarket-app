@@ -5,6 +5,7 @@ import firebase from 'firebase';
 import styles, { config, scale } from './styles';
 
 import { Views } from './App';
+import { isStatusActive } from './utils/event';
 
 class LandingPage extends Component {
     constructor(props) {
@@ -28,19 +29,7 @@ class LandingPage extends Component {
     attendeeSignIn = () => {
         firebase.auth().signInAnonymously()
             .then((response) => {
-                firebase.database().ref(`/status/`).once('value').then((snapshot) => {
-                    let status = snapshot.val();
-                    if (status && !status.active) {
-                        Alert.alert(
-                            'Oops',
-                            'Looks like the night market has not started yet.',
-                            [
-                                {text: 'OK', style: 'cancel'}
-                            ]
-                        );
-                        firebase.auth().currentUser.delete().catch(err => console.log(err));
-                    }
-                });
+                isStatusActive();
             }).catch( err =>{
                 console.log(error.code);
                 console.log(error.message);

@@ -7,6 +7,7 @@ import FCM, { FCMEvent, RemoteNotificationResult, WillPresentNotificationResult,
 import { NavigationActions } from 'react-navigation';
 
 import { Status, limits, ErrorToken } from '../App';
+import { isEventActive } from '../utils/event';
 import { AppHeader } from '../components';
 import styles, { config, scale } from '../styles';
 
@@ -196,7 +197,7 @@ export default class VendorFood extends Component {
                                         <ListItem style={{ borderBottomWidth: vendor.canOrder ? 0 : StyleSheet.hairlineWidth, marginLeft: 0 }}>
                                             <Body style={{ flex: 2 }}>
                                                 <Text>{item.name}</Text>
-                                                {descs[item.trueIndex] && <Text style={styles.menuDesc}>{descs[item.trueIndex]}</Text>}
+                                                {descs[item.trueIndex] && <Text style={{ color: 'gray' }}>{descs[item.trueIndex]}</Text>}
                                             </Body>
                                             {item.price > 0 && <Text>${item.price}</Text>}
                                         </ListItem>
@@ -262,7 +263,7 @@ export default class VendorFood extends Component {
                             {this.isQueueLong() && <Text style={[styles.row,styles.center,{ color: 'red' }]}>Your order may take a while to begin preparing.</Text>}
                             <View style={[styles.row, styles.last]}>
                                 <Button disabled={!vendor.canOrder || totalQuantity <= 0} 
-                                    onPress={async () => { if (await this.lessThanMaxOrders()) this.submitOrder() }}>
+                                    onPress={async () => { if (await this.lessThanMaxOrders() && isEventActive()) this.submitOrder() }}>
                                     <Text>Submit Order</Text>
                                 </Button>
                             </View>

@@ -219,13 +219,13 @@ export default class VendorList extends Component {
                                                         <Badge style={{ backgroundColor: config.colorPrimary, marginRight: 10}}>
                                                             <Text>{item.boothNumber}</Text>
                                                         </Badge>
-                                                        <Text style={ [{flex: 1, marginRight: 8}, styles.bold, styles.cardH1] }>{item.name}</Text>
+                                                        <Text style={ [{ flex: 1, flexWrap: 'wrap'}, styles.bold, styles.cardH1] }>{item.name}</Text>
                                                         {item.canOrder && 
-                                                        <Image
-                                                            resizeMode="contain"
-                                                            style={[styles.icon]}
-                                                            source={require('../../img/mobile-order-support-icon.png')}
-                                                        />}
+                                                        <View style={{ alignItems: 'flex-end' }}>
+                                                        <Icon name='mobile' 
+                                                            type='Entypo'
+                                                            style={{ fontSize: 24, color: config.colorPrimary, }}
+                                                        /></View>}
                                                     </View>
                                                     {item.desc.length > 0 && <Text style={ [styles.desc, styles.smallSection] }>{item.desc}</Text>}
                                                     <Text style={ [styles.bold, styles.smallSection] }>Menu:</Text><Text style={[styles.menuItem]}>{foodNames.join(', ')}</Text>

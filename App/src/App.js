@@ -56,6 +56,7 @@ export const ErrorToken = () => {
         ]
     );
 }
+
 registerKilledListener();
 
 export default class App extends Component {

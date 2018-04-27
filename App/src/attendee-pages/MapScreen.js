@@ -223,7 +223,10 @@ export default class MapScreen extends Component {
                     }}
                     onPress={() => { this.props.onCalloutPress(marker) }}
                   >
-                        <Text style={mainStyles.cardH3}>{marker.boothNumber}. {marker.name}</ Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      <Text style={mainStyles.cardH3}>{marker.boothNumber}. {marker.name}</Text>
+                      <Icon name='chevron-thin-right' type='Entypo' style={{ marginLeft: 8, fontSize: 12 }}/>
+                    </View>
                    </Callout>
 
               </Marker.Animated>
