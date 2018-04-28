@@ -91,7 +91,7 @@ export default class MapScreen extends Component {
   }
 
   hasVendorParam = () => {
-    return this.props.notif;
+    return this.props.notif.vendorId;
   }
 
   getVendorPropIndex = (vendors) => {
@@ -108,7 +108,7 @@ export default class MapScreen extends Component {
       console.log(' this shouldnt be -1 ' + vendorIndex)
       return vendorIndex;
     } else {
-      this.setState({ finishedScrollingToVendor: true })
+      this.setState({ finishedScrollingToVendor: true });
       return -1;
     }
   }
@@ -262,7 +262,7 @@ export default class MapScreen extends Component {
               this.showMarkerCallout(index);
             }
           }}
-          enableMomentum={false}
+          enableMomentum={true}
           decelerationRate={0.9}
           firstItem={this.state.selectedVendorId > -1 ? this.state.selectedVendorId : 0}
         />
