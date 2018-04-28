@@ -220,7 +220,10 @@ export default class MapScreen extends Component {
               justifyContent: 'space-between',
               alignItems: 'center'
             }}
-            onPress={() => { this.props.onCalloutPress(marker) }}
+            onPress={() => { 
+              if (marker.menu && marker.menu.length > 0)
+                this.props.onCalloutPress(marker)
+            }}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text style={mainStyles.cardH3}>{marker.boothNumber}. {marker.name}</Text>
@@ -257,8 +260,7 @@ export default class MapScreen extends Component {
           itemWidth={CARD_WIDTH}
           onSnapToItem={(index) => {
             if (this.state.finishedScrollingToVendor) {
-              console.log('snapping')
-              console.log(index);
+              console.log('snapping to ' + index);
               this.centerMarker(index);
               this.showMarkerCallout(index);
             }

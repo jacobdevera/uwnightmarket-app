@@ -19,13 +19,15 @@ export default class VendorFood extends Component {
             order: [],
             showToast: false,
             subMenus: [],
-            loading: true
+            loading: true,
+            priceExists: false
         }
     }
 
     async componentDidMount() {
         const { params } = this.props.navigation.state;
         const vendor = params ? params.vendor : null;
+        const isAttendee = params ? params.isAttendee : false;
         let order = new Array(vendor.menu.length);
         let descs = vendor.menu.map(item => item.desc);
 
@@ -37,7 +39,10 @@ export default class VendorFood extends Component {
                 }
             }) : [{ name: '', menu: [] }];
 
+        let priceExists = false;
         vendor.menu.forEach((item, index) => {
+            if (item.price > 0)
+                priceExists = true;
             order[index] = { 
                 name: item.name,
                 trueIndex: index,
@@ -60,12 +65,14 @@ export default class VendorFood extends Component {
         }
 
         this.setState({ 
+            isAttendee: isAttendee,
             vendor: vendor, 
             order: order, 
             token: token || "", 
             descs: descs, 
             subMenus: subMenus,
-            loading: false
+            loading: false,
+            priceExists: priceExists
         });
     }
 
@@ -176,7 +183,7 @@ export default class VendorFood extends Component {
     }
 
     render() {
-        let { vendor, order, descs, subMenus, loading } = this.state;
+        let { isAttendee, vendor, order, descs, subMenus, loading, priceExists } = this.state;
         let totalQuantity = 0;
         let totalPrice = 0;
         order.forEach((item) => {
@@ -243,7 +250,7 @@ export default class VendorFood extends Component {
                     <View>
                         <View style={[styles.rowSpaceBetween, styles.section]}>
                             <View style={{flex: 1}}><Text style={[{textAlign: 'left'}, styles.bold, styles.h2]}>Item</Text></View>
-                            <View style={{flex: 1}}><Text style={[{textAlign: 'right'}, styles.bold, styles.h2]}>Price</Text></View>
+                            {priceExists && <View style={{flex: 1}}><Text style={[{textAlign: 'right'}, styles.bold, styles.h2]}>Price</Text></View>}
                         </View>
                         {vendor && subMenuLists}
                         {vendor.canOrder ? 
@@ -263,7 +270,7 @@ export default class VendorFood extends Component {
                             {this.isQueueLong() && <Text style={[styles.row,styles.center,{ color: 'red' }]}>Your order may take a while to begin preparing.</Text>}
                             <View style={[styles.row, styles.last]}>
                                 <Button disabled={!vendor.canOrder || totalQuantity <= 0} 
-                                    onPress={async () => { if (await this.lessThanMaxOrders() && await isEventActive()) this.submitOrder() }}>
+                                    onPress={async () => { if (await this.lessThanMaxOrders() && await isEventActive() && isAttendee) this.submitOrder() }}>
                                     <Text>Submit Order</Text>
                                 </Button>
                             </View>

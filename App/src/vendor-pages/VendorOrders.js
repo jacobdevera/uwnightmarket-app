@@ -254,7 +254,7 @@ class VendorOrders extends Component {
                 <AppHeader navigation={this.props.navigation}>
                     Orders
                 </AppHeader>
-                <Content style={styles.paddedContainer}>
+                <Content style={[styles.paddedContainer, styles.section]}>
                     {orders && Object.values(orders).length > 0
                         ? filteredOrders.length > 0 ? 
                             <OrderList

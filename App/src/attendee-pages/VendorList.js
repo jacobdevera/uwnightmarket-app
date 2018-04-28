@@ -193,7 +193,8 @@ export default class VendorList extends Component {
                                     <Card>
                                         <CardItem style={{ paddingLeft: 10, paddingRight: 10, paddingTop: 0, paddingBottom: 0 }}
                                             button onPress={() => { this.props.navigation.navigate('VendorFood', {
-                                                    vendor: item
+                                                    vendor: item,
+                                                    isAttendee: true
                                                 }); 
                                             }}
                                         > 

@@ -9,8 +9,8 @@ import MapScreen from "./MapScreen";
 
 const Map = (props) => {
     const goToVendor = (vendor) => {
-        if (firebase.auth().currentUser.isAnonymous)
-            props.navigation.navigate('VendorView', { vendor: vendor});
+        let isAttendee = firebase.auth().currentUser.isAnonymous;
+        props.navigation.navigate('VendorView', { vendor: vendor, isAttendee: isAttendee });
     }
     console.log('muh props')
     console.log(props.screenProps);
