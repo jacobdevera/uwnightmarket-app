@@ -23,7 +23,6 @@ import {Status, limits} from '../App';
 import styles, { config, modalStyles } from '../styles';
 import { hash } from '../utils/order';
 
-
 class MyOrders extends Component {
     constructor(props) {
         super(props);
@@ -45,6 +44,14 @@ class MyOrders extends Component {
             cancelIndex: 1,
             destructiveIndex: 0,
             handleActionSelect: this.handleActionSelect
+        }
+    }
+
+    componentWillMount() {
+        let { screenProps } = this.props;
+        let notif = screenProps && screenProps.state && screenProps.state.initialNotif;
+        if (notif && notif.vendorId) {
+            this.props.navigation.navigate('MapView', { vendorId: notif.vendorId });
         }
     }
 
@@ -75,7 +82,6 @@ class MyOrders extends Component {
                     this.setState({orders: [], loading: false});
                 }
             });
-
     }
 
     componentWillUnmount() {
@@ -240,7 +246,8 @@ class MyOrders extends Component {
                             vendor={false} />
                     </View>}
                 </Content>
-            </Container>);
+            </Container>
+        );
     }
 }
 

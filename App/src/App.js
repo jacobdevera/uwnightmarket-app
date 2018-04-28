@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Alert, StatusBar, Platform, Linking, SafeAreaView } from 'react-native';
 import { DrawerNavigator } from "react-navigation";
-import { Container, Drawer, StyleProvider, Root } from 'native-base';
+import { Container, Drawer, StyleProvider, Root, Spinner } from 'native-base';
 import getTheme from './native-base-theme/components';
 import commonColor from './native-base-theme/variables/commonColor';
 
@@ -15,8 +15,10 @@ import FCM, { FCMEvent, RemoteNotificationResult, WillPresentNotificationResult,
     NotificationActionType, NotificationActionOption, NotificationCategoryOption } from 'react-native-fcm';
 import { registerKilledListener } from "./Listeners";
 import { API_KEY } from './FirebaseConstants';
+import styles, { config } from './styles';
 
 import NavigationService from './utils/NavigationService';
+import { isStatusActive } from './utils/event';
 
 export const Views = {
     INITIAL: 0,
@@ -42,16 +44,14 @@ export const limits = {
 
 export const filters = ['food', 'beverage', 'hot', 'cold', 'savory', 'sweet', 'spicy', 'available'];
 
-export const ErrorToken = () => {
+export const errorToken = () => {
     Alert.alert(
         'Please allow for notifications',
         'This is needed for vendors to notify you when your order is ready.',
         [
             { text: 'OK', style: 'cancel' },
             { text: 'Open Settings', onPress: () => { 
-                Linking.openURL('app-settings:').catch((err) => {
-                console.log(err);
-              });
+                Linking.openURL('app-settings:').catch(err => console.log(err));
             }}
         ]
     );
@@ -66,8 +66,14 @@ export default class App extends Component {
         console.ignoredYellowBox = ['Setting a timer', 'Remote', 'source.uri'];
         this.state = {
             view: 0,
-            loggedIn: null
+            loggedIn: false,
+            initialNotif: null,
+            checkingLogin: true
         };
+    }
+
+    clearInitialNotif = () => {
+        this.setState({ initialNotif: null })
     }
 
     componentWillMount() {
@@ -81,24 +87,21 @@ export default class App extends Component {
             });
         }
 
-        FCM.getInitialNotification().then(notif => {
-            console.log("INITIAL NOTIFICATION", notif)
-        });
-
         firebase.auth().onAuthStateChanged(async (user) => {
             if (user) {
                 let newView = user.isAnonymous ? Views.ATTENDEE : Views.VENDOR;
                 if (user.isAnonymous) {
-                    try {
-                        await FCM.requestPermissions();
-                    } catch (e) {
+                    await FCM.requestPermissions().catch((e) => {
                         console.log(e);
-                        ErrorToken();
-                    }
+                        errorToken();
+                    });
                 }
-                this.setState({ view: newView, loggedIn: true });
+                FCM.getInitialNotification().then(notif => {
+                    console.log("INITIAL NOTIFICATION ", notif)
+                    this.setState({ initialNotif: notif, view: newView, loggedIn: true, checkingLogin: false });
+                });
             } else {
-                this.setState({ view: Views.INITIAL, loggedIn: false });
+                this.setState({ view: Views.INITIAL, loggedIn: false, checkingLogin: false });
             }
         });
 
@@ -108,7 +111,8 @@ export default class App extends Component {
                 return;
             }
             if (notif.opened_from_tray) {
-                NavigationService.navigate('MapView', { vendorId: notif.vendorId });
+                this.setState({ initialNotif: notif, view: Views.ATTENDEE });
+                NavigationService.navigate('Map', { vendorId: notif.vendorId });
                 return;
             }
 
@@ -146,23 +150,29 @@ export default class App extends Component {
 
     setView = (index) => {
         this.setState({ view: index });
-        console.log("Set view to" + index);
+        console.log("Set view to " + index);
     };
 
     render() {
+        const { view, checkingLogin } = this.state;
         return (
             <StyleProvider style={getTheme(commonColor)}>
                 <Root>
                     <Container style={{ backgroundColor: 'white' }}>
-                        {this.state.view === Views.INITIAL ?
-                            <LandingPage setView={this.setView} /> : this.state.view === Views.ATTENDEE ?
-                                <AttendeeDrawerNav 
-                                    ref={navigatorRef => {
-                                        NavigationService.setTopLevelNavigator(navigatorRef);
-                                    }}
-                                    screenProps={{ state: this.state, setView: this.setView }} /> : this.state.view === Views.LOGIN ?
-                                <LoginForm setView={this.setView} /> :
-                                <VendorDrawerNav screenProps={{ state: this.state, setView: this.setView }} />}
+                        {checkingLogin ? 
+                            <Spinner style={{ marginTop: 'auto', marginBottom: 'auto' }} color={config.colorPrimary}/> 
+                        : view === Views.INITIAL ?
+                            <LandingPage setView={this.setView} /> 
+                        : view === Views.ATTENDEE ?
+                            <AttendeeDrawerNav 
+                                ref={navigatorRef => {
+                                    NavigationService.setTopLevelNavigator(navigatorRef);
+                                }}
+                                screenProps={{ state: this.state, setView: this.setView, clearInitialNotif: this.clearInitialNotif }} /> 
+                        : view === Views.LOGIN ?
+                            <LoginForm setView={this.setView} /> 
+                        :
+                            <VendorDrawerNav screenProps={{ state: this.state, setView: this.setView }} />}
                     </Container>
                 </Root>
             </StyleProvider>

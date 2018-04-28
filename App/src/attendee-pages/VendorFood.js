@@ -6,7 +6,7 @@ import FCM, { FCMEvent, RemoteNotificationResult, WillPresentNotificationResult,
     NotificationActionType, NotificationActionOption, NotificationCategoryOption } from 'react-native-fcm';
 import { NavigationActions } from 'react-navigation';
 
-import { Status, limits, ErrorToken } from '../App';
+import { Status, limits, errorToken } from '../App';
 import { isEventActive } from '../utils/event';
 import { AppHeader } from '../components';
 import styles, { config, scale } from '../styles';
@@ -156,11 +156,11 @@ export default class VendorFood extends Component {
                 );
             } else {
                 console.log(token);
-                ErrorToken();
+                errorToken();
             }
         } catch (e) {
             console.log(e);
-            ErrorToken();
+            errorToken();
         }
     }
 

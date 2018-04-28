@@ -19,7 +19,7 @@ export const isEventActive = async () => {
 export const acceptTermsAndConditions = (acceptCallback) => {
     Alert.alert(
         'Do you accept the terms and conditions?',
-        'You must accept to continue',
+        'You must accept to continue.',
         [
             {text: 'Decline', style: 'cancel'},
             {text: 'Accept', onPress: acceptCallback}

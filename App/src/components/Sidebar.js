@@ -42,9 +42,6 @@ class Sidebar extends Component {
         if (index === 0) {
             let user = firebase.auth().currentUser;
             if (user.isAnonymous) { // is attendee
-                /*if (await this.deleteUserOrders(user)) {
-                    user.delete();
-                }*/
                 this.props.screenProps.setView(Views.INITIAL);
             } else {
                 firebase.auth().signOut().catch((error) => {

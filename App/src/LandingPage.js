@@ -10,10 +10,7 @@ import { isStatusActive, acceptTermsAndConditions } from './utils/event';
 class LandingPage extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            loading: false,
-            error: ''
-        };
+        this.state = { loading: false };
     }
 
     onAttendeeButtonPress() {
@@ -25,7 +22,7 @@ class LandingPage extends Component {
                 [
                     {text: 'Skip', style: 'cancel', onPress: () => { 
                             acceptTermsAndConditions(() => {
-                                this.setState({ error: '', loading: true });
+                                this.setState({ loading: true });
                                 this.attendeeSignIn();
                             })
                         }
@@ -33,7 +30,7 @@ class LandingPage extends Component {
                     {text: 'Review', onPress: () => {
                             Linking.openURL('https://kchen73.github.io/uwnightmarket/')
                             acceptTermsAndConditions(() => {
-                                this.setState({ error: '', loading: true });
+                                this.setState({ loading: true });
                                 this.attendeeSignIn();          
                             })
                         }
@@ -47,21 +44,11 @@ class LandingPage extends Component {
 
     attendeeSignIn = () => {
         firebase.auth().signInAnonymously()
-            .then((response) => {
-                isStatusActive();
-            }).catch( err =>{
+            .catch( err =>{
                 console.log(err.code);
                 console.log(err.message);
-                this.onLoginFail.bind(this);
             }
         );
-    }
-    
-    onLoginFail(){
-        this.setState({
-            error: 'Authentication Failed',
-            loading: false
-        });
     }
 
     render(){
