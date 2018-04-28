@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, Image, View, FlatList, TouchableOpacity } from 'react-native';
+import {Alert, Image, View, FlatList, TouchableOpacity} from 'react-native';
 import {
     ActionSheet,
     Button,
@@ -66,8 +66,8 @@ export class OrderList extends Component {
                 title: title
             },
             buttonIndex => {
-                console.log("item:   " +item);
-                handleActionSelect(buttonIndex, item);
+                if (buttonIndex !== cancelIndex)
+                    handleActionSelect(buttonIndex, item);
             }
         );
     }

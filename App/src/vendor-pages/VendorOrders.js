@@ -134,6 +134,14 @@ class VendorOrders extends Component {
             );
         } else {
             if (await this.updateOrder(statuses[index], selectedItem)) {
+                if (statuses[index] === Status.PICKED_UP) {
+                    Toast.show({
+                        text: `Order completed`,
+                        type: 'success',
+                        position: 'bottom',
+                        duration: 5000
+                    });
+                }
                 this.buildAndSendNotification(statuses[index], selectedItem);
             }
         }
@@ -159,7 +167,7 @@ class VendorOrders extends Component {
                 text: `Order canceled`,
                 position: 'bottom',
                 duration: 5000
-            })
+            });
             break;
         }
     }

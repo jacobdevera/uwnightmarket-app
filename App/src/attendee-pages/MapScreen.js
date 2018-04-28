@@ -83,7 +83,8 @@ export default class MapScreen extends Component {
             this.centerMarker(selectedVendorId);
             this._carousel.snapToItem(selectedVendorId);
             marker._component.showCallout();
-            this.props.clearInitialNotif();
+            if (this.props.clearInitialNotif)
+              this.props.clearInitialNotif();
             this.setState({ finishedScrollingToVendor: true, selectedVendorId: -1 });
           }, 500);
       }

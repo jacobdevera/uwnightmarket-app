@@ -24,7 +24,7 @@ const VendorDrawerNav = DrawerNavigator(
     {
         VendorHome: { screen: VendorHome },
         VendorOrders: { screen: VendorOrders },
-        Map: { screen: Map },
+        Map: { screen: MapStackNav },
         VendorMenu: { screen: VendorMenu },
         VendorSalesSummary: { screen: VendorSalesSummary }
     },
