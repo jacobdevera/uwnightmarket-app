@@ -108,6 +108,7 @@ export default class MapScreen extends Component {
       console.log(' this shouldnt be -1 ' + vendorIndex)
       return vendorIndex;
     } else {
+      this.setState({ finishedScrollingToVendor: true })
       return -1;
     }
   }

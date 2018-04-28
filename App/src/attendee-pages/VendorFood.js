@@ -263,7 +263,7 @@ export default class VendorFood extends Component {
                             {this.isQueueLong() && <Text style={[styles.row,styles.center,{ color: 'red' }]}>Your order may take a while to begin preparing.</Text>}
                             <View style={[styles.row, styles.last]}>
                                 <Button disabled={!vendor.canOrder || totalQuantity <= 0} 
-                                    onPress={async () => { if (await this.lessThanMaxOrders() && isEventActive()) this.submitOrder() }}>
+                                    onPress={async () => { if (await this.lessThanMaxOrders() && await isEventActive()) this.submitOrder() }}>
                                     <Text>Submit Order</Text>
                                 </Button>
                             </View>
