@@ -91,7 +91,7 @@ export default class MapScreen extends Component {
   }
 
   hasVendorParam = () => {
-    return this.props.notif.vendorId;
+    return this.props.notif && this.props.notif.vendorId;
   }
 
   getVendorPropIndex = (vendors) => {

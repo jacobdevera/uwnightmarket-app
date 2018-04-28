@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, Image, View, FlatList} from 'react-native';
+import {Alert, Image, View, FlatList, TouchableOpacity } from 'react-native';
 import {
     ActionSheet,
     Button,
@@ -101,95 +101,96 @@ export class OrderList extends Component {
                                     <Icon style={{ fontSize: 32, marginLeft: 8, marginRight: 8 }} name='more' />
                                 </Button>}
                             </ListItem>
-                            <View style={styles.row}>
-                                <View
-                                    style={{
-                                    flex: 20
-                                }}>
-                                    <Text style={[styles.center, styles.header, styles.cardH2]}>Order #</Text>
-                                    <Button 
-                                        onPress={() => { if (this.props.orderOnPress) this.props.orderOnPress(item) }}
-                                        transparent 
-                                        style={{ 
-                                            alignSelf: 'center'
-                                        }}
-                                    >
-                                        <Badge
-                                            width={64}
-                                            style={{ 
-                                                alignSelf: 'center',
-                                                backgroundColor: config.colorPrimary 
-                                            }}>
-                                            <Text
-                                            style={{
-                                                textAlign:'center'
-                                            }}>{hash(item.id)}</Text>
-                                        </Badge>
-                                    </Button>
-                                </View>
-                                <View
-                                    style={{
-                                    flex: 45
-                                }}>
-                                    <Text style={[styles.center, styles.header, styles.cardH2]}>Qty x Item</Text>
-                                    <FlatList
-                                        data={item.items}
-                                        keyExtractor={item => `${item.name}`}
-                                        renderItem={({item}) => {
-                                        return (
-                                            <Text
-                                                style={{
-                                                fontSize: 12,
-                                                paddingLeft: 4,
-                                                textAlign: 'center'
-                                            }}>{item.quantity} {item.name}</Text>
-                                        )
-                                    }}/>
-                                </View>
-                                <View
-                                    style={{
-                                    flex: 15,
-                                    alignItems: 'center'
-                                }}>
-                                    <Text style={[styles.center, styles.header, styles.cardH2]}>Total</Text>
-                                    <Text
+                            <TouchableOpacity onPress={() => { if (this.props.orderOnPress) this.props.orderOnPress(item) }}>
+                                <View style={styles.row}>
+                                    <View
                                         style={{
-                                        textAlign:'center',
-                                        fontSize: 18,
-                                        fontWeight: 'bold'
+                                        flex: 20
                                     }}>
-                                        ${this.getTotalPrice(item)}
-                                    </Text>
-                                </View>
-                                <View
-                                    style={{
-                                    flex: 20,
-                                    alignItems: 'center'
-                                }}>
-                                    <Text style={[styles.header, styles.cardH2]}>Status</Text>
-                                    <View>
+                                        <Text style={[styles.center, styles.header, styles.cardH2]}>Order #</Text>
                                         <Button
-                                            small
-                                            style={{
-                                            width: 72 * scale,
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                            backgroundColor: this.getStatusButtonColor(item)
-                                        }}>
-                                            <Text
-                                                style={[
-                                                styles.bold,
-                                                styles.center, {
-                                                    paddingLeft: 0,
-                                                    paddingRight: 0,
-                                                    fontSize: Math.max(10, 10 * scale),
-                                                    lineHeight: Math.max(12, 12 * scale)
-                                                }
-                                            ]}>{item.status}</Text>
+                                            transparent 
+                                            style={{ 
+                                                alignSelf: 'center'
+                                            }}
+                                        >
+                                            <Badge
+                                                width={64}
+                                                style={{ 
+                                                    alignSelf: 'center',
+                                                    backgroundColor: config.colorPrimary 
+                                                }}>
+                                                <Text
+                                                style={{
+                                                    textAlign:'center'
+                                                }}>{hash(item.id)}</Text>
+                                            </Badge>
                                         </Button>
                                     </View>
+                                    <View
+                                        style={{
+                                        flex: 45
+                                    }}>
+                                        <Text style={[styles.center, styles.header, styles.cardH2]}>Qty x Item</Text>
+                                        <FlatList
+                                            data={item.items}
+                                            keyExtractor={item => `${item.name}`}
+                                            renderItem={({item}) => {
+                                            return (
+                                                <Text
+                                                    style={{
+                                                    fontSize: 12,
+                                                    paddingLeft: 4,
+                                                    textAlign: 'center'
+                                                }}>{item.quantity} {item.name}</Text>
+                                            )
+                                        }}/>
+                                    </View>
+                                    <View
+                                        style={{
+                                        flex: 15,
+                                        alignItems: 'center'
+                                    }}>
+                                        <Text style={[styles.center, styles.header, styles.cardH2]}>Total</Text>
+                                        <Text
+                                            style={{
+                                            textAlign:'center',
+                                            fontSize: 18,
+                                            fontWeight: 'bold'
+                                        }}>
+                                            ${this.getTotalPrice(item)}
+                                        </Text>
+                                    </View>
+                                    <View
+                                        style={{
+                                        flex: 20,
+                                        alignItems: 'center'
+                                    }}>
+                                        <Text style={[styles.header, styles.cardH2]}>Status</Text>
+                                        <View>
+                                            <Button
+                                                small
+                                                style={{
+                                                width: 72 * scale,
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                                backgroundColor: this.getStatusButtonColor(item)
+                                            }}>
+                                                <Text
+                                                    style={[
+                                                    styles.bold,
+                                                    styles.center, {
+                                                        paddingLeft: 0,
+                                                        paddingRight: 0,
+                                                        fontSize: Math.max(10, 10 * scale),
+                                                        lineHeight: Math.max(12, 12 * scale)
+                                                    }
+                                                ]}>{item.status}</Text>
+                                            </Button>
+                                        </View>
+                                    </View>
                                 </View>
-                            </View>
+                            </TouchableOpacity>
                         </Card>
                     )
                 }}/>
