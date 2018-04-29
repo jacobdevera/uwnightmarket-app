@@ -5,22 +5,9 @@ import { StackNavigator } from "react-navigation";
 import firebase from 'firebase'
 
 import { filters } from '../App';
+import { sortByBoothNumber, sortByName } from '../utils/vendor';
 import { AppHeader, StackHeader } from '../components';
-import styles, { config, scale } from '../styles';
-
-const modalStyles = StyleSheet.create({
-    modalContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        backgroundColor: 'rgba(0,0,0,0.3)'
-    },
-    innerContainer: {
-        flex: 1,
-        margin: Math.max(32, 32 * scale),
-        backgroundColor: 'white',
-        borderRadius: 8
-    },
-});
+import styles, { config, scale, modalStyles } from '../styles';
 
 export default class VendorList extends Component {
     constructor(props) {
@@ -44,7 +31,7 @@ export default class VendorList extends Component {
             snapshot.forEach((vendorSnapshot) => {
                 vendorList.push(vendorSnapshot.val());
             });
-            vendorList = vendorList.sort(this.sortByName);
+            vendorList = vendorList.sort(sortByName);
             this.setState({ vendors: vendorList, filteredVendors: vendorList });
         });
     }
@@ -86,19 +73,15 @@ export default class VendorList extends Component {
         this.setState({ canOrderFilter: canOrderFilter, filteredVendors: newVendors });
     }
 
-    sortByBoothNumber = (a, b) => a.boothNumber - b.boothNumber;
-
-    sortByName = (a, b) => a.name.localeCompare(b.name);
-
     sort = (type) => {
         let sortToPerform;
         switch (type) {
             case 'number': 
-            sortToPerform = this.sortByBoothNumber;
+            sortToPerform = sortByBoothNumber;
             break;
 
             case 'name':
-            sortToPerform = this.sortByName;
+            sortToPerform = sortByName;
             break;
         }
         let sortedVendors = this.state.filteredVendors.sort(sortToPerform);
@@ -122,7 +105,6 @@ export default class VendorList extends Component {
                         animationType={'fade'}
                         onRequestClose={() => this.modalClose()}
                     >
-                        {/*<View style={modalStyles.modalContainer}>*/}
                         <TouchableOpacity 
                             style={modalStyles.modalContainer} 
                             activeOpacity={1} 
@@ -154,6 +136,16 @@ export default class VendorList extends Component {
                                             <Text style={[styles.bold]}>Filter</Text>
                                         </ListItem>
                                         <ScrollView contentContainerStyle={{ flexGrow: 0 }}>
+                                            <ListItem button onPress={() => this.toggleCanOrderFilter()}>
+                                                <CheckBox 
+                                                    color={'#d94d5d'}
+                                                    checked={canOrderFilter} 
+                                                    onPress={() => this.toggleCanOrderFilter()}
+                                                />
+                                                <Body>
+                                                    <Text>supports mobile ordering</Text>
+                                                </Body>
+                                            </ListItem>
                                             <FlatList
                                                 scrollEnabled={false}
                                                 data={filters}
@@ -174,16 +166,6 @@ export default class VendorList extends Component {
                                                     );
                                                 }}
                                             />
-                                            <ListItem button onPress={() => this.toggleCanOrderFilter()}>
-                                                <CheckBox 
-                                                    color={'#d94d5d'}
-                                                    checked={canOrderFilter} 
-                                                    onPress={() => this.toggleCanOrderFilter()}
-                                                />
-                                                <Body>
-                                                    <Text>supports mobile ordering</Text>
-                                                </Body>
-                                            </ListItem>
                                         </ScrollView>
                                         <View style={styles.row}>
                                             <Button
@@ -197,7 +179,6 @@ export default class VendorList extends Component {
                                 </View>
                             </TouchableWithoutFeedback>
                         </TouchableOpacity>
-                        {/*</View>*/}
                     </Modal>
                     {vendors && vendors.length > 0 ?
                         <FlatList
@@ -210,36 +191,47 @@ export default class VendorList extends Component {
                                 let bodyLeftMargin = item.img.length > 0 ? 8 : 0;
                                 return (
                                     <Card>
-                                        <CardItem style={{ paddingLeft: 8, paddingRight: 8 }}
+                                        <CardItem style={{ paddingLeft: 10, paddingRight: 10, paddingTop: 0, paddingBottom: 0 }}
                                             button onPress={() => { this.props.navigation.navigate('VendorFood', {
-                                                    vendor: item
+                                                    vendor: item,
+                                                    isAttendee: true
                                                 }); 
                                             }}
-                                        >
-                                            <Left>
-                                                {item.img.length > 0 &&
+                                        > 
+                                            {item.img.length > 0 &&
+                                            <View style={{paddingTop: 10, paddingBottom: 10 }}>
                                                 <Image
                                                     resizeMode="contain"
-                                                    style={styles.listImage }
+                                                    style={[styles.listImage]}
                                                     source={{ uri: item.img }}
-                                                />}
-                                                <Body style={{ marginLeft: bodyLeftMargin, alignSelf: 'flex-start' }}>
+                                                />
+                                            </View>}
+                                            <Body style={{ 
+                                                paddingLeft: 10, 
+                                                marginLeft: bodyLeftMargin, 
+                                                alignSelf: 'flex-start', 
+                                                borderLeftWidth: StyleSheet.hairlineWidth, 
+                                                borderLeftColor: '#ccc', 
+                                                paddingTop: 10, 
+                                                paddingBottom: 10
+                                            }}>
+                                                <View style={{ flex: 1 }}>
                                                     <View style={{ flexDirection:'row' }}>
-                                                        <Badge style={{ backgroundColor: config.colorPrimary, marginRight: 8}}>
+                                                        <Badge style={{ backgroundColor: config.colorPrimary, marginRight: 10}}>
                                                             <Text>{item.boothNumber}</Text>
                                                         </Badge>
-                                                        <Text style={ [{flex: 3 },styles.header, styles.cardH1] }>{item.name}</Text>
+                                                        <Text style={ [{ flex: 1, flexWrap: 'wrap'}, styles.bold, styles.cardH1] }>{item.name}</Text>
                                                         {item.canOrder && 
-                                                        <Image
-                                                            resizeMode="contain"
-                                                            style={[styles.icon]}
-                                                            source={require('../../img/mobile-order-support-icon.png')}
-                                                        />}
+                                                        <View style={{ alignItems: 'flex-end' }}>
+                                                        <Icon name='mobile' 
+                                                            type='Entypo'
+                                                            style={{ fontSize: 24, color: config.colorPrimary, }}
+                                                        /></View>}
                                                     </View>
                                                     {item.desc.length > 0 && <Text style={ [styles.desc, styles.smallSection] }>{item.desc}</Text>}
-                                                    <Text style={ [styles.bold, styles.smallSection] }>Menu:</Text><Text style={styles.menuItem}>{foodNames.join(', ')}</Text>
-                                                </Body>
-                                            </Left>
+                                                    <Text style={ [styles.bold, styles.smallSection] }>Menu:</Text><Text style={[styles.menuItem]}>{foodNames.join(', ')}</Text>
+                                                </View>
+                                            </Body>
                                         </CardItem>
                                     </Card>
                                 )

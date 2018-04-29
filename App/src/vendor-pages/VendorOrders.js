@@ -49,7 +49,7 @@ class VendorOrders extends Component {
         this.orderRef = firebase.database().ref(`/vendor-orders/${firebase.auth().currentUser.uid}/orders/`).orderByKey();
         this.asConfig = {
             title: 'Set Order Status',
-            options: ['Not Ready', 'Ready', 'Picked Up', 'Delete Order', 'Cancel'],
+            options: ['Not Ready', 'Ready', 'Picked Up', 'Cancel Order', 'Cancel'],
             cancelIndex: 4,
             destructiveIndex: 3,
             handleActionSelect: this.handleStatusChange
@@ -119,29 +119,56 @@ class VendorOrders extends Component {
     handleStatusChange = async (index, selectedItem) => {
         let { id, userId, vendorId, status, vendorName } = selectedItem;
         let statuses = [Status.NOT_READY, Status.READY, Status.PICKED_UP, Status.CANCELED];
-        if (await this.updateOrder(statuses[index], selectedItem)) {
-            let title, body = '';
-            let notif = {};
-            switch (statuses[index]) {
-                case Status.READY:
-                title = 'Order ready!';
-                body = `Please head to ${vendorName} to pick it up.`
-                notif = this.buildNotification(selectedItem, title, body);
-                this.sendNotification(JSON.stringify(notif));
-                break;
-                
-                case Status.CANCELED:
-                title = 'Order canceled';
-                body = `Unfortunately, ${vendorName} could not fulfill your order.`
-                notif = this.buildNotification(selectedItem, title, body);
-                this.sendNotification(JSON.stringify(notif));
-                Toast.show({
-                    text: `Order canceled`,
-                    position: 'bottom',
-                    duration: 5000
-                })
-                break;
+        if (index === this.asConfig.destructiveIndex) {
+            Alert.alert(
+                'Cancel this order?',
+                'The attendee will be notified.',
+                [
+                    { text: 'No', style: 'cancel'},
+                    { text: 'Cancel Order', style: 'destructive', onPress: async () =>  {
+                        if (await this.updateOrder(statuses[index], selectedItem)) {
+                            this.buildAndSendNotification(statuses[index], selectedItem);
+                        }
+                    }}
+                ]
+            );
+        } else {
+            if (await this.updateOrder(statuses[index], selectedItem)) {
+                if (statuses[index] === Status.PICKED_UP) {
+                    Toast.show({
+                        text: `Order completed`,
+                        type: 'success',
+                        position: 'bottom',
+                        duration: 5000
+                    });
+                }
+                this.buildAndSendNotification(statuses[index], selectedItem);
             }
+        }
+    }
+
+    buildAndSendNotification = (status, order) => {
+        let title, body = '';
+        let notif = {};
+        switch (status) {
+            case Status.READY:
+            title = 'Order ready!';
+            body = `Please head to ${order.vendorName} to pick it up.`
+            notif = this.buildNotificationBasedOnOS(order, title, body);
+            this.sendNotification(JSON.stringify(notif));
+            break;
+            
+            case Status.CANCELED:
+            title = 'Order canceled';
+            body = `Unfortunately, ${order.vendorName} could not fulfill your order.`
+            notif = this.buildNotificationBasedOnOS(order, title, body);
+            this.sendNotification(JSON.stringify(notif));
+            Toast.show({
+                text: `Order canceled`,
+                position: 'bottom',
+                duration: 5000
+            });
+            break;
         }
     }
 
@@ -160,7 +187,7 @@ class VendorOrders extends Component {
         })
     }
 
-    buildNotification = (order, title, body) => {
+    buildNotificationBasedOnOS = (order, title, body) => {
         if (order.platform === 'android') {
             return {
                 "to": order.userToken,
@@ -173,7 +200,8 @@ class VendorOrders extends Component {
                         "priority": "high",
                         "icon": "ic_notif",
                         "show_in_foreground": true,
-                        "sound": "default"
+                        "sound": "default",
+                        "vendorId": order.vendorId
                     }
                 }
             }
@@ -185,8 +213,8 @@ class VendorOrders extends Component {
                     "body": body,
                     "sound": "default"
                 },
-                data: {
-                    targetScreen: 'detail'
+                "data": {
+                    "vendorId": order.vendorId
                 },
                 "priority": 10
             };
@@ -226,7 +254,7 @@ class VendorOrders extends Component {
                 <AppHeader navigation={this.props.navigation}>
                     Orders
                 </AppHeader>
-                <Content style={styles.paddedContainer}>
+                <Content style={[styles.paddedContainer, styles.section]}>
                     {orders && Object.values(orders).length > 0
                         ? filteredOrders.length > 0 ? 
                             <OrderList

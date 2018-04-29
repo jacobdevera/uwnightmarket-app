@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, View, Linking } from 'react-native';
+import { Alert, View, Linking, ScrollView } from 'react-native';
 import { Content, List, ListItem, Text, Icon, Toast } from 'native-base';
 import { NavigationActions } from 'react-navigation';
 import styles from '../styles';
@@ -28,9 +28,8 @@ class Sidebar extends Component {
             case Views.VENDOR:
             routes = [
                 { route: 'VendorHome', title: 'Home' },
-                { route: 'VendorOrders', title: 'Orders', props: { active: true } },
-                { route: 'VendorOrders', title: '\tActive', props: { active: true } },
-                { route: 'VendorOrders', title: '\tCompleted', props: { active: false } },
+                { route: 'VendorOrders', title: 'Orders - Active', props: { active: true } },
+                { route: 'VendorOrders', title: 'Orders - Completed', props: { active: false } },
                 { route: 'VendorMenu', title: 'Menu' },
                 { route: 'VendorSalesSummary', title: 'Sales Summary' },
                 { route: 'Map', title: 'Map' },
@@ -43,9 +42,7 @@ class Sidebar extends Component {
         if (index === 0) {
             let user = firebase.auth().currentUser;
             if (user.isAnonymous) { // is attendee
-                if (await this.deleteUserOrders(user)) {
-                    user.delete();
-                }
+                this.props.screenProps.setView(Views.INITIAL);
             } else {
                 firebase.auth().signOut().catch((error) => {
                     this.signOutError(error);
@@ -93,44 +90,46 @@ class Sidebar extends Component {
 
     render() {
         return (
-            <Content style={styles.sideBar}>
-                <List
-                    dataArray={this.state.routes}
-                    renderRow={(data, index) => {
-                        return (
-                            <ListItem key={index} noBorder button onPress={() => {
-                                this.props.navigation.navigate({ routeName: data.route, params: data.props });
-                                this.props.navigation.setParams(data.props);
-                                if (data.route === 'VendorNavigator')
-                                    this.props.navigation.popToTop();
-                            }}>
-                                <Text style={[styles.light, styles.bold]}>{data.title}</Text>
-                            </ListItem>
-                        );
-                    }}
-                />
-                <ListItem key={this.state.routes.length} noBorder button onPress={() => {
-                    if (firebase.auth().currentUser.isAnonymous)
-                        Alert.alert(
-                            'Are you sure you want to sign out?',
-                            'Any existing orders will be deleted.',
-                            [
-                                { text: 'Cancel', style: 'cancel' },
-                                { text: 'Sign Out', onPress: () => this.handleSignOut(0) },
-                            ]
-                        );
-                    else
-                        this.handleSignOut(0);
-                    }}     
-                >
-                    <Text style={[styles.light, styles.bold]}>Log Out</Text>
-                </ListItem>
-                <View style={styles.row}>
-                    <Icon name='logo-facebook' onPress={ ()=>{ Linking.openURL('https://www.facebook.com/TheUWNightMarket')}} style={styles.iconWhite}/>
+            <View style={styles.sideBar}>
+                <ScrollView>
+                    <List
+                        dataArray={this.state.routes}
+                        renderRow={(data, index) => {
+                            return (
+                                <ListItem key={index} noBorder button onPress={() => {
+                                    this.props.navigation.navigate({ routeName: data.route, params: data.props });
+                                    this.props.navigation.setParams(data.props);
+                                    if (data.route === 'VendorNavigator')
+                                        this.props.navigation.popToTop();
+                                }}>
+                                    <Text style={[styles.light, styles.bold]}>{data.title}</Text>
+                                </ListItem>
+                            );
+                        }}
+                    />
+                    <ListItem key={this.state.routes.length} noBorder button onPress={() => {
+                        if (firebase.auth().currentUser.isAnonymous)
+                            Alert.alert(
+                                'Sign out?',
+                                'Your orders will be saved.',
+                                [
+                                    { text: 'Cancel', style: 'cancel' },
+                                    { text: 'Sign Out', onPress: () => this.handleSignOut(0) },
+                                ]
+                            );
+                        else
+                            this.handleSignOut(0);
+                        }}     
+                    >
+                        <Text style={[styles.light, styles.bold]}>Log Out</Text>
+                    </ListItem>
+                </ScrollView>
+                <View style={[styles.row, { flex: 1, alignItems: 'flex-end', marginBottom: 16 }]}>
+                    <Icon name='logo-facebook' onPress={ ()=>{ Linking.openURL('https://www.facebook.com/TheUWNightMarket')} } style={styles.iconWhite}/>
                     <Icon name='logo-instagram' onPress={ ()=>{ Linking.openURL('https://www.instagram.com/uwnightmarket/')} } style={styles.iconWhite}/>
                     <Icon name='logo-twitter' onPress={ ()=>{ Linking.openURL('https://twitter.com/uwnightmarket')} } style={styles.iconWhite}/>
                 </View>
-            </Content>
+            </View>
         );
     }
 }

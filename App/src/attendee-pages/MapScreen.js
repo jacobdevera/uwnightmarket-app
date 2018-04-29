@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import {
   AppRegistry,
   StyleSheet,
-  Text,
   View,
   ScrollView,
   Image,
@@ -11,57 +10,46 @@ import {
   Animated
 } from "react-native";
 
-import { Icon } from 'native-base';
+import { Icon, Text, Badge } from 'native-base';
 
 import MapView ,{ Callout, AnimatedRegion, Marker  } from "react-native-maps";
 import firebase from 'firebase';
+import Carousel from 'react-native-snap-carousel';
+
+import { sortByName, sortByBoothNumber } from '../utils/vendor';
+import mainStyles, { config, scale as mainScale } from '../styles';
 
 const { width, height } = Dimensions.get("window");
 const scale = parseInt(width) / 375; // 375 is default iphone 6 width
 
+const cardsOnScreen = 3;
 const CARD_HEIGHT = height / 4;
-const CARD_WIDTH = CARD_HEIGHT - 50;
+const CARD_WIDTH = (width / cardsOnScreen);
 
 export default class MapScreen extends Component {
-
     constructor(props){
       super(props);
-      this.centerMarker = this.centerMarker.bind(this);
-      this.onDragEnd = this.onDragEnd.bind(this);
-    
-      this.intervalLen = CARD_WIDTH * scale;
-      this.intervalDiff = 21 * scale
       this.markers = [];
+      this.state = {
+        vendors: [],
+        region: {
+          latitude: 47.655661,
+          longitude: -122.309414,
+          latitudeDelta: 0.0014,
+          longitudeDelta: 0.0014,    
+        },
+        markerPressed: false,
+        marginTopHack: 1, // get map view to re-render to show location button
+        selectedVendorId: null,
+        finishedScrollingToVendor: false
+      };
     }
-      
-  state = {
-    vendors:[],
-    markers: [],
-
-    centeredIndex: 1,
-
-    cards:[],
-
-    region:{
-      latitude: 47.655661,
-      longitude: -122.309414,
-      latitudeDelta: 0.0014,
-      longitudeDelta: 0.0014,    
-    },
-    currentCard :1,
-    markerPressed: false,
-    calloutIsRendered:false,
-  };
-
- 
-  
-
 
   componentWillMount() {
+    console.log('component will mount')
+    console.log(this.props);
     this.index = 0;
     this.animation = new Animated.Value(0);
-  }
-  componentDidMount() {
     // We should detect when scrolling has stopped then animate
     // We should just debounce the event listener here
     let vendorRef = firebase.database().ref('/vendors/').orderByKey();
@@ -70,57 +58,75 @@ export default class MapScreen extends Component {
       let vendorList = [];
       snapshot.forEach((vendorSnapshot) => {
         let each = vendorSnapshot.val();
-        if(each.latitude !==  0 &&each.longitude !==  0){
+        if (each.latitude !==  0 && each.longitude !== 0) {
           vendorList.push(each);
         }
       });
-      console.log(vendorList);
-
-      // vendorList = vendorList.sort(this.sortByBoothNumber);
-      this.setState({ vendors: vendorList });
+      vendorList = vendorList.sort(sortByBoothNumber);
+      let vendorPropIndex = this.getVendorPropIndex(vendorList);
+      console.log(vendorPropIndex);
+      if (vendorPropIndex < 0) {
+        this.setState({ finishedScrollingToVendor: true });
+        this.props.clearInitialNotif();
+      }
+      this.markers = new Array(vendorList.length);
+      this.setState({ vendors: vendorList, selectedVendorId: vendorPropIndex });
     });
-
   }
 
-
-  onDragEnd(event) {
-    let value = event.nativeEvent.contentOffset.x;
-    console.log("value    ", value);
-
-
-    let { height, width } = Dimensions.get('window');
-
-    console.log("CARD_WIDTH   ",CARD_WIDTH)
-    console.log("this.intervalDiff     ", this.intervalDiff)
-    console.log("scale", scale)
-
-    let index = (Math.floor(value / (this.intervalLen+ this.intervalDiff) + 1)); // animate 30% away from landing on the next item
-    if (index >= this.state.vendors.length) {
-      index = this.state.vendors.length - 1;
+  componentDidUpdate() {
+    const { selectedVendorId, vendors, finishedScrollingToVendor } = this.state;
+    console.log(this.state);
+    if (selectedVendorId > -1) {
+      let marker = this.markers[selectedVendorId];
+      if (vendors[selectedVendorId] !== null && marker !== undefined && !finishedScrollingToVendor) {
+          console.log(selectedVendorId);
+          console.log('centering marker');
+          // hack to show callout until react-native-maps fixed
+          setTimeout(() => {
+            this.centerMarker(selectedVendorId);
+            this._carousel.snapToItem(selectedVendorId);
+            marker._component.showCallout();
+            if (this.props.clearInitialNotif)
+              this.props.clearInitialNotif();
+            this.setState({ finishedScrollingToVendor: true, selectedVendorId: -1 });
+          }, 500);
+      }
     }
-    if (index <= 0) {
-      index = 0;
+  }
+
+  hasVendorParam = () => {
+    return this.props.notif && this.props.notif.vendorId;
+  }
+
+  getVendorPropIndex = (vendors) => {
+    console.log(this.hasVendorParam());
+    if (this.hasVendorParam()) {
+      let vendorIndex = -1;
+      console.log(this.props.notif);
+      vendors.forEach((vendor, index) => {
+        console.log(vendor.userId)
+        if (vendor.userId === this.props.notif.vendorId) {
+          vendorIndex = index; 
+        }
+      });
+      console.log(' this shouldnt be -1 ' + vendorIndex)
+      return vendorIndex;
+    } else {
+      this.setState({ finishedScrollingToVendor: true });
+      return -1;
     }
-    
-    console.log("index    ", index)
-    this.setState({centeredIndex : index})
+  }
 
-
-
-    // let marker = this.state.markers[index];
-    this.state.markers[index]._component.showCallout();
+  centerMarker = (index) => {
     this.map.animateToCoordinate({
       latitude: this.state.vendors[index].latitude,
-      longitude: this.state.vendors[index].longitude,
+      longitude: this.state.vendors[index].longitude
     }, 300);
-
-    console.log("state center index    " + this.state.centeredCard)
   }
 
-  centerMarker(key){
-    console.log(this.sv)
-    console.log(key)
-    this.sv._component.scrollTo({x:  (key - 1) * 140});
+  showMarkerCallout = (index) => {
+    this.markers[index]._component.showCallout();
   }
 
   makeCoordinate(vendor){
@@ -134,42 +140,30 @@ export default class MapScreen extends Component {
     this.setState({ region });
   }
 
-  centeredStyle = function(myColor) {
-    return {
-      borderRadius: 10,
-      background: myColor,
-    }
+  _renderItem = ({item, index}) => {
+    return (
+      <View  
+        style={styles.card}
+        key={index}
+      >
+        <View style={styles.textContent}>
+          <Text style={[styles.bold, mainStyles.center, mainStyles.mapText]}>
+            Booth: {item.boothNumber}
+          </Text>
+        </View>
+        <Image
+          source={{ uri: item.img}}
+          style={styles.cardImage}
+          resizeMode="contain"
+        />
+        <View style={styles.textContent}>
+          <Text style={[mainStyles.mapText, mainStyles.center]} numberOfLines={2}>
+            {item.name}
+          </Text>
+        </View>
+      </View>
+    );
   }
-
-
-  addMarker(marker){
-    // this.markers.push(marker)
-    
-    this.setState((prevState) => {markers : prevState.markers.push(marker)})
-  }
-
-
-  addCard(card){
-    
-    // this.markers.push(marker)
-    this.setState((prevState) => {card : prevState.cards.push(card)})
-  }
-
-
-  setMarkerRef = (ref) => {
-    this.marker = ref
-  }
-
-  renderCallout() {
-    if(this.state.calloutIsRendered === true) return;
-    this.setState({calloutIsRendered: true});
-    this.marker.showCallout();
-    console.log(this.marker)
-    console.log(this.map)
-
-  }
-
-
 
   render() {
     const interpolations = this.state.vendors.map((marker, index) => {
@@ -191,127 +185,94 @@ export default class MapScreen extends Component {
       return { scale, opacity };
     });
 
+    const markers = this.state.vendors.map((marker, index) => {
+      const scaleStyle = {
+        transform: [
+          {
+            scale: interpolations[index].scale,
+          },
+        ],
+      };
+      const opacityStyle = {
+        opacity: interpolations[index].opacity,
+      };
+      return (
+        <Marker.Animated
+          ref={marker => { this.markers[index] = marker; }}
+          coordinate={this.makeCoordinate(marker)} 
+          key={index} 
+          onPress={e => {
+              this.setState({markerPressed: true});
+              this._carousel.snapToItem(index);
+              this.centerMarker(index);
+              setTimeout(() =>
+                this.setState({markerPressed: false})
+              , 3000);
+            }
+        }>
+
+              {/* <Image
+                source={require('../../img/location-marker.png')}
+                style={{ width: 25, height: 25 }}
+                resizeMode='contain'
+              /> */}
+          <Callout
+            style = {{
+              flexDirection: 'row',
+              flex: 1,
+              elevation: 5,
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}
+            onPress={() => { 
+              if (marker.menu && marker.menu.length > 0)
+                this.props.onCalloutPress(marker)
+            }}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={mainStyles.cardH3}>{marker.boothNumber}. {marker.name}</Text>
+              <Icon name='chevron-thin-right' type='Entypo' style={{ marginLeft: 8, fontSize: 12 }}/>
+            </View>
+          </Callout>
+        </Marker.Animated>
+      )}
+    );
 
     return (
       <View style={styles.container}>
         <MapView
           ref={map => this.map = map}
           loadingEnabled
-          
           initialRegion={this.state.region}
-          style={styles.container}
+          style={[styles.container, { marginTop: this.state.marginTopHack }]}
           showsUserLocation={true}
-          followUserLocation={true}
-          showsMyLocationButton
-
-
+          showsMyLocationButton={true}
+          onMapReady={()=>{
+            this.setState({ marginTopHack: 0 });
+          }}
         >
-          {this.state.vendors.map((marker, index) => {
-            const scaleStyle = {
-              transform: [
-                {
-                  scale: interpolations[index].scale,
-                },
-              ],
-            };
-            const opacityStyle = {
-              opacity: interpolations[index].opacity,
-            };
-            return (
-              <Marker.Animated
-              ref={marker => {this.addMarker(marker)}
-              }
-              coordinate={this.makeCoordinate(marker)} 
-              key={index} 
-              onPress={e => {
-                  this.setState({markerPressed: true});
-                  this.centerMarker(index);
-                  this.map.animateToCoordinate({
-                    latitude: marker.latitude,
-                    longitude: marker.longitude
-                  }, 300);
-
-                  setTimeout(() =>
-                    this.setState({markerPressed: false})
-                  , 3000);
-                }
-              }>
- 
-                    {/* <Image
-                      source={require('../../img/location-marker.png')}
-                      style={{ width: 25, height: 25 }}
-                      resizeMode='contain'
-                    /> */}
-                  <Callout
-                    style = {{
-                      flexDirection: 'row',
-                      flex: 1,
-                      elevation: 5,
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      // width:100,
-                      // textAlign:"center"
-                    }}
-                    onPress={() => { this.props.onCalloutPress(marker) }}
-                  >
-                        <Text>{marker.boothNumber}. {marker.name}</ Text>
-                   </Callout>
-
-              </Marker.Animated>
-            );
-          })}
+          {markers}
         </MapView>
-        <Animated.ScrollView 
-          ref = {sv => this.sv = sv}
-          horizontal
-          scrollEventThrottle={10000}
-          showsHorizontalScrollIndicator={false}
-          snapToInterval={this.intervalLen+ this.intervalDiff } // works
-          snapToAlignment={"center"}
-          // snapToInterval={this.intervalDiff}
-          decelerationRate={"fast"}
-          // pagingEnabled={true}
 
-          onMomentumScrollEnd={
-            this.onDragEnd
-          }
-          onScroll={
-              Animated.event(
-                [{ nativeEvent: { contentOffset: { x: this.animation } } }],
-                { useNativeDriver: true },
-                )
-          }
-          style={styles.scrollView}
-          contentContainerStyle={styles.endPadding}
-        >
-          {this.state.vendors.map((marker, index) => {
-            // console.log(" index !!!  " + index);
-              return (<View  
-              
-              ref = {(card) =>{this.addCard(card)}}
-              style={
-                index === this.state.centeredIndex? styles.centeredCard :
-                styles.card}
-              key={index}
-               
-               >
-               <Text style = {styles.cardtitle}>
-               {}
-               
-               Booth: {marker.boothNumber}</Text>
-                <Image
-                  source={{ uri: marker.img}}
-                  style={styles.cardImage}
-                  resizeMode="contain"
-                />
-                <View style={styles.textContent}>
-                  <Text numberOfLines={1} style={
-                    styles.cardtitle}>{marker.name}
-                    </Text>
-                </View>
-              </View>);
-          })}
-        </Animated.ScrollView>
+        <Carousel
+          ref={(c) => { this._carousel = c; }}
+          containerCustomStyle={styles.scrollView}
+          data={this.state.vendors}
+          renderItem={this._renderItem}
+          sliderHeight={CARD_HEIGHT}
+          sliderWidth={width}
+          itemWidth={CARD_WIDTH}
+          onSnapToItem={(index) => {
+            if (this.state.finishedScrollingToVendor) {
+              console.log('snapping to ' + index);
+              this.centerMarker(index);
+              this.showMarkerCallout(index);
+            }
+          }}
+          enableMomentum={true}
+          decelerationRate={0.9}
+          firstItem={this.state.selectedVendorId > -1 ? this.state.selectedVendorId : 0}
+        />
       </View>
     );
   }
@@ -336,38 +297,16 @@ const styles = StyleSheet.create({
     height: 100,
   },
   card: {
-    borderRadius:10,
-    padding: 10,
-    elevation: 2,
+    borderRadius: 10,
+    paddingHorizontal: 10,
     backgroundColor: "#FFF",
-    marginHorizontal: 10,
     marginBottom: 0,
-    paddingBottom: 0,
     shadowColor: "#000",
     shadowRadius: 5,
     shadowOpacity: 0.3,
     shadowOffset: { x: 2, y: -2 },
     height: CARD_HEIGHT,
-    width: CARD_WIDTH,
-    overflow: "hidden",
-  },
-  centeredCard: {
-    borderRadius:10,
-    padding: 10,
-    elevation: 2,
-    borderColor:"#D94C5D",
-    backgroundColor: "#FFF",
-    borderWidth: 2,
-    marginHorizontal: 10,
-    marginBottom: 0,
-    paddingBottom: 0,
-    shadowColor: "#000",
-    shadowRadius: 5,
-    shadowOpacity: 0.3,
-    shadowOffset: { x: 2, y: -2 },
-    height: CARD_HEIGHT + 15,
-    width: CARD_WIDTH,
-    overflow: "hidden",
+    overflow: "hidden"
   },
   cardImage: {
     flex: 3,
@@ -377,14 +316,15 @@ const styles = StyleSheet.create({
   },
   textContent: {
     flex: 1,
+    justifyContent: 'center',
+    paddingVertical: Math.max(10, 10 * mainScale)
   },
-  cardtitle: {
+  cardTitle: {
     fontSize: 12,
     marginTop: 5,
     textAlign: 'center',
     marginBottom: 0,
-    paddingBottom: 0,
-    fontWeight: "bold",
+    paddingBottom: 0
   },
   cardDescription: {
     fontSize: 12,

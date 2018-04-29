@@ -1,54 +1,54 @@
 import React, { Component } from 'react';
-import { Alert, Image, View } from 'react-native';
+import { Alert, Image, View, Linking } from 'react-native';
 import { Button, Container, Content, Text, Spinner } from 'native-base';
 import firebase from 'firebase';
 import styles, { config, scale } from './styles';
 
 import { Views } from './App';
+import { isStatusActive, acceptTermsAndConditions } from './utils/event';
 
 class LandingPage extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            loading: false,
-            error: ''
-        };
+        this.state = { loading: false };
     }
 
     onAttendeeButtonPress() {
-        this.setState({ error: '', loading: true });
-        this.attendeeSignIn();
+        if (!firebase.auth().currentUser) {
+            console.log('new user');
+            Alert.alert(
+                'Terms and Conditions',
+                `Please review the terms and conditions to coninue.`,
+                [
+                    {text: 'Skip', style: 'cancel', onPress: () => { 
+                            acceptTermsAndConditions(() => {
+                                this.setState({ loading: true });
+                                this.attendeeSignIn();
+                            })
+                        }
+                    },
+                    {text: 'Review', onPress: () => {
+                            Linking.openURL('https://kchen73.github.io/uwnightmarket/')
+                            acceptTermsAndConditions(() => {
+                                this.setState({ loading: true });
+                                this.attendeeSignIn();          
+                            })
+                        }
+                    },
+                ]
+            );
+        } else {
+            this.props.setView(Views.ATTENDEE);
+        }
     }
 
     attendeeSignIn = () => {
         firebase.auth().signInAnonymously()
-            .then((response) => {
-                firebase.database().ref(`/status/`).once('value').then((snapshot) => {
-                    let status = snapshot.val();
-                    if (status && !status.active) {
-                        Alert.alert(
-                            'Oops',
-                            'Looks like the night market has not started yet.',
-                            [
-                                {text: 'OK', style: 'cancel'}
-                            ]
-                        );
-                        firebase.auth().currentUser.delete().catch(err => console.log(err));
-                    }
-                });
-            }).catch( err =>{
-                console.log(error.code);
-                console.log(error.message);
-                this.onLoginFail.bind(this);
+            .catch( err =>{
+                console.log(err.code);
+                console.log(err.message);
             }
         );
-    }
-    
-    onLoginFail(){
-        this.setState({
-            error: 'Authentication Failed',
-            loading: false
-        });
     }
 
     render(){

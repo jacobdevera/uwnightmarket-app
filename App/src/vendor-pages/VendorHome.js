@@ -42,37 +42,20 @@ class VendorHome extends Component {
                     }
 
                     <View style={styles.section}>
-                        <Text style={[styles.header, styles.h2]}>General Info</Text>
-                        <Text>Water is in the center of Red Square</Text>
-                        <Text>Please don't burn your booth down</Text>
-                        <Text>Ask the staff in hot pink hats if you have any questions</Text>
-                        <Text>Free food for the staff and volunteers is always welcomed</Text>
+                        <Text>Welcome to the UW Night Market app! Thank you for being a vendor with us. 
+                            If you need any assistance, please see the contact information below 
+                            or find one of our officers (in a grey Night Market shirt). 
+                            We will come around to help you guys periodically as well.</Text>
                     </View>
 
                     <View style={[styles.section, styles.fullWidth]}>
                         <Text style={[styles.header, styles.h2]}>Contacts</Text>
-                        <List>
-                            <ListItem avatar>
-                                <Left>
-                                   {/* <Thumbnail source={{ uri: 'Image URL' }} />}*/}
-                                </Left>
-                                <Body>
-                                    <Text>Jessica Ong</Text>
-                                    <Text note>TSA President</Text>
-                                    <Text note>206-123-4567</Text>
-                                </Body>
-                            </ListItem>
-                            <ListItem avatar>
-                                <Left>
-                                   {/* <Thumbnail source={{ uri: 'Image URL' }} />}*/}
-                                </Left>
-                                <Body>
-                                    <Text>Alex Tang</Text>
-                                    <Text note>Vendor Lead</Text>
-                                    <Text note>206-123-4567</Text>
-                                </Body>
-                            </ListItem>
-                        </List>
+                        <Text>For questions related to the event, vendor assistance, 
+                            facilities assistance, or general questions, contact the 
+                            TSA team (Jessica Ong) at <Text style={styles.bold}>(281) 698-7289</Text>.</Text>
+                        <Text style={styles.section}>For questions related to the mobile app or if you run 
+                            into technical difficulties, contact the app development team 
+                            (Kevin Chen) at <Text style={styles.bold}>(425) 246-9204</Text>.</Text>
                     </View>
                 </Content>
             </Container>

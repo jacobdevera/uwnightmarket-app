@@ -1,10 +1,16 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions, Platform } from "react-native";
+
 const { height, width } = Dimensions.get('window');
-export const scale = parseInt(width) / 414; // 414: iPhone 6 Plus width
+const isIphoneX = Platform.OS === "ios" && height === 812 && width === 375;
+
+export const scale = parseInt(width) / 414; // iPhone 6 Plus dimensions
+export const scaleVert = parseInt(width) / 736;
 export const config = {
     colorPrimary: '#d94d5d',
     colorDark: '#a21334',
-    textDark: '#2a2a2a'
+    backgroundDark: '#aeaeae',
+    textDark: '#2a2a2a',
+    textLight: '#666666'
 }
 
 export default styles = StyleSheet.create({
@@ -25,8 +31,14 @@ export default styles = StyleSheet.create({
         height: 75 * scale
     },
     sideBar: {
-        paddingTop: 20,
-        backgroundColor: config.colorPrimary
+        paddingTop: isIphoneX ? 39 : 20,
+        backgroundColor: config.colorPrimary,
+        flex: 1
+    },
+    bgContainer: { 
+        flex: 1, 
+        width: null, 
+        height: null 
     },
     light: {
         color: '#fff'
@@ -44,6 +56,10 @@ export default styles = StyleSheet.create({
     listImage: {
         height: 96 * scale,
         width: 96 * scale
+    },
+    listImageLarge: {
+        height: 200 * scale,
+        width: 200 * scale
     },
     column: {
         flex: 1,
@@ -73,14 +89,10 @@ export default styles = StyleSheet.create({
     rowSmall: {
         width: '100%',
         flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center'
-    },
-    menuDesc: {
-        color: 'gray'
+        alignItems: 'flex-start'
     },
     desc: {
-        fontFamily: 'Montserrat-Italic',
+        color: config.textLight,
         fontSize: 14
     },
     menuItem: {
@@ -99,6 +111,12 @@ export default styles = StyleSheet.create({
     },
     cardH2: {
         fontSize: 14
+    },
+    cardH3: {
+        fontSize: 12
+    },
+    mapText: {
+        fontSize: Math.max(12, 12 * scale)
     },
     h1: {
         fontSize: 24 
@@ -126,5 +144,25 @@ export default styles = StyleSheet.create({
     },
     last: {
         paddingBottom: Math.max(16, 16 * scale)
+    },
+    orderNumberLarge: {
+        fontSize: Math.max(96, scale * 96)
     }
+});
+
+export const modalStyles = StyleSheet.create({
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0,0,0,0.3)'
+    },
+    innerContainer: {
+        flex: 1,
+        marginLeft: Math.max(32, 32 * scale),
+        marginRight: Math.max(32, 32 * scale),
+        marginTop: Math.max(98, 98 * scaleVert),
+        marginBottom: Math.max(98, 98 * scaleVert),
+        backgroundColor: 'white',
+        borderRadius: 8
+    },
 });

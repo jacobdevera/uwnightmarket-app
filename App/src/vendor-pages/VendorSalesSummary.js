@@ -62,33 +62,43 @@ class VendorSalesSummary extends Component {
                 </AppHeader>
                 <Content contentContainerStyle={styles.paddedContainer}>
                     <View style={styles.section}>
-                        <View style={styles.rowSpaceBetween}>
-                            <View style={styles.column}>
-                                <Text style={{ alignSelf: 'flex-start' }}>Total Revenue: </Text>
-                                <Text style={[styles.section, { alignSelf: 'flex-start' }]}>Total Number of Orders Completed: </Text>
+                        <View style={styles.columnSmall}>
+                            <View style={[styles.row]}>
+                                <Text style={{ flex: 1 }}>Revenue: </Text>
+                                <View style={[{ flex: 1, alignItems: 'flex-end' }]}>
+                                    <Text style={[styles.bold, { textAlign: 'left' } ]}>${totalRevenue}</Text>
+                                </View>
                             </View>
-                            <View style={[styles.column]}>
-                                <Text style={[styles.bold, { alignSelf: 'flex-end'}]}>${totalRevenue}</Text>
-                                <Text style={[styles.bold, styles.section, { alignSelf: 'flex-end'}]}>{Object.keys(orders).length}</Text>
+                            <View style={[styles.row]}>
+                                <Text style={[{ flex: 1 }]}>Orders Completed: </Text>
+                                <View style={[{ flex: 1, alignItems: 'flex-end' }]}>
+                                    <Text style={[styles.bold, { textAlign: 'left' }]}>{Object.keys(orders).length}</Text>
+                                </View>
                             </View>
                         </View>
                         {Object.keys(soldItems).length > 0 &&
                         <View style={[styles.section, styles.last]}>
                             <View style={styles.row}>
                                 <Text style={[styles.bold, { flex: 8 }]}>Item</Text>
-                                <Text style={[styles.bold, { flex: 2 }]}>Qty</Text>
-                                <Text style={[styles.bold, { flex: 5 }]}>Revenue</Text>
+                                <Text style={[styles.bold, { flex: 2, textAlign: 'center' }]}>Qty</Text>
+                                <View style={{ flex: 5, alignItems: 'flex-end' }}>
+                                    <Text style={[styles.bold, { textAlign: 'left' }]}>Revenue</Text>
+                                </View>
                             </View>
                             <FlatList
-                                data={Object.keys(soldItems)}
+                                data={Object.keys(soldItems).sort((a, b) => soldItems[b].revenue - soldItems[a].revenue)}
                                 extraData={this.state}
                                 keyExtractor={ item => item }
                                 renderItem={({ item }) => {
                                     return (
                                         <View style={styles.row}>
                                             <Text style={{ flex: 8 }}>{item}</Text>
-                                            <Text style={{ flex: 2 }}>{soldItems[item].quantity}</Text>
-                                            <Text style={{ flex: 5 }}>${soldItems[item].revenue}</Text>
+                                            <Text style={{ flex: 2, textAlign: 'center' }}>{soldItems[item].quantity}</Text>
+                                            <View style={{ flex: 5, alignItems: 'flex-end' }}>
+                                                <Text style={{ textAlign: 'left' }}>
+                                                    ${soldItems[item].revenue}
+                                                </Text>
+                                            </View>
                                         </View>
                                     )
                                 }}

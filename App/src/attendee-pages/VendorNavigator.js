@@ -13,7 +13,12 @@ import styles from '../styles';
 const VendorNavigator = StackNavigator(
     {
         VendorList: { screen: VendorList },
-        VendorFood: { screen: VendorFood }
+        VendorFood: { 
+            screen: VendorFood, 
+            navigationOptions: ({navigation}) => ({
+            drawerLockMode: 'locked-closed'
+          }) 
+        }
     }, 
     {
         headerMode: 'none'

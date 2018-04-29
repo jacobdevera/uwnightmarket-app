@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { Alert, Image, View, Modal, StyleSheet, FlatList, Platform } from 'react-native';
+import { Alert, Image, View, Modal, StyleSheet, FlatList, Platform, PushNotificationIOS } from 'react-native';
 import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon, Left, Right, Thumbnail, List, ListItem, Toast, Spinner } from 'native-base';
 import firebase from 'firebase';
 import FCM, { FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType, 
     NotificationActionType, NotificationActionOption, NotificationCategoryOption } from 'react-native-fcm';
 import { NavigationActions } from 'react-navigation';
 
-import { Status, limits } from '../App';
+import { Status, limits, errorToken } from '../App';
+import { isEventActive } from '../utils/event';
 import { AppHeader } from '../components';
 import styles, { config, scale } from '../styles';
 
@@ -18,13 +19,15 @@ export default class VendorFood extends Component {
             order: [],
             showToast: false,
             subMenus: [],
-            loading: true
+            loading: true,
+            priceExists: false
         }
     }
 
     async componentDidMount() {
         const { params } = this.props.navigation.state;
         const vendor = params ? params.vendor : null;
+        const isAttendee = params ? params.isAttendee : false;
         let order = new Array(vendor.menu.length);
         let descs = vendor.menu.map(item => item.desc);
 
@@ -36,7 +39,10 @@ export default class VendorFood extends Component {
                 }
             }) : [{ name: '', menu: [] }];
 
+        let priceExists = false;
         vendor.menu.forEach((item, index) => {
+            if (item.price > 0)
+                priceExists = true;
             order[index] = { 
                 name: item.name,
                 trueIndex: index,
@@ -49,22 +55,24 @@ export default class VendorFood extends Component {
 
         let token;
         if (vendor.canOrder) {
-            console.log('wut')
             try {
                 let queueSnapshot = await firebase.database().ref(`/vendor-orders/${vendor.userId}/order_count`).once('value');
                 currentQueueSize = queueSnapshot.val();
                 vendor.currentQueueSize = currentQueueSize;
                 token = await FCM.getFCMToken();
+                console.log(token);
             } catch (e) { console.log(e);}
         }
 
         this.setState({ 
+            isAttendee: isAttendee,
             vendor: vendor, 
             order: order, 
             token: token || "", 
             descs: descs, 
             subMenus: subMenus,
-            loading: false
+            loading: false,
+            priceExists: priceExists
         });
     }
 
@@ -113,49 +121,69 @@ export default class VendorFood extends Component {
         });
     }
 
-    submitOrder = () => {
-        let newOrderKey = firebase.database().ref().child('orders').push().key;
-        let userId = firebase.auth().currentUser.uid;
-        let filtered = this.state.order.filter((item) => item.quantity > 0);
-        
-        let orderData = {
-            vendorName: this.state.vendor.name,
-            vendorId: this.state.vendor.userId,
-            userId: userId,
-            userToken: this.state.token,
-            time: firebase.database.ServerValue.TIMESTAMP,
-            items: filtered,
-            status: Status.NOT_READY,
-            platform: Platform.OS
+    submitOrder = async () => {
+        try {
+            await FCM.requestPermissions();
+            if (this.state.token.length > 0) {
+                let newOrderKey = firebase.database().ref().child('orders').push().key;
+                let userId = firebase.auth().currentUser.uid;
+                let filtered = this.state.order.filter((item) => item.quantity > 0);
+                
+                let orderData = {
+                    vendorName: this.state.vendor.name,
+                    vendorId: this.state.vendor.userId,
+                    userId: userId,
+                    userToken: this.state.token,
+                    time: firebase.database.ServerValue.TIMESTAMP,
+                    items: filtered,
+                    status: Status.NOT_READY,
+                    platform: Platform.OS
+                }
+    
+                let updates = {};
+                updates['/orders/' + newOrderKey] = orderData;
+                updates['/user-orders/' + userId + '/' + newOrderKey] = Status.NOT_READY; 
+                updates['/vendor-orders/' + this.state.vendor.userId + '/orders/' + newOrderKey] = Status.NOT_READY;
+                
+                Alert.alert(
+                    'Submit order?',
+                    `When your order is ready, you must go to the vendor's booth and be prepared to pay with cash. You will be unable to delete your order after two minutes.`,
+                    [
+                        {text: 'Cancel', style: 'cancel'},
+                        {text: 'Submit', onPress: () => firebase.database().ref().update(updates).then((response) => {
+                                Toast.show({ 
+                                    text: `Order submitted`,
+                                    position: 'bottom', 
+                                    duration: 5000
+                                })
+                                this.props.navigation.navigate({ routeName: 'MyOrders' });
+                            }
+                        )},
+                    ]
+                );
+            } else {
+                console.log(token);
+                errorToken();
+            }
+        } catch (e) {
+            console.log(e);
+            errorToken();
         }
-
-        let updates = {};
-        updates['/orders/' + newOrderKey] = orderData;
-        updates['/user-orders/' + userId + '/' + newOrderKey] = Status.NOT_READY; 
-        updates['/vendor-orders/' + this.state.vendor.userId + '/orders/' + newOrderKey] = Status.NOT_READY;
-        
-        Alert.alert(
-            'Are you sure?',
-            `When your order is ready, you must go to the vendor's booth and be prepared to pay with cash. You will be unable to delete your order after two minutes.`,
-            [
-                {text: 'Cancel', style: 'cancel'},
-                {text: 'Submit', onPress: () => firebase.database().ref().update(updates).then((response) => {
-                        Toast.show({ 
-                            text: `Order submitted`,
-                            position: 'bottom', 
-                            duration: 5000
-                        })
-                        this.props.navigation.navigate({ routeName: 'MyOrders' });
-                    }
-                )},
-            ]
-        );
     }
 
     isQueueLong = () => this.state.vendor.currentQueueSize >= limits.queue;
     
+    hasPrice = () => {
+        let hasPrice = false;
+        this.state.order.forEach((item) => {
+            if (item.price > 0)
+                hasPrice = true;
+        });
+        return true;
+    }
+
     render() {
-        let { vendor, order, descs, subMenus, loading } = this.state;
+        let { isAttendee, vendor, order, descs, subMenus, loading, priceExists } = this.state;
         let totalQuantity = 0;
         let totalPrice = 0;
         order.forEach((item) => {
@@ -173,10 +201,10 @@ export default class VendorFood extends Component {
                         renderItem={({item, index}) => {
                             return (
                                     <View>
-                                        <ListItem style={{ borderBottomWidth: 0, marginLeft: 0 }}>
+                                        <ListItem style={{ borderBottomWidth: vendor.canOrder ? 0 : StyleSheet.hairlineWidth, marginLeft: 0 }}>
                                             <Body style={{ flex: 2 }}>
                                                 <Text>{item.name}</Text>
-                                                {descs[item.trueIndex] && <Text style={styles.menuDesc}>{descs[item.trueIndex]}</Text>}
+                                                {descs[item.trueIndex] && <Text style={{ color: 'gray' }}>{descs[item.trueIndex]}</Text>}
                                             </Body>
                                             {item.price > 0 && <Text>${item.price}</Text>}
                                         </ListItem>
@@ -221,22 +249,28 @@ export default class VendorFood extends Component {
                 {!loading ?
                     <View>
                         <View style={[styles.rowSpaceBetween, styles.section]}>
-                            <View style={{flex: 1,}}><Text style={[{textAlign: 'left'}, styles.bold, styles.h2]}>Menu</Text></View>
-                            <View style={{flex: 1}}><Text style={[{textAlign: 'right'}, styles.bold, styles.h2]}>Price</Text></View>
+                            <View style={{flex: 1}}><Text style={[{textAlign: 'left'}, styles.bold, styles.h2]}>Item</Text></View>
+                            {priceExists && <View style={{flex: 1}}><Text style={[{textAlign: 'right'}, styles.bold, styles.h2]}>Price</Text></View>}
                         </View>
                         {vendor && subMenuLists}
                         {vendor.canOrder ? 
                         <View>
-                            <Text style={[styles.center, styles.bold, styles.row]}>Total Due: ${totalPrice}</Text>
-                            <View style={styles.column}>
-                                <Text style={{ color: this.isQueueLong() ? 'red' : config.textDark }}>
-                                    Current queue size: {vendor.currentQueueSize ? vendor.currentQueueSize : 0}
-                                </Text>
-                                {this.isQueueLong() && <Text style={{ color: 'red' }}>Your order may take a while to begin preparing.</Text>}
+                            <View style={[styles.row, { alignItems: 'center' }]}>
+                                <Text style={[styles.bold, styles.h1, { flex: 1, textAlign: 'right' }]}>Total Due: </Text>
+                                <Text style={[styles.h1, { flex: 1, textAlign: 'right'}]}>${totalPrice}</Text>
                             </View>
+                            <View style={[styles.row, { alignItems: 'center', paddingTop: 0 }]}>
+                                <Text style={[styles.bold, { flex: 1, textAlign: 'right', color: this.isQueueLong() ? 'red' : config.textLight }]}>
+                                    Orders in queue: 
+                                </Text>
+                                <Text style={[styles.h1, { flex: 1, textAlign: 'right', color: this.isQueueLong() ? 'red' : config.textLight}]}>
+                                    {vendor.currentQueueSize ? vendor.currentQueueSize : 0}
+                                </Text>
+                            </View>
+                            {this.isQueueLong() && <Text style={[styles.row,styles.center,{ color: 'red' }]}>Your order may take a while to begin preparing.</Text>}
                             <View style={[styles.row, styles.last]}>
                                 <Button disabled={!vendor.canOrder || totalQuantity <= 0} 
-                                    onPress={async () => { if (await this.lessThanMaxOrders()) this.submitOrder() }}>
+                                    onPress={async () => { if (await this.lessThanMaxOrders() && await isEventActive() && isAttendee) this.submitOrder() }}>
                                     <Text>Submit Order</Text>
                                 </Button>
                             </View>
