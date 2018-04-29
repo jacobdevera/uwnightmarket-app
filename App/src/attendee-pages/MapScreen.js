@@ -65,6 +65,10 @@ export default class MapScreen extends Component {
       vendorList = vendorList.sort(sortByBoothNumber);
       let vendorPropIndex = this.getVendorPropIndex(vendorList);
       console.log(vendorPropIndex);
+      if (vendorPropIndex < 0) {
+        this.setState({ finishedScrollingToVendor: true });
+        this.props.clearInitialNotif();
+      }
       this.markers = new Array(vendorList.length);
       this.setState({ vendors: vendorList, selectedVendorId: vendorPropIndex });
     });
