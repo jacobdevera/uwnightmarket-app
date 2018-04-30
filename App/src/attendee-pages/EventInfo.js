@@ -72,6 +72,14 @@ const EventInfo = (props) => {
                 </View>
 
                 <View style={styles.section}>
+                    <Text style={[styles.header, styles.h2, styles.center]}>Payment</Text>
+                    <Text>We are only accepting cash or vouchers! To purchase vouchers, please have
+                        your credit/debit cards ready at the <Text style={styles.bold}>Information Booth</Text> located in front 
+                        of Odegaard Library.
+                    </Text>
+                </View>
+
+                <View style={styles.section}>
                     <Text style={[styles.header, styles.h2, styles.center]}>Questions</Text>
                     <Text>If you have any questions, feel free to find us at 
                         the <Text style={styles.bold}>Information Booth</Text> located in front 
