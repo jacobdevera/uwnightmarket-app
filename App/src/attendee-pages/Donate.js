@@ -3,7 +3,7 @@ import { Image, View, Linking } from 'react-native';
 import { Button, Container, Content, H1, H2, H3, Text } from 'native-base';
 
 import { AppHeader } from '../components';
-import styles, { config } from '../styles';
+import styles, { config, moderateScale } from '../styles';
 
 const Donate = (props) => {
     return (
@@ -16,7 +16,7 @@ const Donate = (props) => {
                     <Text style={[styles.header, styles.h2, styles.center]}>We Need Your Help!</Text>
                     <View style={{ flex: 1, flexDirection: 'row' }}>
                         <Image
-                            style={[{ flex: 1, resizeMode: "contain", width: null, height: null, borderRadius: 8 }]}
+                            style={[{ flex: 1, resizeMode: "contain", width: null, height: null }]}
                             source={require('../../img/donate.jpg')}
                         />
                     </View>

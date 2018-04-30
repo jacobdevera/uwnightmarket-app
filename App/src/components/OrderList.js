@@ -16,7 +16,7 @@ import {
     Badge,
     Icon
 } from 'native-base';
-import styles, {config, scale} from '../styles';
+import styles, {config, moderateScale} from '../styles';
 import StatusPicker from './StatusPicker';
 import {Status} from '../App';
 import {StackNavigator} from "react-navigation";
@@ -98,7 +98,7 @@ export class OrderList extends Component {
                                     style={{ marginLeft: 'auto', height: 32 }}
                                     onPress={() => this.showActionSheet(item)}
                                 >
-                                    <Icon style={{ fontSize: 32, marginLeft: 8, marginRight: 8 }} name='more' />
+                                    <Icon style={{ fontSize: moderateScale(32, 0.25), marginLeft: moderateScale(8), marginRight: moderateScale(8) }} name='more' />
                                 </Button>}
                             </ListItem>
                             <TouchableOpacity onPress={() => { if (this.props.orderOnPress) this.props.orderOnPress(item) }}>
@@ -108,24 +108,17 @@ export class OrderList extends Component {
                                         flex: 20
                                     }}>
                                         <Text style={[styles.center, styles.header, styles.cardH2]}>Order #</Text>
-                                        <Button
-                                            transparent 
+                                        <Badge
+                                            width={64}
                                             style={{ 
-                                                alignSelf: 'center'
-                                            }}
-                                        >
-                                            <Badge
-                                                width={64}
-                                                style={{ 
-                                                    alignSelf: 'center',
-                                                    backgroundColor: config.colorPrimary 
-                                                }}>
-                                                <Text
-                                                style={{
-                                                    textAlign:'center'
-                                                }}>{hash(item.id)}</Text>
-                                            </Badge>
-                                        </Button>
+                                                alignSelf: 'center',
+                                                backgroundColor: config.colorPrimary 
+                                            }}>
+                                            <Text
+                                            style={{
+                                                textAlign:'center'
+                                            }}>{hash(item.id)}</Text>
+                                        </Badge>
                                     </View>
                                     <View
                                         style={{
@@ -139,7 +132,7 @@ export class OrderList extends Component {
                                             return (
                                                 <Text
                                                     style={{
-                                                    fontSize: 12,
+                                                    fontSize: moderateScale(12),
                                                     paddingLeft: 4,
                                                     textAlign: 'center'
                                                 }}>{item.quantity} {item.name}</Text>
@@ -171,7 +164,7 @@ export class OrderList extends Component {
                                             <Button
                                                 small
                                                 style={{
-                                                width: 72 * scale,
+                                                width: moderateScale(72),
                                                 justifyContent: 'center',
                                                 alignItems: 'center',
                                                 backgroundColor: this.getStatusButtonColor(item)
@@ -182,8 +175,8 @@ export class OrderList extends Component {
                                                     styles.center, {
                                                         paddingLeft: 0,
                                                         paddingRight: 0,
-                                                        fontSize: Math.max(10, 10 * scale),
-                                                        lineHeight: Math.max(12, 12 * scale)
+                                                        fontSize: moderateScale(10),
+                                                        lineHeight: moderateScale(12)
                                                     }
                                                 ]}>{item.status}</Text>
                                             </Button>

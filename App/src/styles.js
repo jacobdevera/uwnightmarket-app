@@ -3,8 +3,15 @@ import { StyleSheet, Dimensions, Platform } from "react-native";
 const { height, width } = Dimensions.get('window');
 const isIphoneX = Platform.OS === "ios" && height === 812 && width === 375;
 
-export const scale = parseInt(width) / 414; // iPhone 6 Plus dimensions
-export const scaleVert = parseInt(width) / 736;
+const guidelineBaseWidth = 414; // iPhone 6 Plus dimensions
+const guidelineBaseHeight = 736;
+
+export const horizontalScale = size => width / guidelineBaseWidth * size;
+export const verticalScale = size => height / guidelineBaseHeight * size;
+export const moderateScale = (size, factor = 0.5) => size + (horizontalScale(size) - size) * factor;
+
+export const scale = parseInt(width) / guidelineBaseWidth; 
+export const scaleVert = parseInt(width) / guidelineBaseHeight;
 export const config = {
     colorPrimary: '#d94d5d',
     colorDark: '#a21334',
@@ -66,7 +73,7 @@ export default styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'space-around',
         alignItems: 'center',
-        padding: Math.max(16, 16 * scale)
+        padding: moderateScale(16)
     },
     columnSmall: {
         flex: 1,
@@ -78,13 +85,13 @@ export default styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-around',
-        padding: 8
+        padding: moderateScale(8)
     },
     rowSpaceBetween: {
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: 8
+        padding: moderateScale(8)
     },
     rowSmall: {
         width: '100%',
@@ -93,11 +100,11 @@ export default styles = StyleSheet.create({
     },
     desc: {
         color: config.textLight,
-        fontSize: 14
+        fontSize: moderateScale(14, 0.25)
     },
     menuItem: {
         fontFamily: 'Montserrat-Italic',
-        fontSize: 14
+        fontSize: moderateScale(14, 0.25)
     },
     bold: {
         fontFamily: 'Montserrat-Bold'
@@ -107,25 +114,25 @@ export default styles = StyleSheet.create({
         paddingBottom: 4
     },
     cardH1: {
-        fontSize: 18
+        fontSize: moderateScale(18, 0.25)
     },
     cardH2: {
-        fontSize: 14
+        fontSize: moderateScale(14, 0.25)
     },
     cardH3: {
-        fontSize: 12
+        fontSize: moderateScale(12, 0.25)
     },
     mapText: {
         fontSize: Math.max(12, 12 * scale)
     },
     h1: {
-        fontSize: 24 
+        fontSize: moderateScale(24, 0.25) 
     },
     h2: {
-        fontSize: 20
+        fontSize: moderateScale(20, 0.25)
     },
     h3: {
-        fontSize: 16
+        fontSize: moderateScale(16, 0.25)
     },
     center: {
         textAlign: 'center'
@@ -147,6 +154,9 @@ export default styles = StyleSheet.create({
     },
     orderNumberLarge: {
         fontSize: Math.max(96, scale * 96)
+    },
+    badge: {
+        backgroundColor: config.colorPrimary, marginRight: 8, justifyContent: 'center'
     }
 });
 
@@ -158,10 +168,10 @@ export const modalStyles = StyleSheet.create({
     },
     innerContainer: {
         flex: 1,
-        marginLeft: Math.max(32, 32 * scale),
-        marginRight: Math.max(32, 32 * scale),
-        marginTop: Math.max(98, 98 * scaleVert),
-        marginBottom: Math.max(98, 98 * scaleVert),
+        marginLeft: moderateScale(32),
+        marginRight: moderateScale(32),
+        marginTop: verticalScale(98),
+        marginBottom: verticalScale(98),
         backgroundColor: 'white',
         borderRadius: 8
     },

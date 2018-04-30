@@ -260,7 +260,7 @@ export default class VendorFood extends Component {
                                 <Text style={[styles.h1, { flex: 1, textAlign: 'right'}]}>${totalPrice}</Text>
                             </View>
                             <View style={[styles.row, { alignItems: 'center', paddingTop: 0 }]}>
-                                <Text style={[styles.bold, { flex: 1, textAlign: 'right', color: this.isQueueLong() ? 'red' : config.textLight }]}>
+                                <Text style={[styles.bold, styles.h3, { flex: 1, textAlign: 'right', color: this.isQueueLong() ? 'red' : config.textLight }]}>
                                     Orders in queue: 
                                 </Text>
                                 <Text style={[styles.h1, { flex: 1, textAlign: 'right', color: this.isQueueLong() ? 'red' : config.textLight}]}>

@@ -3,7 +3,7 @@ import { Image, View, StyleSheet } from 'react-native';
 import { Button, Card, CardItem, Container, Content, Text, Thumbnail, Body, Left, List, Badge, Right } from 'native-base';
 
 import { AppHeader } from '../components';
-import styles, { config } from '../styles';
+import styles, { config, moderateScale } from '../styles';
 
 const Games = (props) => {
     let items = [
@@ -57,12 +57,12 @@ const Games = (props) => {
                                         <Body style={{ alignSelf: 'flex-start', paddingRight: 10, marginRight: 10, borderRightWidth: StyleSheet.hairlineWidth, borderRightColor: '#ccc', paddingTop: 10, paddingBottom: 10 }}>
                                             <View style={{ flex: 1 }}>
                                                 <View style={[{flexDirection: 'row', justifyContent: 'flex-start'}]}>
-                                                    <Badge style={{ backgroundColor: config.colorPrimary, marginRight: 8}}>
+                                                    <Badge style={styles.badge}>
                                                         <Text>{data.boothNumber}</Text>
                                                     </Badge>
                                                     <View>
                                                         <Text style={ [styles.bold, styles.cardH1] }>{data.name}</Text>
-                                                        <Text style={ [styles.cardH2, styles.smallSection, { color: config.colorPrimary, marginTop: 0 }]}>
+                                                        <Text style={ [styles.cardH3, styles.smallSection, { color: config.colorPrimary, marginTop: 0 }]}>
                                                             {data.price}
                                                         </Text>
                                                     </View>

@@ -7,7 +7,7 @@ import firebase from 'firebase'
 import { filters } from '../App';
 import { sortByBoothNumber, sortByName } from '../utils/vendor';
 import { AppHeader, StackHeader } from '../components';
-import styles, { config, scale, modalStyles } from '../styles';
+import styles, { config, scale, modalStyles, moderateScale } from '../styles';
 
 export default class VendorList extends Component {
     constructor(props) {
@@ -121,7 +121,7 @@ export default class VendorList extends Component {
                                         >
                                             <Text>Booth Number</Text>
                                             <Right>
-                                                <Radio selected={this.state.sort === 'number'} />
+                                                <Radio onPress={() => this.sort('number')} selected={this.state.sort === 'number'} />
                                             </Right>
                                         </ListItem>
                                         <ListItem style={{ justifyContent: 'space-between' }} 
@@ -129,7 +129,7 @@ export default class VendorList extends Component {
                                         >
                                             <Text>Name</Text>
                                             <Right>
-                                                <Radio selected={this.state.sort === 'name'} />
+                                                <Radio onPress={() => this.sort('name')} selected={this.state.sort === 'name'} />
                                             </Right>
                                         </ListItem>
                                         <ListItem style={{ borderBottomWidth: 0 }}>
@@ -215,22 +215,26 @@ export default class VendorList extends Component {
                                                 paddingTop: 10, 
                                                 paddingBottom: 10
                                             }}>
-                                                <View style={{ flex: 1 }}>
-                                                    <View style={{ flexDirection:'row' }}>
-                                                        <Badge style={{ backgroundColor: config.colorPrimary, marginRight: 10}}>
+                                                <View>
+                                                    <View style={{ flex: 1, flexDirection: 'row' }}>
+                                                        <Badge style={styles.badge}>
                                                             <Text>{item.boothNumber}</Text>
                                                         </Badge>
-                                                        <Text style={ [{ flex: 1, flexWrap: 'wrap'}, styles.bold, styles.cardH1] }>{item.name}</Text>
-                                                        {item.canOrder && 
-                                                        <View style={{ alignItems: 'flex-end' }}>
-                                                        <Icon name='mobile' 
-                                                            type='Entypo'
-                                                            style={{ fontSize: 24, color: config.colorPrimary, }}
-                                                        /></View>}
+                                                        <Text style={ [{flex: 1, flexWrap: 'wrap'},styles.bold, styles.cardH1] }>{item.name}</Text>
                                                     </View>
-                                                    {item.desc.length > 0 && <Text style={ [styles.desc, styles.smallSection] }>{item.desc}</Text>}
-                                                    <Text style={ [styles.bold, styles.smallSection] }>Menu:</Text><Text style={[styles.menuItem]}>{foodNames.join(', ')}</Text>
+                                                    {item.desc.length > 0 && <Text style={ [{flex: 1},styles.desc, styles.smallSection] }>{item.desc}</Text>}
+                                                    <View>
+                                                        <Text style={ [styles.bold, styles.smallSection] }>Menu:</Text>
+                                                        <Text style={[styles.menuItem]}>{foodNames.join(', ')}</Text>
+                                                    </View>
                                                 </View>
+                                                {item.canOrder && 
+                                                <View style={{ position: 'absolute', top: 8, right: -4 }}>
+                                                    <Icon name='mobile' 
+                                                        type='Entypo'
+                                                        style={{ fontSize: moderateScale(20), color: config.colorPrimary }}
+                                                    />
+                                                </View>}
                                             </Body>
                                         </CardItem>
                                     </Card>
