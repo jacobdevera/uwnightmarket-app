@@ -227,7 +227,7 @@ export default class VendorList extends Component {
 
                                                 {item.desc.length > 0 && <Text style={ [styles.desc, styles.smallSection] }>{item.desc}</Text>}
                                                 <View>
-                                                    <Text style={[styles.bold, styles.smallSection] }>Menu:</Text>
+                                                    <Text style={[styles.bold, styles.smallSection, styles.cardH2] }>Menu:</Text>
                                                     <Text style={[styles.menuItem]}>{foodNames.join(', ')}</Text>
                                                 </View>
                                                 {item.canOrder && 

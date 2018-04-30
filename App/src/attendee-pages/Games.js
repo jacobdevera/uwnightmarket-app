@@ -63,20 +63,18 @@ const Games = (props) => {
                                     <Card>
                                         <CardItem style={{ paddingLeft: 10, paddingRight: 10, paddingTop: 0, paddingBottom: 0 }}>
                                             <Body style={{ alignSelf: 'flex-start', paddingRight: 10, marginRight: 10, borderRightWidth: StyleSheet.hairlineWidth, borderRightColor: '#ccc', paddingTop: 10, paddingBottom: 10 }}>
-                                                <View style={{ flex: 1 }}>
-                                                    <View style={[{flexDirection: 'row', justifyContent: 'flex-start'}]}>
-                                                        <Badge style={styles.badge}>
-                                                            <Text>{data.boothNumber}</Text>
-                                                        </Badge>
-                                                        <View style={{ flex: 1 }}>
-                                                            <Text style={ [{flex: 1, flexWrap: 'wrap'}, styles.bold, styles.cardH1] }>{data.name}</Text>
-                                                            <Text style={ [styles.cardH3, styles.smallSection, { color: config.colorPrimary, marginTop: 0 }]}>
-                                                                {data.price}
-                                                            </Text>
-                                                        </View>
+                                                <View style={[{flexDirection: 'row', justifyContent: 'flex-start'}]}>
+                                                    <Badge style={styles.badge}>
+                                                        <Text>{data.boothNumber}</Text>
+                                                    </Badge>
+                                                    <View style={{ flex: 1 }}>
+                                                        <Text style={ [{flex: 1, flexWrap: 'wrap'}, styles.bold, styles.cardH1] }>{data.name}</Text>
+                                                        <Text style={ [styles.cardH3, styles.smallSection, { color: config.colorPrimary, marginTop: 0 }]}>
+                                                            {data.price}
+                                                        </Text>
                                                     </View>
-                                                    <Text style={[styles.smallSection, { fontSize: 14, color: config.textDark }]}>{data.desc}</Text>
                                                 </View>
+                                                <Text style={[styles.smallSection, { fontSize: 14, color: config.textDark }]}>{data.desc}</Text>
                                             </Body>
                                             <Image
                                                 resizeMode="contain"
