@@ -54,10 +54,13 @@ export default class VendorList extends Component {
         
         if (filters.length > 0) {
             newVendors = newVendors.filter((vendor) => {
-                filters.forEach((filter) => {
-                    vendor.menu = vendor.menu.filter((item) => {
-                        return item.traits.includes(filter.name)
+                vendor.menu = vendor.menu.filter((item) => {
+                    let satisfiesAFilter = false;
+                    filters.forEach((filter) => {
+                        if (item.traits.includes(filter.name))
+                            satisfiesAFilter = true;
                     })
+                    return satisfiesAFilter;
                 })
                 return vendor.menu.length > 0;
             });
@@ -206,7 +209,7 @@ export default class VendorList extends Component {
                                                     source={{ uri: item.img }}
                                                 />
                                             </View>}
-                                            <Body style={{ 
+                                            <Body style={{
                                                 paddingLeft: 10, 
                                                 marginLeft: bodyLeftMargin, 
                                                 alignSelf: 'flex-start', 
@@ -215,18 +218,17 @@ export default class VendorList extends Component {
                                                 paddingTop: 10, 
                                                 paddingBottom: 10
                                             }}>
+                                                <View style={{ flex: 1, flexDirection: 'row' }}>
+                                                    <Badge style={styles.badge}>
+                                                        <Text>{item.boothNumber}</Text>
+                                                    </Badge>
+                                                    <Text style={ [{flex: 1, flexWrap: 'wrap'},styles.bold, styles.cardH1] }>{item.name}</Text>
+                                                </View>
+
+                                                {item.desc.length > 0 && <Text style={ [styles.desc, styles.smallSection] }>{item.desc}</Text>}
                                                 <View>
-                                                    <View style={{ flex: 1, flexDirection: 'row' }}>
-                                                        <Badge style={styles.badge}>
-                                                            <Text>{item.boothNumber}</Text>
-                                                        </Badge>
-                                                        <Text style={ [{flex: 1, flexWrap: 'wrap'},styles.bold, styles.cardH1] }>{item.name}</Text>
-                                                    </View>
-                                                    {item.desc.length > 0 && <Text style={ [{flex: 1},styles.desc, styles.smallSection] }>{item.desc}</Text>}
-                                                    <View>
-                                                        <Text style={ [styles.bold, styles.smallSection] }>Menu:</Text>
-                                                        <Text style={[styles.menuItem]}>{foodNames.join(', ')}</Text>
-                                                    </View>
+                                                    <Text style={[styles.bold, styles.smallSection] }>Menu:</Text>
+                                                    <Text style={[styles.menuItem]}>{foodNames.join(', ')}</Text>
                                                 </View>
                                                 {item.canOrder && 
                                                 <View style={{ position: 'absolute', top: 8, right: -4 }}>
