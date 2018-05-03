@@ -69,7 +69,7 @@ const Games = (props) => {
                                                     </Badge>
                                                     <View style={{ flex: 1 }}>
                                                         <Text style={ [{flex: 1, flexWrap: 'wrap'}, styles.bold, styles.cardH1] }>{data.name}</Text>
-                                                        <Text style={ [styles.cardH3, styles.smallSection, { color: config.colorPrimary, marginTop: 0 }]}>
+                                                        <Text style={ [styles.cardH2, styles.smallSection, { color: config.colorPrimary, marginTop: 0 }]}>
                                                             {data.price}
                                                         </Text>
                                                     </View>

@@ -207,76 +207,78 @@ export default class VendorList extends Component {
                             </TouchableWithoutFeedback>
                         </TouchableOpacity>
                     </Modal>
-                    <View style={styles.section}>
-                        <Item>
-                            <Input placeholder='search for vendors or menu items...'
-                                style={{ fontFamily: 'Montserrat-Regular' }}
-                                onChangeText={(query) => {
-                                    this.onSearch(query);
-                                }}
-                            />
-                        </Item>
-                    </View>
                     {vendors && vendors.length > 0 ?
-                        <FlatList
-                            style={[styles.section, styles.last]}
-                            data={filteredVendors}
-                            extraData={this.state}
-                            keyExtractor={ item => item.name }
-                            renderItem={({ item }) => {
-                                let foodNames = item.menu.slice(0, 3).map((item, index) => item.name + (index >= 2 ? '...': ''));
-                                let bodyLeftMargin = item.img.length > 0 ? 8 : 0;
-                                return (
-                                    <Card>
-                                        <CardItem style={{ paddingLeft: 10, paddingRight: 10, paddingTop: 0, paddingBottom: 0 }}
-                                            button onPress={() => { this.props.navigation.navigate('VendorFood', {
-                                                    vendor: item,
-                                                    isAttendee: true
-                                                }); 
-                                            }}
-                                        > 
-                                            {item.img.length > 0 &&
-                                            <View style={{paddingTop: 10, paddingBottom: 10 }}>
-                                                <Image
-                                                    resizeMode="contain"
-                                                    style={[styles.listImage]}
-                                                    source={{ uri: item.img }}
-                                                />
-                                            </View>}
-                                            <Body style={{
-                                                paddingLeft: 10, 
-                                                marginLeft: bodyLeftMargin, 
-                                                alignSelf: 'flex-start', 
-                                                borderLeftWidth: StyleSheet.hairlineWidth, 
-                                                borderLeftColor: '#ccc', 
-                                                paddingTop: 10, 
-                                                paddingBottom: 10
-                                            }}>
-                                                <View style={{ flex: 1, flexDirection: 'row' }}>
-                                                    <Badge style={styles.badge}>
-                                                        <Text>{item.boothNumber}</Text>
-                                                    </Badge>
-                                                    <Text style={ [{flex: 1, flexWrap: 'wrap'},styles.bold, styles.cardH1] }>{item.name}</Text>
-                                                </View>
-
-                                                {item.desc.length > 0 && <Text style={ [styles.desc, styles.smallSection] }>{item.desc}</Text>}
-                                                <View>
-                                                    <Text style={[styles.bold, styles.smallSection, styles.cardH2] }>Menu:</Text>
-                                                    <Text style={[styles.menuItem]}>{foodNames.join(', ')}</Text>
-                                                </View>
-                                                {item.canOrder && 
-                                                <View style={{ position: 'absolute', top: 8, right: -4 }}>
-                                                    <Icon name='mobile' 
-                                                        type='Entypo'
-                                                        style={{ fontSize: moderateScale(20), color: config.colorPrimary }}
+                        <View>
+                            <View style={styles.section}>
+                                <Item>
+                                    <Input placeholder='search for vendors or menu items...'
+                                        style={{ fontFamily: 'Montserrat-Regular' }}
+                                        onChangeText={(query) => {
+                                            this.onSearch(query);
+                                        }}
+                                    />
+                                </Item>
+                            </View>
+                            <FlatList
+                                style={[styles.section, styles.last]}
+                                data={filteredVendors}
+                                extraData={this.state}
+                                keyExtractor={ item => item.name }
+                                renderItem={({ item }) => {
+                                    let foodNames = item.menu.slice(0, 3).map((item, index) => item.name + (index >= 2 ? '...': ''));
+                                    let bodyLeftMargin = item.img.length > 0 ? 8 : 0;
+                                    return (
+                                        <Card>
+                                            <CardItem style={{ paddingLeft: 10, paddingRight: 10, paddingTop: 0, paddingBottom: 0 }}
+                                                button onPress={() => { this.props.navigation.navigate('VendorFood', {
+                                                        vendor: item,
+                                                        isAttendee: true
+                                                    }); 
+                                                }}
+                                            > 
+                                                {item.img.length > 0 &&
+                                                <View style={{paddingTop: 10, paddingBottom: 10 }}>
+                                                    <Image
+                                                        resizeMode="contain"
+                                                        style={[styles.listImage]}
+                                                        source={{ uri: item.img }}
                                                     />
                                                 </View>}
-                                            </Body>
-                                        </CardItem>
-                                    </Card>
-                                )
-                            }}
-                        />
+                                                <Body style={{
+                                                    paddingLeft: 10, 
+                                                    marginLeft: bodyLeftMargin, 
+                                                    alignSelf: 'flex-start', 
+                                                    borderLeftWidth: StyleSheet.hairlineWidth, 
+                                                    borderLeftColor: '#ccc', 
+                                                    paddingTop: 10, 
+                                                    paddingBottom: 10
+                                                }}>
+                                                    <View style={{ flex: 1, flexDirection: 'row' }}>
+                                                        <Badge style={styles.badge}>
+                                                            <Text>{item.boothNumber}</Text>
+                                                        </Badge>
+                                                        <Text style={ [{flex: 1, flexWrap: 'wrap'},styles.bold, styles.cardH1] }>{item.name}</Text>
+                                                    </View>
+
+                                                    {item.desc.length > 0 && <Text style={ [styles.desc, styles.smallSection] }>{item.desc}</Text>}
+                                                    <View>
+                                                        <Text style={[styles.bold, styles.smallSection, styles.cardH2] }>Menu:</Text>
+                                                        <Text style={[styles.menuItem]}>{foodNames.join(', ')}</Text>
+                                                    </View>
+                                                    {item.canOrder && 
+                                                    <View style={{ position: 'absolute', top: 8, right: -4 }}>
+                                                        <Icon name='mobile' 
+                                                            type='Entypo'
+                                                            style={{ fontSize: moderateScale(20), color: config.colorPrimary }}
+                                                        />
+                                                    </View>}
+                                                </Body>
+                                            </CardItem>
+                                        </Card>
+                                    )
+                                }}
+                            />
+                        </View>
                         : <Spinner color={config.colorPrimary} />}
                 </Content>
             </Container>
