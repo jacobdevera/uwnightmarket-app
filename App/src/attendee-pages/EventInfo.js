@@ -63,7 +63,11 @@ const EventInfo = (props) => {
                     Welcome to UW Night Market! Established in 2001, 
                     the UW Night Market has been held by UW's Taiwanese Student Association for 
                     the past 17 years, and this is now our 18th Night Market. We're so happy you 
-                    are here to join us, and have fun today! Event is from 5:30PM-10:30PM.
+                    are here to join us. We hope you have fun today!
+                </Text>
+
+                <Text style={[styles.section, styles.bold]}>
+                    The event is from 5:30PM-10:30PM.
                 </Text>
 
                 <View style={styles.section}>

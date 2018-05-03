@@ -217,7 +217,7 @@ class MyOrders extends Component {
                             </View>
                             <View style={[{ flexDirection: 'row' }, styles.smallSection]}>
                                 <Icon name='dot-single' type='Entypo' style={{ fontSize: 16, paddingTop: 2  }}/>
-                                <Text style={{ flex: 1, flexWrap: 'wrap' }}>{`Once you make an order, you have up to ${limits.orderAge / 1000 / 60} minutes to delete the order.`}</Text>
+                                <Text style={{ flex: 1, flexWrap: 'wrap' }}>{`Once you make an order, you have up to ${limits.orderAge / 1000 / 60} minutes to cancel the order.`}</Text>
                             </View>
                             <View style={[{ flexDirection: 'row' }, styles.smallSection]}>
                                 <Icon name='dot-single' type='Entypo' style={{ fontSize: 16, paddingTop: 2  }}/>    

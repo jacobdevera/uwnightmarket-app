@@ -20,12 +20,12 @@ const Donate = (props) => {
                             source={require('../../img/donate.jpg')}
                         />
                     </View>
-                    <Text style={styles.section}>Every year, our hardworking officers spend months on months of planning for 
-                        the day of the event. Kind of like a part-time job! However, we cannot do this 
+                    <Text style={styles.section}>Every year, our hardworking officers spend months of planning for 
+                        the day of the event. However, we cannot do this 
                         without the help of the public. The costs include tens of thousands on facilities, 
                         foods, prizes, and much more. We love giving to our community by educating everyone 
                         about Taiwanese culture, but we would not be able to do it without you. Please 
-                        donate to our cause on our USEED page, and have fun today! Thank you!</Text>
+                        donate to our cause on our crowdfunding page, and have fun today! Thank you!</Text>
                 </View>
                 <Text style={styles.section}>Link to our donation page:{`\n`}
                 <Text 
