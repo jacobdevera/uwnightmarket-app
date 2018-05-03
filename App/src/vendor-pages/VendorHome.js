@@ -36,7 +36,7 @@ class VendorHome extends Component {
                         />
                         <View style={styles.section}>
                             <Text style={[styles.center, styles.header, styles.h1]}>{vendor.name}</Text>
-                            <Text style={[styles.center]}>Vendor Booth #: {vendor.boothNumber}</Text>
+                            <Text style={[styles.center]}>Vendor Booth #{vendor.boothNumber}</Text>
                         </View>
                     </View>
                     }

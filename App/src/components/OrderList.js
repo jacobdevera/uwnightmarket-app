@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, Image, View, FlatList, TouchableOpacity} from 'react-native';
+import {Alert, Image, View, FlatList, TouchableOpacity, StyleSheet} from 'react-native';
 import {
     ActionSheet,
     Button,
@@ -102,7 +102,7 @@ export class OrderList extends Component {
                                 </Button>}
                             </ListItem>
                             <TouchableOpacity onPress={() => { if (this.props.orderOnPress) this.props.orderOnPress(item) }}>
-                                <View style={styles.row}>
+                                <View style={[styles.row]}>
                                     <View
                                         style={{
                                         flex: 20
@@ -128,12 +128,13 @@ export class OrderList extends Component {
                                         <FlatList
                                             data={item.items}
                                             keyExtractor={item => `${item.name}`}
-                                            renderItem={({item}) => {
+                                            renderItem={({item, index}) => {
                                             return (
                                                 <Text
                                                     style={{
-                                                    fontSize: moderateScale(12),
-                                                    paddingLeft: 4,
+                                                    fontSize: moderateScale(12, 0.33),
+                                                    paddingLeft: moderateScale(8),
+                                                    paddingBottom: moderateScale(4),
                                                     textAlign: 'center'
                                                 }}>{item.quantity} {item.name}</Text>
                                             )
@@ -148,7 +149,7 @@ export class OrderList extends Component {
                                         <Text
                                             style={{
                                             textAlign:'center',
-                                            fontSize: 18,
+                                            fontSize: moderateScale(18, 0.33),
                                             fontWeight: 'bold'
                                         }}>
                                             ${this.getTotalPrice(item)}

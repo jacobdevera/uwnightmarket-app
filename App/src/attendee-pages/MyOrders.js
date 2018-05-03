@@ -20,7 +20,7 @@ import firebase from 'firebase';
 
 import {AppHeader, OrderList} from '../components';
 import {Status, limits} from '../App';
-import styles, { config, modalStyles } from '../styles';
+import styles, { config, modalStyles, moderateScale } from '../styles';
 import { hash } from '../utils/order';
 
 class MyOrders extends Component {
@@ -175,9 +175,10 @@ class MyOrders extends Component {
                                         styles.h1, 
                                         styles.section, 
                                         styles.fullWidth, 
+                                        
                                         { textAlign: 'center' }
                                     ]}>
-                                        Order number:
+                                        Order #
                                     </Text>
                                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                                     <Text style={[styles.bold, styles.orderNumberLarge]}>
@@ -221,7 +222,7 @@ class MyOrders extends Component {
                             <View style={[{ flexDirection: 'row' }, styles.smallSection]}>
                                 <Icon name='dot-single' type='Entypo' style={{ fontSize: 16, paddingTop: 2  }}/>    
                                 <Text style={{ flex: 1, flexWrap: 'wrap' }}>{`You will receive a notification when your order is ready for pick up. `+
-                                `Please arrive at the booth within 10 minutes to pick up your order and be prepared to pay with cash.`}</Text>
+                                `Please arrive at the booth within 10 minutes to pick up your order and be prepared to pay with cash or vouchers.`}</Text>
                             </View>
                             <View style={[{ flexDirection: 'row' }, styles.smallSection]}>
                                 <Icon name='dot-single' type='Entypo' style={{ fontSize: 16, paddingTop: 2  }}/>

@@ -123,7 +123,7 @@ export default styles = StyleSheet.create({
         fontSize: moderateScale(12, 0.25)
     },
     mapText: {
-        fontSize: Math.max(12, 12 * scale)
+        fontSize: moderateScale(12, 0.25)
     },
     h1: {
         fontSize: moderateScale(24, 0.25) 
