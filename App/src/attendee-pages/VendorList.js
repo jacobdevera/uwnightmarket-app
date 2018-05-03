@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Image, View, Modal, StyleSheet, FlatList, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
-import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon, Left, Right, List, ListItem, Radio, Badge, Spinner } from 'native-base';
+import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon, Left, Right, List, ListItem, Radio, Badge, Spinner, Input, Item } from 'native-base';
 import { StackNavigator } from "react-navigation";
 import firebase from 'firebase'
 
@@ -20,7 +20,8 @@ export default class VendorList extends Component {
             }),
             modalVisible: false,
             sort: 'name',
-            canOrderFilter: false
+            canOrderFilter: false,
+            query: ''
         }
     }
     
@@ -89,6 +90,28 @@ export default class VendorList extends Component {
         }
         let sortedVendors = this.state.filteredVendors.sort(sortToPerform);
         this.setState({ filteredVendors: sortedVendors, sort: type });
+    }
+    
+    resetFilters = () => {
+        let newFilters = this.state.filters.slice();
+        newFilters.forEach((filter) => { filter.active = false });
+        return newFilters;
+    }
+
+    onSearch = (query) => {
+        query = query.toLowerCase();
+        let newFilters = this.resetFilters();
+        let newVendors = JSON.parse(JSON.stringify(this.state.vendors));
+
+        newVendors = newVendors.filter((vendor) => {
+            if (vendor.name.toLowerCase().indexOf(query) > -1 || query.length < 1) 
+                return true;
+            let hasMatchingMenuItem = false;
+            vendor.menu = vendor.menu.filter((item) => item.name.toLowerCase().indexOf(query) > -1);
+            return vendor.menu.length > 0;
+        });
+        newVendors = newVendors.sort(sortByName);
+        this.setState({ filteredVendors: newVendors, filters: newFilters, canOrderFilter: false, sort: 'name' })
     }
 
     render() {
@@ -170,8 +193,9 @@ export default class VendorList extends Component {
                                                 }}
                                             />
                                         </ScrollView>
-                                        <View style={styles.row}>
+                                        <View style={{ flexDirection: 'row', justifyContent: 'center'}}>
                                             <Button
+                                                transparent
                                                 style={{ alignSelf: 'flex-end' }}
                                                 onPress={() => this.modalClose()}
                                             >
@@ -183,6 +207,15 @@ export default class VendorList extends Component {
                             </TouchableWithoutFeedback>
                         </TouchableOpacity>
                     </Modal>
+                    <View style={styles.section}>
+                        <Item>
+                            <Input placeholder='search for vendors or menu items...'
+                                onChangeText={(query) => {
+                                    this.onSearch(query);
+                                }}
+                            />
+                        </Item>
+                    </View>
                     {vendors && vendors.length > 0 ?
                         <FlatList
                             style={[styles.section, styles.last]}
