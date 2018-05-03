@@ -210,6 +210,7 @@ export default class VendorList extends Component {
                     <View style={styles.section}>
                         <Item>
                             <Input placeholder='search for vendors or menu items...'
+                                style={{ fontFamily: 'Montserrat-Regular' }}
                                 onChangeText={(query) => {
                                     this.onSearch(query);
                                 }}
