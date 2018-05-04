@@ -83,7 +83,7 @@ export class OrderList extends Component {
                     let timeDiff = Math.floor(dayjs().diff(dayjs(item.time), 'seconds') / 60);
                     return (
                         <Card>
-                            <ListItem itemDivider style={[styles.rowSpaceBetween, { alignItems: 'flex-start' }]}>
+                            <ListItem itemDivider style={[styles.rowSpaceBetween, { alignItems: 'flex-start', backgroundColor: '#f8f8f8' }]}>
                                 <View style={{ marginTop: 8, marginLeft: 8 }}>
                                     {!this.props.vendor &&
                                     <Text style={[styles.header, styles.cardH2]}>

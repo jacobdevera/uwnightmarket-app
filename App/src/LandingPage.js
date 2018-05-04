@@ -28,7 +28,7 @@ class LandingPage extends Component {
                         }
                     },
                     {text: 'Review', onPress: () => {
-                            Linking.openURL('https://kchen73.github.io/uwnightmarket/')
+                            Linking.openURL('https://kchen73.github.io/uwnightmarket/#legal')
                             acceptTermsAndConditions(() => {
                                 this.setState({ loading: true });
                                 this.attendeeSignIn();          
