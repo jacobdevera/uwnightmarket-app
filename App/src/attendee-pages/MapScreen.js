@@ -17,7 +17,7 @@ import firebase from 'firebase';
 import Carousel from 'react-native-snap-carousel';
 
 import { sortByName, sortByBoothNumber } from '../utils/vendor';
-import mainStyles, { config, scale as mainScale } from '../styles';
+import mainStyles, { config, scale as mainScale, moderateScale } from '../styles';
 
 const { width, height } = Dimensions.get("window");
 const scale = parseInt(width) / 375; // 375 is default iphone 6 width
@@ -35,8 +35,8 @@ export default class MapScreen extends Component {
         region: {
           latitude: 47.655661,
           longitude: -122.309414,
-          latitudeDelta: 0.0014,
-          longitudeDelta: 0.0014,    
+          latitudeDelta: 0.004,
+          longitudeDelta: 0.004,    
         },
         markerPressed: false,
         marginTopHack: 1, // get map view to re-render to show location button
@@ -67,7 +67,8 @@ export default class MapScreen extends Component {
       console.log(vendorPropIndex);
       if (vendorPropIndex < 0) {
         this.setState({ finishedScrollingToVendor: true });
-        this.props.clearInitialNotif();
+        if (this.props.clearInitialNotif)
+          this.props.clearInitialNotif();
       }
       this.markers = new Array(vendorList.length);
       this.setState({ vendors: vendorList, selectedVendorId: vendorPropIndex });
@@ -147,7 +148,7 @@ export default class MapScreen extends Component {
         key={index}
       >
         <View style={styles.textContent}>
-          <Text style={[styles.bold, mainStyles.center, mainStyles.mapText]}>
+          <Text style={[mainStyles.bold, mainStyles.center, mainStyles.mapText]}>
             Booth: {item.boothNumber}
           </Text>
         </View>
@@ -317,7 +318,7 @@ const styles = StyleSheet.create({
   textContent: {
     flex: 1,
     justifyContent: 'center',
-    paddingVertical: Math.max(10, 10 * mainScale)
+    paddingVertical: moderateScale(10)
   },
   cardTitle: {
     fontSize: 12,

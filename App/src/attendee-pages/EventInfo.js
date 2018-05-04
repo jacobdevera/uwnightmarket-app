@@ -63,12 +63,24 @@ const EventInfo = (props) => {
                     Welcome to UW Night Market! Established in 2001, 
                     the UW Night Market has been held by UW's Taiwanese Student Association for 
                     the past 17 years, and this is now our 18th Night Market. We're so happy you 
-                    are here to join us, and have fun today! Event is from 5:30PM-10:30PM.
+                    are here to join us. We hope you have fun today!
+                </Text>
+
+                <Text style={[styles.section, styles.bold]}>
+                    The event is from 5:30PM-10:30PM.
                 </Text>
 
                 <View style={styles.section}>
                     <Text style={[styles.header, styles.h2, styles.center]}>Parking</Text>
                     <Text>Central Parking Garage - free parking for public (Central Plaza Garage, Seattle, WA 98105). Parking is first come, first served.</Text>
+                </View>
+
+                <View style={styles.section}>
+                    <Text style={[styles.header, styles.h2, styles.center]}>Payment</Text>
+                    <Text>We are only accepting cash or vouchers! To purchase vouchers, please have
+                        your credit/debit cards ready at the <Text style={styles.bold}>Information Booth</Text> located in front 
+                        of Odegaard Library.
+                    </Text>
                 </View>
 
                 <View style={styles.section}>

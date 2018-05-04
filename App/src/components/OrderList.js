@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, Image, View, FlatList, TouchableOpacity} from 'react-native';
+import {Alert, Image, View, FlatList, TouchableOpacity, StyleSheet} from 'react-native';
 import {
     ActionSheet,
     Button,
@@ -16,7 +16,7 @@ import {
     Badge,
     Icon
 } from 'native-base';
-import styles, {config, scale} from '../styles';
+import styles, {config, moderateScale} from '../styles';
 import StatusPicker from './StatusPicker';
 import {Status} from '../App';
 import {StackNavigator} from "react-navigation";
@@ -83,7 +83,7 @@ export class OrderList extends Component {
                     let timeDiff = Math.floor(dayjs().diff(dayjs(item.time), 'seconds') / 60);
                     return (
                         <Card>
-                            <ListItem itemDivider style={[styles.rowSpaceBetween, { alignItems: 'flex-start' }]}>
+                            <ListItem itemDivider style={[styles.rowSpaceBetween, { alignItems: 'flex-start', backgroundColor: '#f8f8f8' }]}>
                                 <View style={{ marginTop: 8, marginLeft: 8 }}>
                                     {!this.props.vendor &&
                                     <Text style={[styles.header, styles.cardH2]}>
@@ -98,34 +98,27 @@ export class OrderList extends Component {
                                     style={{ marginLeft: 'auto', height: 32 }}
                                     onPress={() => this.showActionSheet(item)}
                                 >
-                                    <Icon style={{ fontSize: 32, marginLeft: 8, marginRight: 8 }} name='more' />
+                                    <Icon style={{ fontSize: moderateScale(32, 0.25), marginLeft: moderateScale(8), marginRight: moderateScale(8) }} name='more' />
                                 </Button>}
                             </ListItem>
                             <TouchableOpacity onPress={() => { if (this.props.orderOnPress) this.props.orderOnPress(item) }}>
-                                <View style={styles.row}>
+                                <View style={[styles.row]}>
                                     <View
                                         style={{
                                         flex: 20
                                     }}>
                                         <Text style={[styles.center, styles.header, styles.cardH2]}>Order #</Text>
-                                        <Button
-                                            transparent 
+                                        <Badge
+                                            width={64}
                                             style={{ 
-                                                alignSelf: 'center'
-                                            }}
-                                        >
-                                            <Badge
-                                                width={64}
-                                                style={{ 
-                                                    alignSelf: 'center',
-                                                    backgroundColor: config.colorPrimary 
-                                                }}>
-                                                <Text
-                                                style={{
-                                                    textAlign:'center'
-                                                }}>{hash(item.id)}</Text>
-                                            </Badge>
-                                        </Button>
+                                                alignSelf: 'center',
+                                                backgroundColor: config.colorPrimary 
+                                            }}>
+                                            <Text
+                                            style={{
+                                                textAlign:'center'
+                                            }}>{hash(item.id)}</Text>
+                                        </Badge>
                                     </View>
                                     <View
                                         style={{
@@ -135,12 +128,13 @@ export class OrderList extends Component {
                                         <FlatList
                                             data={item.items}
                                             keyExtractor={item => `${item.name}`}
-                                            renderItem={({item}) => {
+                                            renderItem={({item, index}) => {
                                             return (
                                                 <Text
                                                     style={{
-                                                    fontSize: 12,
-                                                    paddingLeft: 4,
+                                                    fontSize: moderateScale(12, 0.33),
+                                                    paddingLeft: moderateScale(8),
+                                                    paddingBottom: moderateScale(4),
                                                     textAlign: 'center'
                                                 }}>{item.quantity} {item.name}</Text>
                                             )
@@ -155,7 +149,7 @@ export class OrderList extends Component {
                                         <Text
                                             style={{
                                             textAlign:'center',
-                                            fontSize: 18,
+                                            fontSize: moderateScale(18, 0.33),
                                             fontWeight: 'bold'
                                         }}>
                                             ${this.getTotalPrice(item)}
@@ -171,7 +165,7 @@ export class OrderList extends Component {
                                             <Button
                                                 small
                                                 style={{
-                                                width: 72 * scale,
+                                                width: moderateScale(72),
                                                 justifyContent: 'center',
                                                 alignItems: 'center',
                                                 backgroundColor: this.getStatusButtonColor(item)
@@ -182,8 +176,8 @@ export class OrderList extends Component {
                                                     styles.center, {
                                                         paddingLeft: 0,
                                                         paddingRight: 0,
-                                                        fontSize: Math.max(10, 10 * scale),
-                                                        lineHeight: Math.max(12, 12 * scale)
+                                                        fontSize: moderateScale(10),
+                                                        lineHeight: moderateScale(12)
                                                     }
                                                 ]}>{item.status}</Text>
                                             </Button>

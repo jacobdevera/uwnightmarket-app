@@ -10,7 +10,7 @@ const Merchandise = (props) => {
         {
             name: 'Crewneck and Hoodie',
             price: '$25 (Crewneck), $30 (Hoodie)',
-            desc: 'Hoodie has same design',
+            desc: 'Same design for hoodies',
             img: [require('../../img/crewneck.png')]
         },
         {

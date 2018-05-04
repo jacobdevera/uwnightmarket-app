@@ -101,7 +101,7 @@ export default class VendorFood extends Component {
         return new Promise((resolve) => {
             firebase.database().ref(`/user-orders/${firebase.auth().currentUser.uid}`).once('value', (snapshot) => {
                 if (snapshot.val()) {
-                    activeOrders = Object.values(snapshot.val()).filter((order) => order !== Status.PICKED_UP);
+                    activeOrders = Object.values(snapshot.val()).filter((order) => order !== Status.PICKED_UP && order !== Status.CANCELED);
                     if (activeOrders.length >= limits.orders) {
                         Toast.show({
                             text: `Cannot exceed ${limits.orders} active orders`,
@@ -147,7 +147,7 @@ export default class VendorFood extends Component {
                 
                 Alert.alert(
                     'Submit order?',
-                    `When your order is ready, you must go to the vendor's booth and be prepared to pay with cash. You will be unable to delete your order after two minutes.`,
+                    `When your order is ready, you must go to the vendor's booth and be prepared to pay with cash or vouchers. You will be unable to delete your order after two minutes.`,
                     [
                         {text: 'Cancel', style: 'cancel'},
                         {text: 'Submit', onPress: () => firebase.database().ref().update(updates).then((response) => {
@@ -260,7 +260,7 @@ export default class VendorFood extends Component {
                                 <Text style={[styles.h1, { flex: 1, textAlign: 'right'}]}>${totalPrice}</Text>
                             </View>
                             <View style={[styles.row, { alignItems: 'center', paddingTop: 0 }]}>
-                                <Text style={[styles.bold, { flex: 1, textAlign: 'right', color: this.isQueueLong() ? 'red' : config.textLight }]}>
+                                <Text style={[styles.bold, styles.h3, { flex: 1, textAlign: 'right', color: this.isQueueLong() ? 'red' : config.textLight }]}>
                                     Orders in queue: 
                                 </Text>
                                 <Text style={[styles.h1, { flex: 1, textAlign: 'right', color: this.isQueueLong() ? 'red' : config.textLight}]}>

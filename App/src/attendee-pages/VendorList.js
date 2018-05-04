@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Image, View, Modal, StyleSheet, FlatList, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
-import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon, Left, Right, List, ListItem, Radio, Badge, Spinner } from 'native-base';
+import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon, Left, Right, List, ListItem, Radio, Badge, Spinner, Input, Item } from 'native-base';
 import { StackNavigator } from "react-navigation";
 import firebase from 'firebase'
 
 import { filters } from '../App';
-import { sortByBoothNumber, sortByName } from '../utils/vendor';
+import { sortByBoothNumber, sortByName, sortByParticipating } from '../utils/vendor';
 import { AppHeader, StackHeader } from '../components';
-import styles, { config, scale, modalStyles } from '../styles';
+import styles, { config, scale, modalStyles, moderateScale } from '../styles';
 
 export default class VendorList extends Component {
     constructor(props) {
@@ -19,8 +19,9 @@ export default class VendorList extends Component {
                 return { name: filter, active: false }
             }),
             modalVisible: false,
-            sort: 'name',
-            canOrderFilter: false
+            sort: 'mobile',
+            canOrderFilter: false,
+            query: ''
         }
     }
     
@@ -31,7 +32,7 @@ export default class VendorList extends Component {
             snapshot.forEach((vendorSnapshot) => {
                 vendorList.push(vendorSnapshot.val());
             });
-            vendorList = vendorList.sort(sortByName);
+            vendorList = vendorList.sort(sortByParticipating);
             this.setState({ vendors: vendorList, filteredVendors: vendorList });
         });
     }
@@ -54,10 +55,13 @@ export default class VendorList extends Component {
         
         if (filters.length > 0) {
             newVendors = newVendors.filter((vendor) => {
-                filters.forEach((filter) => {
-                    vendor.menu = vendor.menu.filter((item) => {
-                        return item.traits.includes(filter.name)
+                vendor.menu = vendor.menu.filter((item) => {
+                    let satisfiesAFilter = false;
+                    filters.forEach((filter) => {
+                        if (item.traits.includes(filter.name))
+                            satisfiesAFilter = true;
                     })
+                    return satisfiesAFilter;
                 })
                 return vendor.menu.length > 0;
             });
@@ -83,9 +87,35 @@ export default class VendorList extends Component {
             case 'name':
             sortToPerform = sortByName;
             break;
+
+            case 'mobile':
+            sortToPerform = sortByParticipating;
+            break;
         }
         let sortedVendors = this.state.filteredVendors.sort(sortToPerform);
         this.setState({ filteredVendors: sortedVendors, sort: type });
+    }
+    
+    resetFilters = () => {
+        let newFilters = this.state.filters.slice();
+        newFilters.forEach((filter) => { filter.active = false });
+        return newFilters;
+    }
+
+    onSearch = (query) => {
+        query = query.toLowerCase();
+        let newFilters = this.resetFilters();
+        let newVendors = JSON.parse(JSON.stringify(this.state.vendors));
+
+        newVendors = newVendors.filter((vendor) => {
+            if (vendor.name.toLowerCase().indexOf(query) > -1 || query.length < 1) 
+                return true;
+            let hasMatchingMenuItem = false;
+            vendor.menu = vendor.menu.filter((item) => item.name.toLowerCase().indexOf(query) > -1);
+            return vendor.menu.length > 0;
+        });
+        newVendors = newVendors.sort(sortByName);
+        this.setState({ filteredVendors: newVendors, filters: newFilters, canOrderFilter: false, sort: 'name' })
     }
 
     render() {
@@ -121,7 +151,7 @@ export default class VendorList extends Component {
                                         >
                                             <Text>Booth Number</Text>
                                             <Right>
-                                                <Radio selected={this.state.sort === 'number'} />
+                                                <Radio onPress={() => this.sort('number')} selected={this.state.sort === 'number'} />
                                             </Right>
                                         </ListItem>
                                         <ListItem style={{ justifyContent: 'space-between' }} 
@@ -129,7 +159,15 @@ export default class VendorList extends Component {
                                         >
                                             <Text>Name</Text>
                                             <Right>
-                                                <Radio selected={this.state.sort === 'name'} />
+                                                <Radio onPress={() => this.sort('name')} selected={this.state.sort === 'name'} />
+                                            </Right>
+                                        </ListItem>
+                                        <ListItem style={{ justifyContent: 'space-between' }} 
+                                            onPress={() => this.sort('mobile')}
+                                        >
+                                            <Text>Mobile Ordering</Text>
+                                            <Right>
+                                                <Radio onPress={() => this.sort('mobile')} selected={this.state.sort === 'mobile'} />
                                             </Right>
                                         </ListItem>
                                         <ListItem style={{ borderBottomWidth: 0 }}>
@@ -167,12 +205,15 @@ export default class VendorList extends Component {
                                                 }}
                                             />
                                         </ScrollView>
-                                        <View style={styles.row}>
+                                        <View style={{ flexDirection: 'row', justifyContent: 'center'}}>
                                             <Button
+                                                transparent
                                                 style={{ alignSelf: 'flex-end' }}
                                                 onPress={() => this.modalClose()}
                                             >
-                                                <Text>Close</Text>
+                                                <Text>
+                                                    Done
+                                                </Text>
                                             </Button>
                                         </View>
                                     </View>
@@ -181,62 +222,88 @@ export default class VendorList extends Component {
                         </TouchableOpacity>
                     </Modal>
                     {vendors && vendors.length > 0 ?
-                        <FlatList
-                            style={[styles.section, styles.last]}
-                            data={filteredVendors}
-                            extraData={this.state}
-                            keyExtractor={ item => item.name }
-                            renderItem={({ item }) => {
-                                let foodNames = item.menu.slice(0, 3).map((item, index) => item.name + (index >= 2 ? '...': ''));
-                                let bodyLeftMargin = item.img.length > 0 ? 8 : 0;
-                                return (
-                                    <Card>
-                                        <CardItem style={{ paddingLeft: 10, paddingRight: 10, paddingTop: 0, paddingBottom: 0 }}
-                                            button onPress={() => { this.props.navigation.navigate('VendorFood', {
-                                                    vendor: item,
-                                                    isAttendee: true
-                                                }); 
-                                            }}
-                                        > 
-                                            {item.img.length > 0 &&
-                                            <View style={{paddingTop: 10, paddingBottom: 10 }}>
-                                                <Image
-                                                    resizeMode="contain"
-                                                    style={[styles.listImage]}
-                                                    source={{ uri: item.img }}
-                                                />
-                                            </View>}
-                                            <Body style={{ 
-                                                paddingLeft: 10, 
-                                                marginLeft: bodyLeftMargin, 
-                                                alignSelf: 'flex-start', 
-                                                borderLeftWidth: StyleSheet.hairlineWidth, 
-                                                borderLeftColor: '#ccc', 
-                                                paddingTop: 10, 
-                                                paddingBottom: 10
-                                            }}>
-                                                <View style={{ flex: 1 }}>
-                                                    <View style={{ flexDirection:'row' }}>
-                                                        <Badge style={{ backgroundColor: config.colorPrimary, marginRight: 10}}>
+                        <View>
+                            <View style={styles.section}>
+                                <Item regular
+                                    style={{ borderRadius: 8 }}>
+                                    <Icon name='search' style={{ color: config.textLight, fontSize: 18 }} />
+                                    <Input placeholder='search for vendors or menu items...'
+                                        style={{ 
+                                            fontFamily: 'Montserrat-Regular', 
+                                            paddingLeft: 2, 
+                                            height: 35, 
+                                            fontSize: 14,
+                                            lineHeight: 16
+                                        }}
+                                        placeholderTextColor={config.textLight}
+                                        onChangeText={(query) => {
+                                            this.onSearch(query);
+                                        }}
+                                    />
+                                </Item>
+                            </View>
+                            {filteredVendors.length > 0 ?
+                            <FlatList
+                                style={[styles.last, { marginTop: 12 }]}
+                                data={filteredVendors}
+                                extraData={this.state}
+                                keyExtractor={ item => item.name }
+                                renderItem={({ item }) => {
+                                    let foodNames = item.menu.slice(0, 3).map((item, index) => item.name + (index >= 2 ? '...': ''));
+                                    let bodyLeftMargin = item.img.length > 0 ? 8 : 0;
+                                    return (
+                                        <Card>
+                                            <CardItem style={{ paddingLeft: 10, paddingRight: 10, paddingTop: 0, paddingBottom: 0 }}
+                                                button onPress={() => { this.props.navigation.navigate('VendorFood', {
+                                                        vendor: item,
+                                                        isAttendee: true
+                                                    }); 
+                                                }}
+                                            > 
+                                                {item.img.length > 0 &&
+                                                <View style={{paddingTop: 10, paddingBottom: 10 }}>
+                                                    <Image
+                                                        resizeMode="contain"
+                                                        style={[styles.listImage]}
+                                                        source={{ uri: item.img }}
+                                                    />
+                                                </View>}
+                                                <Body style={{
+                                                    paddingLeft: 10, 
+                                                    marginLeft: bodyLeftMargin, 
+                                                    alignSelf: 'flex-start', 
+                                                    borderLeftWidth: StyleSheet.hairlineWidth, 
+                                                    borderLeftColor: '#ccc', 
+                                                    paddingTop: 10, 
+                                                    paddingBottom: 10
+                                                }}>
+                                                    <View style={{ flex: 1, flexDirection: 'row' }}>
+                                                        <Badge style={styles.badge}>
                                                             <Text>{item.boothNumber}</Text>
                                                         </Badge>
-                                                        <Text style={ [{ flex: 1, flexWrap: 'wrap'}, styles.bold, styles.cardH1] }>{item.name}</Text>
-                                                        {item.canOrder && 
-                                                        <View style={{ alignItems: 'flex-end' }}>
+                                                        <Text style={ [{flex: 1, flexWrap: 'wrap'},styles.bold, styles.cardH1] }>{item.name}</Text>
+                                                    </View>
+
+                                                    {item.desc.length > 0 && <Text style={ [styles.desc, styles.smallSection, { flex: 1 }]}>{item.desc}</Text>}
+                                                    <View>
+                                                        <Text style={[styles.bold, styles.smallSection, styles.cardH2] }>Menu:</Text>
+                                                        <Text style={[styles.menuItem]}>{foodNames.join(', ')}</Text>
+                                                    </View>
+                                                    {item.canOrder && 
+                                                    <View style={{ position: 'absolute', top: 8, right: -4 }}>
                                                         <Icon name='mobile' 
                                                             type='Entypo'
-                                                            style={{ fontSize: 24, color: config.colorPrimary, }}
-                                                        /></View>}
-                                                    </View>
-                                                    {item.desc.length > 0 && <Text style={ [styles.desc, styles.smallSection] }>{item.desc}</Text>}
-                                                    <Text style={ [styles.bold, styles.smallSection] }>Menu:</Text><Text style={[styles.menuItem]}>{foodNames.join(', ')}</Text>
-                                                </View>
-                                            </Body>
-                                        </CardItem>
-                                    </Card>
-                                )
-                            }}
-                        />
+                                                            style={{ fontSize: moderateScale(20), color: config.colorPrimary }}
+                                                        />
+                                                    </View>}
+                                                </Body>
+                                            </CardItem>
+                                        </Card>
+                                    )
+                                }}
+                            />
+                            : <Text style={[styles.center, styles.desc, { marginTop: 12 }]}>no results</Text>}
+                        </View>
                         : <Spinner color={config.colorPrimary} />}
                 </Content>
             </Container>

@@ -20,7 +20,7 @@ import firebase from 'firebase';
 
 import {AppHeader, OrderList} from '../components';
 import {Status, limits} from '../App';
-import styles, { config, modalStyles } from '../styles';
+import styles, { config, modalStyles, moderateScale } from '../styles';
 import { hash } from '../utils/order';
 
 class MyOrders extends Component {
@@ -175,9 +175,10 @@ class MyOrders extends Component {
                                         styles.h1, 
                                         styles.section, 
                                         styles.fullWidth, 
+                                        
                                         { textAlign: 'center' }
                                     ]}>
-                                        Order number:
+                                        Order #
                                     </Text>
                                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                                     <Text style={[styles.bold, styles.orderNumberLarge]}>
@@ -201,30 +202,30 @@ class MyOrders extends Component {
                         <View style={{ flex: 1 }}>
                             <Text style={[styles.bold, styles.header, styles.h1]}>Ordering Info</Text>
                             <View style={{ flexDirection: 'row' }}>
-                                    <Icon name='dot-single' type='Entypo' style={{ fontSize: 16, paddingTop: 8 }}/>
-                                    <Text  style={{ flex: 1, flexWrap: 'wrap' }}>{`Vendors with the `}
+                                    <Icon name='dot-single' type='Entypo' style={{ fontSize: 20, paddingTop: 6, marginRight: 8, color: config.colorPrimary }}/>
+                                    <Text style={{ flex: 1, flexWrap: 'wrap' }}>{`Vendors with the `}
                                     <Icon name='mobile' type='Entypo' style={{ fontSize: 24, color: config.colorPrimary }}/>
                                     {` icon will be available for mobile ordering.`}</Text>
                             </View>
                             <View style={[{ flexDirection: 'row' }, styles.smallSection]}>
-                                <Icon name='dot-single' type='Entypo' style={{ fontSize: 16, paddingTop: 2 }}/>
+                                <Icon name='dot-single' type='Entypo' style={{ fontSize: 20, color: config.colorPrimary, marginRight: 8 }}/>
                                 <Text style={{ flex: 1, flexWrap: 'wrap' }}>{`You can order a maximum of ${limits.quantity} items from one vendor.`}</Text>
                             </View>
                             <View style={[{ flexDirection: 'row' }, styles.smallSection]}>
-                                <Icon name='dot-single' type='Entypo' style={{ fontSize: 16, paddingTop: 2  }}/>
+                                <Icon name='dot-single' type='Entypo' style={{ fontSize: 20, color: config.colorPrimary, marginRight: 8 }}/>
                                 <Text style={{ flex: 1, flexWrap: 'wrap' }}>{`You can have up to ${limits.orders} active orders at a time.`}</Text>
                             </View>
                             <View style={[{ flexDirection: 'row' }, styles.smallSection]}>
-                                <Icon name='dot-single' type='Entypo' style={{ fontSize: 16, paddingTop: 2  }}/>
-                                <Text style={{ flex: 1, flexWrap: 'wrap' }}>{`Once you make an order, you have up to ${limits.orderAge / 1000 / 60} minutes to delete the order.`}</Text>
+                                <Icon name='dot-single' type='Entypo' style={{ fontSize: 20, color: config.colorPrimary, marginRight: 8 }}/>
+                                <Text style={{ flex: 1, flexWrap: 'wrap' }}>{`Once you make an order, you have up to ${limits.orderAge / 1000 / 60} minutes to cancel the order.`}</Text>
                             </View>
                             <View style={[{ flexDirection: 'row' }, styles.smallSection]}>
-                                <Icon name='dot-single' type='Entypo' style={{ fontSize: 16, paddingTop: 2  }}/>    
+                                <Icon name='dot-single' type='Entypo' style={{ fontSize: 20, color: config.colorPrimary, marginRight: 8 }}/>    
                                 <Text style={{ flex: 1, flexWrap: 'wrap' }}>{`You will receive a notification when your order is ready for pick up. `+
-                                `Please arrive at the booth within 10 minutes to pick up your order and be prepared to pay with cash.`}</Text>
+                                `Please arrive at the booth within 10 minutes to pick up your order and be prepared to pay with cash or vouchers.`}</Text>
                             </View>
                             <View style={[{ flexDirection: 'row' }, styles.smallSection]}>
-                                <Icon name='dot-single' type='Entypo' style={{ fontSize: 16, paddingTop: 2  }}/>
+                                <Icon name='dot-single' type='Entypo' style={{ fontSize: 20, color: config.colorPrimary, marginRight: 8 }}/>
                                 <Text style={{ flex: 1, flexWrap: 'wrap' }}>{`The vendors have the right to cancel your order at any time if and only if they are unable to fulfill your order.`}</Text>
                             </View>
                         </View>
