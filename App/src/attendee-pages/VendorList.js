@@ -210,9 +210,17 @@ export default class VendorList extends Component {
                     {vendors && vendors.length > 0 ?
                         <View>
                             <View style={styles.section}>
-                                <Item>
+                                <Item regular
+                                    style={{ borderRadius: 8 }}>
+                                    <Icon name='search' style={{ color: config.textLight, fontSize: 18 }} />
                                     <Input placeholder='search for vendors or menu items...'
-                                        style={{ fontFamily: 'Montserrat-Regular' }}
+                                        style={{ 
+                                            fontFamily: 'Montserrat-Regular', 
+                                            paddingLeft: 2, 
+                                            height: 35, 
+                                            fontSize: 14
+                                        }}
+                                        placeholderTextColor={config.textLight}
                                         onChangeText={(query) => {
                                             this.onSearch(query);
                                         }}
