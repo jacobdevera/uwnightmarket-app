@@ -5,7 +5,7 @@ import { StackNavigator } from "react-navigation";
 import firebase from 'firebase'
 
 import { filters } from '../App';
-import { sortByBoothNumber, sortByName } from '../utils/vendor';
+import { sortByBoothNumber, sortByName, sortByParticipating } from '../utils/vendor';
 import { AppHeader, StackHeader } from '../components';
 import styles, { config, scale, modalStyles, moderateScale } from '../styles';
 
@@ -19,7 +19,7 @@ export default class VendorList extends Component {
                 return { name: filter, active: false }
             }),
             modalVisible: false,
-            sort: 'name',
+            sort: 'mobile',
             canOrderFilter: false,
             query: ''
         }
@@ -32,7 +32,7 @@ export default class VendorList extends Component {
             snapshot.forEach((vendorSnapshot) => {
                 vendorList.push(vendorSnapshot.val());
             });
-            vendorList = vendorList.sort(sortByName);
+            vendorList = vendorList.sort(sortByParticipating);
             this.setState({ vendors: vendorList, filteredVendors: vendorList });
         });
     }
@@ -86,6 +86,10 @@ export default class VendorList extends Component {
 
             case 'name':
             sortToPerform = sortByName;
+            break;
+
+            case 'mobile':
+            sortToPerform = sortByParticipating;
             break;
         }
         let sortedVendors = this.state.filteredVendors.sort(sortToPerform);
@@ -158,6 +162,14 @@ export default class VendorList extends Component {
                                                 <Radio onPress={() => this.sort('name')} selected={this.state.sort === 'name'} />
                                             </Right>
                                         </ListItem>
+                                        <ListItem style={{ justifyContent: 'space-between' }} 
+                                            onPress={() => this.sort('mobile')}
+                                        >
+                                            <Text>Mobile Ordering</Text>
+                                            <Right>
+                                                <Radio onPress={() => this.sort('mobile')} selected={this.state.sort === 'mobile'} />
+                                            </Right>
+                                        </ListItem>
                                         <ListItem style={{ borderBottomWidth: 0 }}>
                                             <Text style={[styles.bold]}>Filter</Text>
                                         </ListItem>
@@ -199,7 +211,9 @@ export default class VendorList extends Component {
                                                 style={{ alignSelf: 'flex-end' }}
                                                 onPress={() => this.modalClose()}
                                             >
-                                                <Text>Close</Text>
+                                                <Text>
+                                                    Done
+                                                </Text>
                                             </Button>
                                         </View>
                                     </View>
@@ -228,6 +242,7 @@ export default class VendorList extends Component {
                                     />
                                 </Item>
                             </View>
+                            {filteredVendors.length > 0 ?
                             <FlatList
                                 style={[styles.last, { marginTop: 12 }]}
                                 data={filteredVendors}
@@ -287,6 +302,7 @@ export default class VendorList extends Component {
                                     )
                                 }}
                             />
+                            : <Text style={[styles.center, styles.desc, { marginTop: 12 }]}>no results</Text>}
                         </View>
                         : <Spinner color={config.colorPrimary} />}
                 </Content>
