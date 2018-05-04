@@ -74,7 +74,7 @@ const Games = (props) => {
                                                         </Text>
                                                     </View>
                                                 </View>
-                                                <Text style={[styles.smallSection, { fontSize: 14, color: config.textDark }]}>{data.desc}</Text>
+                                                <Text style={[styles.smallSection, { fontSize: moderateScale(14, 0.25), color: config.textDark, flex: 1 }]}>{data.desc}</Text>
                                             </Body>
                                             <Image
                                                 resizeMode="contain"
