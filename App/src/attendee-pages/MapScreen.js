@@ -35,8 +35,8 @@ export default class MapScreen extends Component {
         region: {
           latitude: 47.655661,
           longitude: -122.309414,
-          latitudeDelta: 0.0014,
-          longitudeDelta: 0.0014,    
+          latitudeDelta: 0.004,
+          longitudeDelta: 0.004,    
         },
         markerPressed: false,
         marginTopHack: 1, // get map view to re-render to show location button
