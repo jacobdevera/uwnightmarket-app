@@ -218,7 +218,8 @@ export default class VendorList extends Component {
                                             fontFamily: 'Montserrat-Regular', 
                                             paddingLeft: 2, 
                                             height: 35, 
-                                            fontSize: 14
+                                            fontSize: 14,
+                                            lineHeight: 16
                                         }}
                                         placeholderTextColor={config.textLight}
                                         onChangeText={(query) => {
@@ -228,7 +229,7 @@ export default class VendorList extends Component {
                                 </Item>
                             </View>
                             <FlatList
-                                style={[styles.section, styles.last]}
+                                style={[styles.last, { marginTop: 12 }]}
                                 data={filteredVendors}
                                 extraData={this.state}
                                 keyExtractor={ item => item.name }
@@ -268,7 +269,7 @@ export default class VendorList extends Component {
                                                         <Text style={ [{flex: 1, flexWrap: 'wrap'},styles.bold, styles.cardH1] }>{item.name}</Text>
                                                     </View>
 
-                                                    {item.desc.length > 0 && <Text style={ [styles.desc, styles.smallSection] }>{item.desc}</Text>}
+                                                    {item.desc.length > 0 && <Text style={ [styles.desc, styles.smallSection, { flex: 1 }]}>{item.desc}</Text>}
                                                     <View>
                                                         <Text style={[styles.bold, styles.smallSection, styles.cardH2] }>Menu:</Text>
                                                         <Text style={[styles.menuItem]}>{foodNames.join(', ')}</Text>
