@@ -256,20 +256,21 @@ export default class VendorFood extends Component {
                         {vendor.canOrder ? 
                         <View>
                             <View style={[styles.row, { alignItems: 'center' }]}>
-                                <Text style={[styles.bold, styles.h1, { flex: 1, textAlign: 'right' }]}>Total Due: </Text>
-                                <Text style={[styles.h1, { flex: 1, textAlign: 'right'}]}>${totalPrice}</Text>
-                            </View>
-                            <View style={[styles.row, { alignItems: 'center', paddingTop: 0 }]}>
-                                <Text style={[styles.bold, styles.h3, { flex: 1, textAlign: 'right', color: this.isQueueLong() ? 'red' : config.textLight }]}>
-                                    Orders in queue: 
+                                <Text style={[styles.h3, { flex: 1, textAlign: 'left', color: config.textLight }]}>
+                                    Orders in queue
                                 </Text>
-                                <Text style={[styles.h1, { flex: 1, textAlign: 'right', color: this.isQueueLong() ? 'red' : config.textLight}]}>
+                                <Text style={[styles.h2, { flex: 1, textAlign: 'right', color: config.textLight}]}>
                                     {vendor.currentQueueSize ? vendor.currentQueueSize : 0}
                                 </Text>
                             </View>
-                            {this.isQueueLong() && <Text style={[styles.row,styles.center,{ color: 'red' }]}>Your order may take a while to begin preparing.</Text>}
-                            <View style={[styles.row, styles.last]}>
-                                <Button disabled={!vendor.canOrder || totalQuantity <= 0} 
+                            {this.isQueueLong() && <Text style={[styles.row, styles.center, { color: config.textLight }]}>Your order may take a while to begin preparing.</Text>}
+                            <View style={[styles.row, { alignItems: 'center', paddingTop: 0 }]}>
+                                <Text style={[styles.h1, styles.bold, { flex: 1, textAlign: 'left' }]}>Total Due</Text>
+                                <Text style={[styles.bold, styles.h1, { flex: 1, textAlign: 'right', color: config.colorPrimary }]}>${totalPrice}</Text>
+                            </View>
+                            
+                            <View style={[styles.smallSection, styles.last]}>
+                                <Button block disabled={!vendor.canOrder || totalQuantity <= 0} 
                                     onPress={async () => { if (await this.lessThanMaxOrders() && await isEventActive() && isAttendee) this.submitOrder() }}>
                                     <Text>Submit Order</Text>
                                 </Button>

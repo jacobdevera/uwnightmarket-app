@@ -39,7 +39,7 @@ export const limits = {
     orders: 2,
     orderAge: 120000,
     orderCooldown: 30000,
-    queue: 15
+    queue: 30
 }
 
 export const filters = ['food', 'beverage', 'hot', 'cold', 'savory', 'sweet', 'spicy', 'available'];
