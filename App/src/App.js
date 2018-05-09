@@ -49,7 +49,7 @@ export const errorToken = () => {
         'Please allow for notifications',
         'This is needed for vendors to notify you when your order is ready.',
         [
-            { text: 'OK', style: 'cancel' },
+            { text: 'Later', style: 'cancel' },
             { text: 'Open Settings', onPress: () => { 
                 Linking.openURL('app-settings:').catch(err => console.log(err));
             }}
