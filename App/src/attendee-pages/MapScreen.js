@@ -40,8 +40,7 @@ export default class MapScreen extends Component {
         },
         markerPressed: false,
         marginTopHack: 1, // get map view to re-render to show location button
-        selectedVendorId: null,
-        finishedScrollingToVendor: false
+        selectedVendorId: -1
       };
     }
 
@@ -66,7 +65,6 @@ export default class MapScreen extends Component {
       let vendorPropIndex = this.getVendorPropIndex(vendorList);
       console.log(vendorPropIndex);
       if (vendorPropIndex < 0) {
-        this.setState({ finishedScrollingToVendor: true });
         if (this.props.clearInitialNotif)
           this.props.clearInitialNotif();
       }
@@ -76,24 +74,36 @@ export default class MapScreen extends Component {
   }
 
   componentDidUpdate() {
-    const { selectedVendorId, vendors, finishedScrollingToVendor } = this.state;
-    console.log(this.state);
+    const { selectedVendorId, vendors } = this.state;
+    console.log(selectedVendorId);
     if (selectedVendorId > -1) {
+      console.log('oh shoot')
       let marker = this.markers[selectedVendorId];
-      if (vendors[selectedVendorId] !== null && marker !== undefined && !finishedScrollingToVendor) {
-          console.log(selectedVendorId);
-          console.log('centering marker');
+      if (vendors[selectedVendorId] !== null && marker !== undefined) {
           // hack to show callout until react-native-maps fixed
+          console.log('this should only be called once')
           setTimeout(() => {
-            this.centerMarker(selectedVendorId);
-            this._carousel.snapToItem(selectedVendorId);
-            marker._component.showCallout();
-            if (this.props.clearInitialNotif)
-              this.props.clearInitialNotif();
-            this.setState({ finishedScrollingToVendor: true, selectedVendorId: -1 });
+            this.goToVendorFromNotif(selectedVendorId);
+            this.setState({ selectedVendorId: -1 });
           }, 500);
       }
+    } else if (this.hasVendorParam()) { // map in foreground when tapping notification
+      console.log('waddup')
+      this.goToVendorFromNotif(selectedVendorId);
     }
+  }
+
+  goToVendorFromNotif = (selectedVendorId) => {
+    let index = selectedVendorId > -1 ? selectedVendorId : this.getVendorPropIndex(this.state.vendors);
+    console.log('wtf ' + index);
+    if (index > -1) {
+      let marker = this.markers[index];
+      this.centerMarker(index);
+      this._carousel.snapToItem(index);
+      marker._component.showCallout();
+    }
+    if (this.props.clearInitialNotif)
+      this.props.clearInitialNotif();
   }
 
   hasVendorParam = () => {
@@ -114,7 +124,6 @@ export default class MapScreen extends Component {
       console.log(' this shouldnt be -1 ' + vendorIndex)
       return vendorIndex;
     } else {
-      this.setState({ finishedScrollingToVendor: true });
       return -1;
     }
   }
@@ -264,7 +273,7 @@ export default class MapScreen extends Component {
           sliderWidth={width}
           itemWidth={CARD_WIDTH}
           onSnapToItem={(index) => {
-            if (this.state.finishedScrollingToVendor) {
+            if (this.state.selectedVendorId < 0) {
               console.log('snapping to ' + index);
               this.centerMarker(index);
               this.showMarkerCallout(index);
