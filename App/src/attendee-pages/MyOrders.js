@@ -50,7 +50,7 @@ class MyOrders extends Component {
     componentWillMount() {
         let { screenProps } = this.props;
         let notif = screenProps && screenProps.state && screenProps.state.initialNotif;
-        if (notif && notif.vendorId) {
+        if (notif && notif.vendorId !== null && notif.status === Status.READY) {
             console.log('going to map from notif')
             this.props.navigation.navigate('MapView', { vendorId: notif.vendorId });
         }

@@ -202,7 +202,9 @@ class VendorOrders extends Component {
                         "icon": "ic_notif",
                         "show_in_foreground": true,
                         "sound": "default",
-                        "vendorId": status === Status.READY ? order.vendorId : null
+                        "vendorId": order.vendorId,
+                        "orderId": order.id,
+                        "status": status
                     }
                 }
             }
@@ -215,7 +217,9 @@ class VendorOrders extends Component {
                     "sound": "default"
                 },
                 "data": {
-                    "vendorId": status === Status.READY ? order.vendorId : null
+                    "vendorId": order.vendorId,
+                    "orderId": order.id,
+                    "status": status
                 },
                 "priority": 10
             };

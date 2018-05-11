@@ -87,7 +87,8 @@ export default class MapScreen extends Component {
             this.goToVendorFromNotif(selectedVendorId);
           }, 500);
       }
-    } else if (this.hasVendorParam()) { // map in foreground when tapping notification
+    } else if (this.hasVendorParam() && this.state.vendors.length > 0) { // map in foreground when tapping notification
+      console.log('map in foreground, did update');
       this.goToVendorFromNotif(selectedVendorId);
     }
   }
@@ -111,6 +112,8 @@ export default class MapScreen extends Component {
   }
 
   getVendorPropIndex = (vendors) => {
+    console.log('vendors in list' + vendors.length);
+    console.log(vendors);
     console.log("hasVendorParam " + this.hasVendorParam());
     if (this.hasVendorParam()) {
       let vendorIndex = -1;
@@ -125,6 +128,8 @@ export default class MapScreen extends Component {
       return vendorIndex;
     } else {
       console.log('walang vendor param')
+      console.log('this returned -1 somehow')
+      console.log(vendors);
       return -1;
     }
   }

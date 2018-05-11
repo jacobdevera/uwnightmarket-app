@@ -113,7 +113,8 @@ export default class App extends Component {
             if (notif.opened_from_tray) {
                 console.log('opened from tray')
                 this.setState({ initialNotif: notif, view: Views.ATTENDEE });
-                NavigationService.navigate('Map', { vendorId: notif.vendorId });
+                if (notif.status === Status.READY)
+                    NavigationService.navigate('Map', { vendorId: notif.vendorId });
                 return;
             }
 
