@@ -157,6 +157,20 @@ export default styles = StyleSheet.create({
     },
     badge: {
         backgroundColor: config.colorPrimary, marginRight: 8, justifyContent: 'center'
+    },
+    mapNotifBox: {
+        position: "absolute",
+        height: 56,
+        top: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: config.colorPrimary,
+        justifyContent: 'center'
+    },
+    mapNotifBoxText: {
+        fontFamily: 'Montserrat-Bold',
+        color: '#fff',
+        paddingLeft: 30
     }
 });
 

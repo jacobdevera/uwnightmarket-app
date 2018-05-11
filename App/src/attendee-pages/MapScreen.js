@@ -40,12 +40,13 @@ export default class MapScreen extends Component {
         },
         markerPressed: false,
         marginTopHack: 1, // get map view to re-render to show location button
-        selectedVendorId: -1
+        selectedVendorId: -1,
+        notifBoxShow: false,
+        finishedScrollingToVendor: false
       };
     }
 
   componentWillMount() {
-    console.log('component will mount')
     console.log(this.props);
     this.index = 0;
     this.animation = new Animated.Value(0);
@@ -63,10 +64,11 @@ export default class MapScreen extends Component {
       });
       vendorList = vendorList.sort(sortByBoothNumber);
       let vendorPropIndex = this.getVendorPropIndex(vendorList);
-      console.log(vendorPropIndex);
+      console.log('componentWillMount index ' + vendorPropIndex);
       if (vendorPropIndex < 0) {
         if (this.props.clearInitialNotif)
           this.props.clearInitialNotif();
+        this.setState({ finishedScrollingToVendor: true });
       }
       this.markers = new Array(vendorList.length);
       this.setState({ vendors: vendorList, selectedVendorId: vendorPropIndex });
@@ -74,33 +76,31 @@ export default class MapScreen extends Component {
   }
 
   componentDidUpdate() {
-    const { selectedVendorId, vendors } = this.state;
+    const { selectedVendorId, vendors, finishedScrollingToVendor } = this.state;
     console.log(selectedVendorId);
-    if (selectedVendorId > -1) {
-      console.log('oh shoot')
+    if (selectedVendorId > -1 && !finishedScrollingToVendor) {
       let marker = this.markers[selectedVendorId];
       if (vendors[selectedVendorId] !== null && marker !== undefined) {
           // hack to show callout until react-native-maps fixed
           console.log('this should only be called once')
           setTimeout(() => {
             this.goToVendorFromNotif(selectedVendorId);
-            this.setState({ selectedVendorId: -1 });
           }, 500);
       }
     } else if (this.hasVendorParam()) { // map in foreground when tapping notification
-      console.log('waddup')
       this.goToVendorFromNotif(selectedVendorId);
     }
   }
 
   goToVendorFromNotif = (selectedVendorId) => {
     let index = selectedVendorId > -1 ? selectedVendorId : this.getVendorPropIndex(this.state.vendors);
-    console.log('wtf ' + index);
+    console.log('notif index ' + index);
     if (index > -1) {
       let marker = this.markers[index];
       this.centerMarker(index);
       this._carousel.snapToItem(index);
       marker._component.showCallout();
+      this.setState({ notifBoxShow: true, finishedScrollingToVendor: true, selectedVendorId: index });
     }
     if (this.props.clearInitialNotif)
       this.props.clearInitialNotif();
@@ -111,7 +111,7 @@ export default class MapScreen extends Component {
   }
 
   getVendorPropIndex = (vendors) => {
-    console.log(this.hasVendorParam());
+    console.log("hasVendorParam " + this.hasVendorParam());
     if (this.hasVendorParam()) {
       let vendorIndex = -1;
       console.log(this.props.notif);
@@ -124,6 +124,7 @@ export default class MapScreen extends Component {
       console.log(' this shouldnt be -1 ' + vendorIndex)
       return vendorIndex;
     } else {
+      console.log('walang vendor param')
       return -1;
     }
   }
@@ -176,6 +177,7 @@ export default class MapScreen extends Component {
   }
 
   render() {
+    const { selectedVendorId, vendors } = this.state;
     const interpolations = this.state.vendors.map((marker, index) => {
       const inputRange = [
         (index - 1) * CARD_WIDTH,
@@ -247,7 +249,7 @@ export default class MapScreen extends Component {
         </Marker.Animated>
       )}
     );
-
+    
     return (
       <View style={styles.container}>
         <MapView
@@ -264,6 +266,15 @@ export default class MapScreen extends Component {
           {markers}
         </MapView>
 
+        {this.state.notifBoxShow &&
+        <View
+          style={mainStyles.mapNotifBox}
+        >
+          <Text style={mainStyles.mapNotifBoxText}>
+            Pick up your order {vendors[selectedVendorId] ?'at ' + vendors[selectedVendorId].name : 'now'}!
+          </Text>
+        </View>}
+        
         <Carousel
           ref={(c) => { this._carousel = c; }}
           containerCustomStyle={styles.scrollView}
@@ -273,7 +284,7 @@ export default class MapScreen extends Component {
           sliderWidth={width}
           itemWidth={CARD_WIDTH}
           onSnapToItem={(index) => {
-            if (this.state.selectedVendorId < 0) {
+            if (this.state.finishedScrollingToVendor) {
               console.log('snapping to ' + index);
               this.centerMarker(index);
               this.showMarkerCallout(index);
@@ -283,6 +294,7 @@ export default class MapScreen extends Component {
           decelerationRate={0.9}
           firstItem={this.state.selectedVendorId > -1 ? this.state.selectedVendorId : 0}
         />
+        
       </View>
     );
   }
