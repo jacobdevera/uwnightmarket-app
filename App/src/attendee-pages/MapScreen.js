@@ -292,7 +292,6 @@ export default class MapScreen extends Component {
           }}
           enableMomentum={true}
           decelerationRate={0.9}
-          firstItem={this.state.selectedVendorId > -1 ? this.state.selectedVendorId : 0}
         />
         
       </View>

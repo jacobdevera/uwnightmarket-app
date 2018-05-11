@@ -155,14 +155,14 @@ class VendorOrders extends Component {
             case Status.READY:
             title = 'Order ready!';
             body = `Please head to ${order.vendorName} to pick it up.`
-            notif = this.buildNotificationBasedOnOS(order, title, body);
+            notif = this.buildNotificationBasedOnOS(order, title, body, status);
             this.sendNotification(JSON.stringify(notif));
             break;
             
             case Status.CANCELED:
             title = 'Order canceled';
             body = `Unfortunately, ${order.vendorName} could not fulfill your order.`
-            notif = this.buildNotificationBasedOnOS(order, title, body);
+            notif = this.buildNotificationBasedOnOS(order, title, body, status);
             this.sendNotification(JSON.stringify(notif));
             Toast.show({
                 text: `Order canceled`,
@@ -188,7 +188,7 @@ class VendorOrders extends Component {
         })
     }
 
-    buildNotificationBasedOnOS = (order, title, body) => {
+    buildNotificationBasedOnOS = (order, title, body, status) => {
         if (order.platform === 'android') {
             return {
                 "to": order.userToken,
@@ -202,7 +202,7 @@ class VendorOrders extends Component {
                         "icon": "ic_notif",
                         "show_in_foreground": true,
                         "sound": "default",
-                        "vendorId": order.vendorId
+                        "vendorId": status === Status.READY ? order.vendorId : null
                     }
                 }
             }
@@ -215,7 +215,7 @@ class VendorOrders extends Component {
                     "sound": "default"
                 },
                 "data": {
-                    "vendorId": order.vendorId
+                    "vendorId": status === Status.READY ? order.vendorId : null
                 },
                 "priority": 10
             };
