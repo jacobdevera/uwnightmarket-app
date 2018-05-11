@@ -78,6 +78,8 @@ class VendorOrders extends Component {
                         this.setState({ loading: false, orders: orderObj });
                     })
                     .catch((error) => console.log(error))
+            } else {
+                this.setState({ loading: false });
             }
         });
         this.orderRef.on('child_added', this.orderChanged);
@@ -260,14 +262,16 @@ class VendorOrders extends Component {
                     Orders
                 </AppHeader>
                 <Content style={[styles.paddedContainer]}>
-                    {!loading
-                        ? filteredOrders.length > 0 ? 
-                            <OrderList
-                                asConfig={this.asConfig}
-                                orders={filteredOrders}
-                                vendor={true}></OrderList> 
+                    {orders && Object.keys(orders).length > 0 ? 
+                        !loading ? 
+                            filteredOrders.length > 0 ? 
+                                <OrderList
+                                    asConfig={this.asConfig}
+                                    orders={filteredOrders}
+                                    vendor={true}></OrderList> 
                             : <Text style={[styles.section, styles.center]}>You currently have no {active ? 'active' : 'completed'} orders.</Text>
-                        : <Spinner color={config.colorPrimary} />}
+                        : <Spinner color={config.colorPrimary} />
+                    : <Text style={[styles.section, styles.center]}>No one has ordered from you yet.</Text>}
                 </Content>
             </Container>
         );
