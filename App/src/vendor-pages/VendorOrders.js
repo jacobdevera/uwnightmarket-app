@@ -17,7 +17,8 @@ import {
     List,
     ListItem,
     Radio,
-    Badge
+    Badge,
+    Spinner
 } from 'native-base';
 import { StackNavigator } from "react-navigation";
 import firebase from 'firebase'
@@ -25,7 +26,6 @@ import firebase from 'firebase'
 import { Status } from '../App';
 import { SERVER_KEY, FCM_URL } from '../FirebaseConstants';
 import { AppHeader, StackHeader, OrderList } from '../components';
-import { Spinner } from '../components/common';
 import styles, { config } from '../styles';
 
 const modalStyles = StyleSheet.create({
@@ -44,6 +44,7 @@ class VendorOrders extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            loading: true,
             orders: {}
         }
         this.orderRef = firebase.database().ref(`/vendor-orders/${firebase.auth().currentUser.uid}/orders/`).orderByKey();
@@ -74,7 +75,7 @@ class VendorOrders extends Component {
                 Promise
                     .all(promises)
                     .then((responses) => {
-                        this.setState({ orders: orderObj });
+                        this.setState({ loading: false, orders: orderObj });
                     })
                     .catch((error) => console.log(error))
             }
@@ -246,7 +247,7 @@ class VendorOrders extends Component {
 
     render() {
         const { params } = this.props.navigation.state;
-        const { orders } = this.state;
+        const { loading, orders } = this.state;
         let active = params && params.active;
         let filteredOrders = this.getFilteredOrders(Object.values(orders), active);
         return (
@@ -255,14 +256,14 @@ class VendorOrders extends Component {
                     Orders
                 </AppHeader>
                 <Content style={[styles.paddedContainer]}>
-                    {orders && Object.values(orders).length > 0
+                    {!loading
                         ? filteredOrders.length > 0 ? 
                             <OrderList
                                 asConfig={this.asConfig}
                                 orders={filteredOrders}
                                 vendor={true}></OrderList> 
                             : <Text style={[styles.section, styles.center]}>You currently have no {active ? 'active' : 'completed'} orders.</Text>
-                        : <Text style={[styles.section, styles.center]}>No one has ordered from you yet.</Text>}
+                        : <Spinner color={config.colorPrimary} />}
                 </Content>
             </Container>
         );
