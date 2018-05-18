@@ -1,22 +1,15 @@
 import React, { Component } from 'react';
-import { Image, View, FlatList } from 'react-native';
+import { View, FlatList, Alert } from 'react-native';
 import {
     ActionSheet,
     Button,
-    Card,
-    CardItem,
     Container,
     Content,
     Text,
-    Thumbnail,
-    Body,
-    Left,
-    List,
-    ListItem,
-    Badge,
+    ListItem
 } from 'native-base';
 import { AppHeader } from '../components';
-import styles, { scale, moderateScale } from '../styles';
+import styles, { moderateScale } from '../styles';
 import firebase from 'firebase';
 
 const STATUS_ITEMS = ['Available', 'Sold Out', 'Cancel'];
@@ -38,7 +31,7 @@ class VendorMenu extends Component {
         })
     }
 
-    setMenuItemStatus = (index, selectedMenuIndex) => {
+    setMenuItemStatus = async (index, selectedMenuIndex) => {
         if (index < STATUS_ITEMS.length - 1) {
             let statusLower = STATUS_ITEMS.map((item) => item.toLowerCase()).slice(0, STATUS_ITEMS.length - 1);
             let newMenu = this.state.menu.slice();
@@ -47,7 +40,7 @@ class VendorMenu extends Component {
             newItem.traits.push(statusLower[index]);
             this.setState({ menu: newMenu });
 
-            firebase.database().ref(`/vendors/${firebase.auth().currentUser.uid}/menu/`).set(newMenu);
+            await firebase.database().ref(`/vendors/${firebase.auth().currentUser.uid}/menu/`).set(newMenu).catch(res => Alert.alert('Failed to update menu status'));
         }
     }
 
@@ -64,38 +57,39 @@ class VendorMenu extends Component {
                         keyExtractor={item => `${item.name}`}
                         renderItem={({ item, index }) => {
                             return (
-                            <ListItem> 
-                                <Text style={{ flex: 60 }}>{item.name}</Text>
-                                <Text style={[styles.center, { flex: 10 }]}>${item.price}</Text>
-                                <View style={{ flex: 30 }}>
-                                    <Button
-                                        small
-                                        style={{ alignSelf: 'flex-end', width: moderateScale(72), justifyContent: 'center' }}
-                                        onPress = {() => {
-                                            ActionSheet.show(
-                                                {
-                                                    options: STATUS_ITEMS,
-                                                    cancelButtonIndex: 2,
-                                                    destructiveButtonIndex: 1,
-                                                    title: 'Set Menu Item Status'
-                                                },
-                                                buttonIndex => {
-                                                    this.setMenuItemStatus(buttonIndex, index)
-                                                }
-                                            );
-                                        }}
-                                    >
-                                        <Text style={{ 
-                                            paddingLeft: 0, 
-                                            paddingRight: 0, 
-                                            fontSize: moderateScale(10),
-                                            lineHeight: moderateScale(12)
-                                        }}>
-                                            {item.traits.includes('available') ? 'AVAILABLE' : 'SOLD OUT'}
-                                        </Text>
-                                    </Button>
-                                </View>
-                            </ListItem>)
+                                <ListItem> 
+                                    <Text style={{ flex: 60 }}>{item.name}</Text>
+                                    <Text style={[styles.center, { flex: 10 }]}>${item.price}</Text>
+                                    <View style={{ flex: 30 }}>
+                                        <Button
+                                            small
+                                            style={{ alignSelf: 'flex-end', width: moderateScale(72), justifyContent: 'center' }}
+                                            onPress = {() => {
+                                                ActionSheet.show(
+                                                    {
+                                                        options: STATUS_ITEMS,
+                                                        cancelButtonIndex: 2,
+                                                        destructiveButtonIndex: 1,
+                                                        title: 'Set Menu Item Status'
+                                                    },
+                                                    buttonIndex => {
+                                                        this.setMenuItemStatus(buttonIndex, index)
+                                                    }
+                                                );
+                                            }}
+                                        >
+                                            <Text style={{ 
+                                                paddingLeft: 0, 
+                                                paddingRight: 0, 
+                                                fontSize: moderateScale(10),
+                                                lineHeight: moderateScale(12)
+                                            }}>
+                                                {item.traits.includes('available') ? 'AVAILABLE' : 'SOLD OUT'}
+                                            </Text>
+                                        </Button>
+                                    </View>
+                                </ListItem>
+                            );
                         }} 
                     />
                 </Content>

@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
-import { Alert, Image, View, Modal, StyleSheet, FlatList, Platform, PushNotificationIOS } from 'react-native';
-import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon, Left, Right, Thumbnail, List, ListItem, Toast, Spinner } from 'native-base';
+import { Alert, View, StyleSheet, FlatList, Platform } from 'react-native';
+import { Button, Container, Content, Body, Text, Icon, Left, ListItem, Toast, Spinner } from 'native-base';
 import firebase from 'firebase';
-import FCM, { FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType, 
-    NotificationActionType, NotificationActionOption, NotificationCategoryOption } from 'react-native-fcm';
-import { NavigationActions } from 'react-navigation';
+import FCM from 'react-native-fcm';
 
 import { Status, limits, errorToken } from '../App';
 import { isEventActive } from '../utils/event';
 import { AppHeader } from '../components';
-import styles, { config, scale } from '../styles';
+import styles, { config } from '../styles';
 
 export default class VendorFood extends Component {
     constructor() {
@@ -57,10 +55,9 @@ export default class VendorFood extends Component {
         if (vendor.canOrder) {
             try {
                 let queueSnapshot = await firebase.database().ref(`/vendor-orders/${vendor.userId}/order_count`).once('value');
-                currentQueueSize = queueSnapshot.val();
+                let currentQueueSize = queueSnapshot.val();
                 vendor.currentQueueSize = currentQueueSize;
                 token = await FCM.getFCMToken();
-                console.log(token);
             } catch (e) { console.log(e);}
         }
 
@@ -101,7 +98,7 @@ export default class VendorFood extends Component {
         return new Promise((resolve) => {
             firebase.database().ref(`/user-orders/${firebase.auth().currentUser.uid}`).once('value', (snapshot) => {
                 if (snapshot.val()) {
-                    activeOrders = Object.values(snapshot.val()).filter((order) => order !== Status.PICKED_UP && order !== Status.CANCELED);
+                    let activeOrders = Object.values(snapshot.val()).filter((order) => order !== Status.PICKED_UP && order !== Status.CANCELED);
                     if (activeOrders.length >= limits.orders) {
                         Toast.show({
                             text: `Cannot exceed ${limits.orders} active orders`,
@@ -152,7 +149,7 @@ export default class VendorFood extends Component {
                         {text: 'Cancel', style: 'cancel'},
                         {text: 'Submit', onPress: async () => {
                             this.setState({ loading: true });
-                            const response = await firebase.database().ref().update(updates).catch(res => Alert.alert('Order submission failed'));
+                            await firebase.database().ref().update(updates).catch(res => Alert.alert('Order submission failed'));
                             Toast.show({ 
                                 text: `Order submitted`,
                                 position: 'bottom', 
@@ -165,7 +162,6 @@ export default class VendorFood extends Component {
                     ]
                 );
             } else {
-                console.log(token);
                 errorToken();
             }
         } catch (e) {
@@ -176,15 +172,6 @@ export default class VendorFood extends Component {
 
     isQueueLong = () => this.state.vendor.currentQueueSize >= limits.queue;
     
-    hasPrice = () => {
-        let hasPrice = false;
-        this.state.order.forEach((item) => {
-            if (item.price > 0)
-                hasPrice = true;
-        });
-        return true;
-    }
-
     render() {
         let { isAttendee, vendor, order, descs, subMenus, loading, priceExists } = this.state;
         let totalQuantity = 0;
@@ -196,7 +183,7 @@ export default class VendorFood extends Component {
         let subMenuLists = subMenus.map((subMenu) => {
             return (
                 <View key={subMenu.name}>
-                    {(subMenu.name.length > 0 && subMenu.menu.length > 0) &&<Text style={[styles.section, styles.bold]}>{subMenu.name}</Text>}
+                    {(subMenu.name.length > 0 && subMenu.menu.length > 0) && <Text style={[styles.section, styles.bold]}>{subMenu.name}</Text>}
                     <FlatList
                         data={subMenu.menu}
                         extraData={this.state}

@@ -1,24 +1,18 @@
 import React, { Component } from 'react';
-import { Alert, StatusBar, Platform, Linking, SafeAreaView } from 'react-native';
-import { DrawerNavigator } from "react-navigation";
-import { Container, Drawer, StyleProvider, Root, Spinner } from 'native-base';
+import { Alert, Platform, Linking } from 'react-native';
+import { Container, StyleProvider, Root, Spinner } from 'native-base';
 import getTheme from './native-base-theme/components';
 import commonColor from './native-base-theme/variables/commonColor';
+import firebase from 'firebase';
+import FCM, { FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType } from 'react-native-fcm';
 
 import { AttendeeDrawerNav, VendorDrawerNav } from './routes';
-import { AppHeader, Sidebar } from './components';
 import { LandingPage } from './LandingPage';
 import { LoginForm } from './vendor-pages';
-
-import firebase from 'firebase';
-import FCM, { FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType, 
-    NotificationActionType, NotificationActionOption, NotificationCategoryOption } from 'react-native-fcm';
 import { registerKilledListener } from "./Listeners";
-import { API_KEY } from './FirebaseConstants';
-import styles, { config } from './styles';
-
+import { firebaseConfig } from './FirebaseConstants';
+import { config } from './styles';
 import NavigationService from './utils/NavigationService';
-import { isStatusActive } from './utils/event';
 
 export const Views = {
     INITIAL: 0,
@@ -78,13 +72,7 @@ export default class App extends Component {
 
     componentWillMount() {
         if (!firebase.apps.length) {
-            firebase.initializeApp({
-                apiKey: API_KEY,
-                authDomain: "uwnightmarket-90946.firebaseapp.com",
-                databaseURL: "https://uwnightmarket-90946.firebaseio.com",
-                storageBucket: "uwnightmarket-90946.appspot.com",
-                messagingSenderId: "119944110578"
-            });
+            firebase.initializeApp(firebaseConfig);
         }
 
         firebase.auth().onAuthStateChanged(async (user) => {
@@ -150,10 +138,7 @@ export default class App extends Component {
         });
     }
 
-    setView = (index) => {
-        this.setState({ view: index });
-        console.log("Set view to " + index);
-    };
+    setView = (index) => { this.setState({ view: index }); }
 
     render() {
         const { view, checkingLogin } = this.state;

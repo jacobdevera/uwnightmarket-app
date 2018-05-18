@@ -18,7 +18,7 @@ class LandingPage extends Component {
             console.log('new user');
             Alert.alert(
                 'Terms and Conditions',
-                `Please review the terms and conditions to coninue.`,
+                `Please review the terms and conditions to continue.`,
                 [
                     {text: 'Skip', style: 'cancel', onPress: () => { 
                             acceptTermsAndConditions(() => {

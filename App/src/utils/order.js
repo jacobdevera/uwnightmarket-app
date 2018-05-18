@@ -1,3 +1,4 @@
+// returns a shortened form of the order's ID for the purposes of displaying to the user
 export const hash = (input) => {
     let count = 3;
     let res = "";

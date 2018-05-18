@@ -1,26 +1,16 @@
 import React, {Component} from 'react';
-import {Alert, Image, View, FlatList, TouchableOpacity, StyleSheet} from 'react-native';
+import { View, FlatList, TouchableOpacity } from 'react-native';
 import {
     ActionSheet,
     Button,
     Card,
-    CardItem,
-    Container,
-    Content,
     Text,
-    Thumbnail,
-    Body,
-    Left,
-    List,
     ListItem,
     Badge,
     Icon
 } from 'native-base';
-import styles, {config, moderateScale} from '../styles';
-import StatusPicker from './StatusPicker';
-import {Status} from '../App';
-import {StackNavigator} from "react-navigation";
-import firebase from 'firebase';
+import styles, { config, moderateScale } from '../styles';
+import { Status } from '../App';
 import dayjs from 'dayjs';
 import { hash } from '../utils/order';
 

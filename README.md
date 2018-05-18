@@ -8,11 +8,11 @@
 
 <a name="overview"></a>
 ## Overview
-The UW Night Market mobile application alleviates long wait line issues that plague popular food festivals. Leveraging a mobile ordering system to facilitate the ordering process between attendees and vendors, the application increases attendee satisfaction and vendor sales. During this year’s UW Night Market event on May 12th, the application completed 483 orders and generated $4,553 in revenue for ten vendors in four hours.
+The UW Night Market mobile application alleviates long wait line issues that plague popular food festivals. Leveraging a mobile ordering system to facilitate the ordering process between attendees and vendors, the application increases attendee satisfaction and vendor sales. During the UW Night Market event on May 12th, 2018, the application completed 483 orders and generated $4,553 in revenue for ten vendors in four hours.
 
 The mobile application was built as the UW Night Market App team's iSchool capstone project for 2018.
 
-[Project Website](https://kchen73.github.io/uwnightmarket/) | [Documentation for developers](https://github.com/jacobdevera/uwnightmarket-app/tree/development/documentation)
+[Project website](https://kchen73.github.io/uwnightmarket/) | [Documentation for developers](https://github.com/jacobdevera/uwnightmarket-app/tree/development/documentation)
 
 <a name="app"></a>
 ## Mobile Application

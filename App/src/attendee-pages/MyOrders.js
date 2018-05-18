@@ -1,26 +1,19 @@
-import React, {Component} from 'react';
-import {Alert, AsyncStorage, Image, View, Modal, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
+import React, { Component } from 'react';
+import { Alert, AsyncStorage, View, Modal, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import {
     Button,
     Container,
     Content,
-    H1,
-    H2,
-    H3,
     Icon,
     Text,
-    FlatList,
-    Card,
-    CardItem,
-    Body,
     Toast,
     Spinner
 } from 'native-base';
 import firebase from 'firebase';
 
-import {AppHeader, OrderList} from '../components';
-import {Status, limits} from '../App';
-import styles, { config, modalStyles, moderateScale } from '../styles';
+import { AppHeader, OrderList } from '../components';
+import { Status, limits } from '../App';
+import styles, { config, modalStyles } from '../styles';
 import { hash } from '../utils/order';
 
 class MyOrders extends Component {
@@ -36,7 +29,7 @@ class MyOrders extends Component {
             .database()
             .ref(`/user-orders/${firebase.auth().currentUser.uid}`)
             .orderByKey();
-        this.asConfig = {
+        this.asConfig = { // action sheet configuration for OrderList component; differs from vendor
             title: 'You can delete your order if you are unable to pick it up.',
             options: [
                 'Delete Order', 'Cancel'
@@ -50,8 +43,7 @@ class MyOrders extends Component {
     componentWillMount() {
         let { screenProps } = this.props;
         let notif = screenProps && screenProps.state && screenProps.state.initialNotif;
-        if (notif && notif.vendorId !== null && notif.status === Status.READY) {
-            console.log('going to map from notif')
+        if (notif && notif.vendorId !== null && notif.status === Status.READY) { // navigate to the map from a notification
             this.props.navigation.navigate('MapView', { vendorId: notif.vendorId });
         }
     }
@@ -70,7 +62,6 @@ class MyOrders extends Component {
                                 let order = orderSnapshot.val();
                                 order.id = key;
                                 orderList.push(order);
-                                console.log("each order" + order);
                             }))
                         })
                     Promise
@@ -94,8 +85,6 @@ class MyOrders extends Component {
     handleActionSelect = async (index, selectedItem) => {
         if (index === 0 && selectedItem.status === Status.NOT_READY) {
             let lastTimeDeleted = parseInt(await AsyncStorage.getItem('lastTimeDeleted'));
-            console.log(lastTimeDeleted);
-            console.log(Date.now());
             if (lastTimeDeleted === null || isNaN(lastTimeDeleted)) {
                 lastTimeDeleted = Date.now() - limits.orderCooldown;
                 await AsyncStorage.setItem('lastTimeDeleted', (lastTimeDeleted).toString()).catch((e) => console.log(e));
@@ -130,7 +119,7 @@ class MyOrders extends Component {
     }
 
     deleteOrder = (order) => {
-        let {id, userId, vendorId, time} = order;
+        let {id, userId, vendorId } = order;
         let updates = {};
         updates['/orders/' + id] = null;
         updates['/user-orders/' + userId + '/' + id] = null;
@@ -254,4 +243,4 @@ class MyOrders extends Component {
     }
 }
 
-export {MyOrders}
+export { MyOrders }

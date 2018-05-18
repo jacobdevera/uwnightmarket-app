@@ -1,44 +1,18 @@
 import React, { Component } from 'react';
-import { Alert, Image, View, Modal, StyleSheet, FlatList } from 'react-native';
+import { Alert, StyleSheet } from 'react-native';
 import {
-    Button,
     Container,
     Content,
-    Card,
-    CardItem,
-    CheckBox,
-    Body,
     Text,
-    Icon,
-    Left,
-    Right,
-    Thumbnail,
     Toast,
-    List,
-    ListItem,
-    Radio,
-    Badge,
     Spinner
 } from 'native-base';
-import { StackNavigator } from "react-navigation";
 import firebase from 'firebase'
 
 import { Status } from '../App';
 import { SERVER_KEY, FCM_URL } from '../FirebaseConstants';
-import { AppHeader, StackHeader, OrderList } from '../components';
+import { AppHeader, OrderList } from '../components';
 import styles, { config } from '../styles';
-
-const modalStyles = StyleSheet.create({
-    modalContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        backgroundColor: 'rgba(0,0,0,0.3)'
-    },
-    innerContainer: {
-        margin: 16,
-        backgroundColor: 'white'
-    }
-});
 
 class VendorOrders extends Component {
     constructor(props) {
@@ -58,7 +32,6 @@ class VendorOrders extends Component {
     }
 
     componentDidMount() {
-        const { params } = this.props.navigation.state;
         this.orderRef.once('value', (snapshot) => {
             if (snapshot.val()) {
                 let orderObj = {};
@@ -88,12 +61,10 @@ class VendorOrders extends Component {
     }
 
     orderChanged = (snapshot) => {
-        console.log("child added" + snapshot.key);
         let newOrderObj = Object.assign({}, this.state.orders);
         firebase.database().ref(`/orders/${snapshot.key}`).once('value').then((orderSnapshot) => {
             let order = orderSnapshot.val();
             order.id = snapshot.key;
-            console.log(order.id);
             newOrderObj[snapshot.key] = order;
             this.setState((prevState) => {
                 return { orders: {...prevState.orders, [order.id]: order} };
@@ -120,7 +91,6 @@ class VendorOrders extends Component {
     }
 
     handleStatusChange = async (index, selectedItem) => {
-        let { id, userId, vendorId, status, vendorName } = selectedItem;
         let statuses = [Status.NOT_READY, Status.READY, Status.PICKED_UP, Status.CANCELED];
         if (index === this.asConfig.destructiveIndex) {
             Alert.alert(
@@ -229,7 +199,6 @@ class VendorOrders extends Component {
     }
 
     sendNotification = async (body) => {
-        console.log(body);
         let headers = new Headers({
             "Content-Type": "application/json",
             "Authorization": "key=" + SERVER_KEY
@@ -237,7 +206,6 @@ class VendorOrders extends Component {
 
         try {
             let response = await fetch(FCM_URL, { method: "POST", headers, body });
-            console.log(response);
             try {
                 response = await response.json();
                 if (!response.success) {

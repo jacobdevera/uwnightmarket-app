@@ -1,26 +1,22 @@
 import React, { Component } from "react";
 import {
-  AppRegistry,
   StyleSheet,
   View,
-  ScrollView,
   Image,
   Dimensions,
-  TouchableOpacity,
   Animated
 } from "react-native";
 
-import { Icon, Text, Badge } from 'native-base';
+import { Icon, Text } from 'native-base';
 
-import MapView ,{ Callout, AnimatedRegion, Marker  } from "react-native-maps";
+import MapView ,{ Callout, Marker  } from "react-native-maps";
 import firebase from 'firebase';
 import Carousel from 'react-native-snap-carousel';
 
-import { sortByName, sortByBoothNumber } from '../utils/vendor';
-import mainStyles, { config, scale as mainScale, moderateScale } from '../styles';
+import { sortByBoothNumber } from '../utils/vendor';
+import mainStyles, { moderateScale } from '../styles';
 
 const { width, height } = Dimensions.get("window");
-const scale = parseInt(width) / 375; // 375 is default iphone 6 width
 
 const cardsOnScreen = 3;
 const CARD_HEIGHT = height / 4;
@@ -42,19 +38,17 @@ export default class MapScreen extends Component {
         marginTopHack: 1, // get map view to re-render to show location button
         selectedVendorId: -1,
         notifBoxShow: false,
-        finishedScrollingToVendor: false
+        finishedScrollingToVendor: false // scrolling to vendor after tapping on a notification
       };
     }
 
   componentWillMount() {
-    console.log(this.props);
     this.index = 0;
     this.animation = new Animated.Value(0);
     // We should detect when scrolling has stopped then animate
     // We should just debounce the event listener here
     let vendorRef = firebase.database().ref('/vendors/').orderByKey();
     vendorRef.once('value').then((snapshot) => {
-        // console.log("map snapshot:    ", snapshot.val());
       let vendorList = [];
       snapshot.forEach((vendorSnapshot) => {
         let each = vendorSnapshot.val();
@@ -64,7 +58,6 @@ export default class MapScreen extends Component {
       });
       vendorList = vendorList.sort(sortByBoothNumber);
       let vendorPropIndex = this.getVendorPropIndex(vendorList);
-      console.log('componentWillMount index ' + vendorPropIndex);
       if (vendorPropIndex < 0) {
         if (this.props.clearInitialNotif)
           this.props.clearInitialNotif();
@@ -77,25 +70,21 @@ export default class MapScreen extends Component {
 
   componentDidUpdate() {
     const { selectedVendorId, vendors, finishedScrollingToVendor } = this.state;
-    console.log(selectedVendorId);
     if (selectedVendorId > -1 && !finishedScrollingToVendor) {
       let marker = this.markers[selectedVendorId];
       if (vendors[selectedVendorId] !== null && marker !== undefined) {
           // hack to show callout until react-native-maps fixed
-          console.log('this should only be called once')
           setTimeout(() => {
             this.goToVendorFromNotif(selectedVendorId);
           }, 500);
       }
     } else if (this.hasVendorParam() && this.state.vendors.length > 0) { // map in foreground when tapping notification
-      console.log('map in foreground, did update');
       this.goToVendorFromNotif(selectedVendorId);
     }
   }
 
   goToVendorFromNotif = (selectedVendorId) => {
     let index = selectedVendorId > -1 ? selectedVendorId : this.getVendorPropIndex(this.state.vendors);
-    console.log('notif index ' + index);
     if (index > -1) {
       let marker = this.markers[index];
       this.centerMarker(index);
@@ -112,24 +101,15 @@ export default class MapScreen extends Component {
   }
 
   getVendorPropIndex = (vendors) => {
-    console.log('vendors in list' + vendors.length);
-    console.log(vendors);
-    console.log("hasVendorParam " + this.hasVendorParam());
     if (this.hasVendorParam()) {
       let vendorIndex = -1;
-      console.log(this.props.notif);
       vendors.forEach((vendor, index) => {
-        console.log(vendor.userId)
         if (vendor.userId === this.props.notif.vendorId) {
           vendorIndex = index; 
         }
       });
-      console.log(' this shouldnt be -1 ' + vendorIndex)
       return vendorIndex;
     } else {
-      console.log('walang vendor param')
-      console.log('this returned -1 somehow')
-      console.log(vendors);
       return -1;
     }
   }
@@ -227,12 +207,6 @@ export default class MapScreen extends Component {
               , 3000);
             }
         }>
-
-              {/* <Image
-                source={require('../../img/location-marker.png')}
-                style={{ width: 25, height: 25 }}
-                resizeMode='contain'
-              /> */}
           <Callout
             style = {{
               flexDirection: 'row',
@@ -290,7 +264,6 @@ export default class MapScreen extends Component {
           itemWidth={CARD_WIDTH}
           onSnapToItem={(index) => {
             if (this.state.finishedScrollingToVendor) {
-              console.log('snapping to ' + index);
               this.centerMarker(index);
               this.showMarkerCallout(index);
             }
@@ -298,7 +271,6 @@ export default class MapScreen extends Component {
           enableMomentum={true}
           decelerationRate={0.9}
         />
-        
       </View>
     );
   }
@@ -361,8 +333,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   marker: {
-    // width: 20,
-    // height: 20,
     borderRadius: 4,
     backgroundColor: "rgba(130,4,150, 0.9)",
   },

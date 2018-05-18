@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Image, View, Linking } from 'react-native';
-import { Button, Container, Content, H1, H2, H3, Text } from 'native-base';
+import { Container, Content, Text } from 'native-base';
 
 import { AppHeader } from '../components';
-import styles, { config, moderateScale } from '../styles';
+import styles, { config } from '../styles';
 
 const Donate = (props) => {
     return (

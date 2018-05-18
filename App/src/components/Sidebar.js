@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Alert, View, Linking, ScrollView } from 'react-native';
-import { Content, List, ListItem, Text, Icon, Toast } from 'native-base';
-import { NavigationActions } from 'react-navigation';
+import { List, ListItem, Text, Icon, Toast } from 'native-base';
 import styles from '../styles';
 
 import firebase from 'firebase';

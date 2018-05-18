@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Image, View } from 'react-native';
-import { Button, Card, CardItem, Container, Content, Text, Thumbnail, Body, Left, List } from 'native-base';
+import { Card, CardItem, Container, Content, Text, Body, List } from 'native-base';
 
 import { AppHeader } from '../components';
 import styles, { config } from '../styles';

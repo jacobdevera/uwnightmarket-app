@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { Image, View, Modal, StyleSheet, FlatList, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
-import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon, Left, Right, List, ListItem, Radio, Badge, Spinner, Input, Item } from 'native-base';
-import { StackNavigator } from "react-navigation";
+import { Button, Container, Content, Card, CardItem, CheckBox, Body, Text, Icon, Right, ListItem, Radio, Badge, Spinner, Input, Item } from 'native-base';
 import firebase from 'firebase'
 
 import { filters } from '../App';
 import { sortByBoothNumber, sortByName, sortByParticipating } from '../utils/vendor';
-import { AppHeader, StackHeader } from '../components';
-import styles, { config, scale, modalStyles, moderateScale } from '../styles';
+import { AppHeader } from '../components';
+import styles, { config, modalStyles, moderateScale } from '../styles';
 
 export default class VendorList extends Component {
     constructor(props) {
@@ -110,7 +109,6 @@ export default class VendorList extends Component {
         newVendors = newVendors.filter((vendor) => {
             if (vendor.name.toLowerCase().indexOf(query) > -1 || query.length < 1) 
                 return true;
-            let hasMatchingMenuItem = false;
             vendor.menu = vendor.menu.filter((item) => item.name.toLowerCase().indexOf(query) > -1);
             return vendor.menu.length > 0;
         });
@@ -119,7 +117,7 @@ export default class VendorList extends Component {
     }
 
     render() {
-        let { vendors, filteredVendors, sort, filters, canOrderFilter, modalVisible } = this.state;
+        let { vendors, filteredVendors, filters, canOrderFilter, modalVisible } = this.state;
         return (
             <Container>
                 <AppHeader 

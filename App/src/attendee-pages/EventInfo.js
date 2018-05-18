@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, View, FlatList } from 'react-native';
-import { Container, Content, Text, Thumbnail } from 'native-base';
+import { Container, Content, Text } from 'native-base';
 
 import { AppHeader } from '../components';
 import styles from '../styles';

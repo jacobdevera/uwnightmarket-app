@@ -1,10 +1,8 @@
-import React, { Component } from 'react';
-import { Image, View } from 'react-native';
-import { Button, Container, Content, H1, H2, H3, Text } from 'native-base';
+import React from 'react';
+import { Container } from 'native-base';
 import firebase from 'firebase';
 
 import { AppHeader } from '../components';
-import styles from '../styles';
 import MapScreen from "./MapScreen";
 
 const Map = (props) => {
@@ -25,7 +23,8 @@ const Map = (props) => {
                 clearInitialNotif={props.screenProps.clearInitialNotif} 
                 notif={props.screenProps.state.initialNotif} 
                 onCalloutPress={goToVendor}/>
-        </Container>);
+        </Container>
+    );
 }
 
 export { Map }

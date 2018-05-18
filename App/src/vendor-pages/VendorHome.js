@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Image, View } from 'react-native';
-import { Container, Content, Header, Left, Button, Icon, Right, Body, Text, Title, List, ListItem, Thumbnail } from 'native-base';
+import { Container, Content, Text } from 'native-base';
 import firebase from 'firebase';
 
 import styles from '../styles';
@@ -19,6 +19,7 @@ class VendorHome extends Component {
             this.setState({ vendor: vendorObj });
         });
     }
+
     render() {
         let { vendor } = this.state;
         return (
@@ -38,8 +39,7 @@ class VendorHome extends Component {
                             <Text style={[styles.center, styles.header, styles.h1]}>{vendor.name}</Text>
                             <Text style={[styles.center]}>Vendor Booth #{vendor.boothNumber}</Text>
                         </View>
-                    </View>
-                    }
+                    </View>}
 
                     <View style={styles.section}>
                         <Text>Welcome to the UW Night Market app! Thank you for being a vendor with us. 
