@@ -1,7 +1,5 @@
 <img src="./documentation/img/logo.png" width="300">
 
-# UW Night Market App
-
 ## Table of Contents
 1. [Overview](#overview)
 2. [Mobile Application](#app)
@@ -14,15 +12,19 @@ The UW Night Market mobile application alleviates long wait line issues that pla
 
 The mobile application was built as the UW Night Market App team's iSchool capstone project for 2018.
 
-[Project Website](https://kchen73.github.io/uwnightmarket/)
+[Project Website](https://kchen73.github.io/uwnightmarket/) | [Documentation for developers](https://github.com/jacobdevera/uwnightmarket-app/tree/development/documentation)
 
 <a name="app"></a>
 ## Mobile Application
-<div style="width: 100%; display: flex; justify-content: space-around; align-items: center">
-    <img src="./documentation/img/qr-code.svg" width="10%">
+<div>
+    <img src="./documentation/img/qr-code.svg" width="15%">
+    <br />
+    <br />
     <a href="https://itunes.apple.com/us/app/uw-night-market/id1378056792">
         <img src="./documentation/img/app-store-badge.svg" width="200">
     </a>
+    <br />
+    <br />
     <a href='https://play.google.com/store/apps/details?id=com.uwnightmarket&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
         <img alt='Get it on Google Play' src='./documentation/img/play-store-badge.png' width="200"/>
     </a>
