@@ -1,0 +1,1146 @@
+{
+  "status" : {
+    "active" : false
+  },
+  "vendors" : {
+    "1ky77l6TyfREmuMtwwOhox9cHsP2" : {
+      "boothNumber" : 4,
+      "canOrder" : true,
+      "desc" : "An international humanitarian organization, Tzu-Ching's four missions are: charity, medicine, education, and culture.",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2FTzu%20Ching.png?alt=media&token=1a1a2abe-6d9b-4996-9a96-6dfb75f6275a",
+      "latitude" : 47.656168,
+      "longitude" : -122.30958,
+      "menu" : [ {
+        "name" : "Winter Melon Tea 冬瓜茶",
+        "price" : 2,
+        "traits" : [ "beverage", "cold", "sweet", "available" ]
+      }, {
+        "name" : "Spring Rolls 春捲",
+        "price" : 3,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Spicy Noodles 麻辣麵",
+        "price" : 5,
+        "traits" : [ "available", "food", "hot", "savory", "spicy" ]
+      }, {
+        "name" : "Taiwanese Stuffed Chewy Buns 素肉圓",
+        "price" : 4,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Spicy Bean Curd (5 pieces) 五香豆干",
+        "price" : 3,
+        "traits" : [ "available", "food", "cold", "savory" ]
+      } ],
+      "name" : "Tzu Ching",
+      "userId" : "1ky77l6TyfREmuMtwwOhox9cHsP2"
+    },
+    "3ANWfhRN2Oa0RnGxi6h78lV00qG3" : {
+      "boothNumber" : 3,
+      "canOrder" : false,
+      "desc" : "Cozy Taiwanese tea house offering a wide selection of drinks.",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2FSeattle%20Best%20Tea.png?alt=media&token=acd36dbc-70d0-4ced-a89b-deae8cb91fc1",
+      "latitude" : 47.656172,
+      "longitude" : -122.309657,
+      "menu" : [ {
+        "name" : "Black Milk Tea with Boba 原味奶茶加珍珠",
+        "price" : 5,
+        "traits" : [ "beverage", "cold", "sweet", "available" ]
+      }, {
+        "name" : "Honey Milk Tea with Boba 蜂蜜奶茶加珍珠",
+        "price" : 5,
+        "traits" : [ "beverage", "cold", "sweet", "available" ]
+      } ],
+      "name" : "Seattle's Best Tea",
+      "userId" : "3ANWfhRN2Oa0RnGxi6h78lV00qG3"
+    },
+    "3NT86KQkbuZPgJl74O5DFsSZe5J3" : {
+      "boothNumber" : 24,
+      "canOrder" : false,
+      "desc" : "A food truck specializing in roujiamo: ‘Rou’ means meat. ‘Jia’ means sandwich. ‘Mó’ means bread.",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2FMo%20Pockets.png?alt=media&token=fe42e488-c4ee-4258-b4cc-43942f816b2b",
+      "latitude" : 47.656473,
+      "longitude" : -122.3099,
+      "menu" : [ {
+        "name" : "Pork Roujiamo 肉夹馍",
+        "price" : 6,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Popcorn Chicken 鹽酥雞",
+        "price" : 6,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Cold Spicy Noodles 辣涼麵",
+        "price" : 6,
+        "traits" : [ "available", "food", "cold", "savory", "spicy" ]
+      } ],
+      "name" : "Mo Pockets",
+      "userId" : "3NT86KQkbuZPgJl74O5DFsSZe5J3"
+    },
+    "4hYk4a4WnZa1z8XUSAd0vs2UlGq2" : {
+      "boothNumber" : 15,
+      "canOrder" : false,
+      "desc" : "Uwajimaya is an Asian specialty supermarket providing the widest variety of Asian groceries and gifts and freshest meat, seafood and produce.",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2F31265633_1912684118765704_5675331400811675648_n.jpg?alt=media&token=0374531b-126b-4d95-bd32-afaa511e0167",
+      "latitude" : 47.655577,
+      "longitude" : -122.309368,
+      "menu" : [ {
+        "name" : "Young Coconut 椰子水",
+        "price" : 3,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      } ],
+      "name" : "Uwajimaya",
+      "userId" : "4hYk4a4WnZa1z8XUSAd0vs2UlGq2"
+    },
+    "5DfpFz1idmZWMveC9AsXEVwFKOd2" : {
+      "boothNumber" : 22,
+      "canOrder" : false,
+      "desc" : "Tornado Potato, has been in the business for almost a decade, started as a hobbies for retired man from Southern California. Now it turned into something more then just a hobby and the business is all about making friends.",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2Ftornado.png?alt=media&token=43320398-13e3-4c14-84e2-a18781dc6f13",
+      "latitude" : 47.655978,
+      "longitude" : -122.309988,
+      "menu" : [ {
+        "name" : "Tornado Potato 龍捲風馬鈴薯",
+        "price" : 7,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Truffle Tornado 松露龍捲風",
+        "price" : 8,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Garlic Twist 蒜頭捲",
+        "price" : 8,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Lobster Sushi Burrito 龍蝦壽司墨西哥捲",
+        "price" : 9,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Spicy Tuna Sushi Burrito 辣鮪魚壽司墨西哥捲",
+        "price" : 8,
+        "traits" : [ "available", "food", "hot", "savory", "spicy" ]
+      }, {
+        "name" : "Crunch Sushi Burrito 脆壽司墨西哥捲",
+        "price" : 8,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      } ],
+      "name" : "Tornado Potato/Langostino Sushi Burrito",
+      "userId" : "5DfpFz1idmZWMveC9AsXEVwFKOd2"
+    },
+    "ASMAA8XO5JTenNvo9uaHHvvWB773" : {
+      "boothNumber" : 10,
+      "canOrder" : true,
+      "desc" : "A great selection of Chinese and Taiwanese cuisine, offering familiar Chinese dishes, pastries & bubble teas.",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2Fmee%20sum%20logo.jpg?alt=media&token=048c954d-3393-4488-8165-81fc30745269",
+      "latitude" : 47.65600826374972,
+      "longitude" : -122.30897467055229,
+      "menu" : [ {
+        "name" : "Black Milk Tea 原味奶茶",
+        "price" : 4,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      }, {
+        "desc" : "More toppings available for ordering at booth",
+        "name" : "Black Milk Tea with Tapioca 原味奶茶加珍珠",
+        "price" : 5,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      }, {
+        "name" : "Honey Green Tea 蜂蜜綠茶",
+        "price" : 4,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      }, {
+        "desc" : "More toppings available for ordering at booth",
+        "name" : "Honey Green Tea with Tapioca 蜂蜜綠茶加珍珠",
+        "price" : 5,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      }, {
+        "name" : "Winter Melon Tea 冬瓜茶",
+        "price" : 4,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      }, {
+        "desc" : "More toppings available for ordering at booth",
+        "name" : "Winter Melon Tea with Tapioca 冬瓜茶加珍珠",
+        "price" : 5,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      }, {
+        "name" : "Okinawa Milk Tea 黃糖奶茶",
+        "price" : 4,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      }, {
+        "desc" : "More toppings available for ordering at booth",
+        "name" : "Okinawa Milk Tea with Tapioca 黃糖奶茶加珍珠",
+        "price" : 5,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      }, {
+        "name" : "Assorted Beef 牛雜",
+        "price" : 6,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Chicken Chop 炸雞排",
+        "price" : 7,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Popcorn Chicken 鹽酥雞",
+        "price" : 6,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Crispy Squid Legs 椒鹽魷魚",
+        "price" : 6,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      } ],
+      "name" : "Mee Sum Pastry",
+      "userId" : "ASMAA8XO5JTenNvo9uaHHvvWB773"
+    },
+    "AyEbo4clMxM2y6LHPp2tzrAmnxq1" : {
+      "boothNumber" : 17,
+      "canOrder" : true,
+      "desc" : "Specializing in western Chinese fare.",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2FXi'an%20logo.jpg?alt=media&token=bbd9730f-e7e4-418d-872e-401acbc9a4eb",
+      "latitude" : 47.655595,
+      "longitude" : -122.309642,
+      "menu" : [ {
+        "name" : "Braised Pork Sandwich 臘汁肉夾饃",
+        "price" : 5,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Cumin Beef Sandwich 孜然牛肉夾饃",
+        "price" : 5,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Cold Rice Noodles 涼皮",
+        "price" : 5,
+        "traits" : [ "available", "food", "cold", "savory" ]
+      }, {
+        "name" : "Spicy & Tingly Crawfish 麻辣小龍蝦",
+        "price" : 6,
+        "traits" : [ "available", "food", "hot", "savory", "spicy" ]
+      }, {
+        "name" : "Lanzhou Hand Pull Noodles 蘭州拉麵",
+        "price" : 8,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Plum Juice 自制酸梅湯",
+        "price" : 3,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      }, {
+        "name" : "Ice Tea 冰紅茶",
+        "price" : 3,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      } ],
+      "name" : "Qin Xi'an Noodle",
+      "userId" : "AyEbo4clMxM2y6LHPp2tzrAmnxq1"
+    },
+    "BfCsuGwOrmb1iXO9Y2SG0S2kWOZ2" : {
+      "boothNumber" : 16,
+      "canOrder" : false,
+      "desc" : "The original mini wok in a pot is now bringing you their favorite snacks! Spicy tofu, herbal jelly, and of course boba.",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2FBoiling%20point.png?alt=media&token=a384f276-2f1b-46d3-a6f7-a0e961d5bd55",
+      "latitude" : 47.655582,
+      "longitude" : -122.3095,
+      "menu" : [ {
+        "name" : "Spicy Fermented Tofu 麻辣臭豆腐",
+        "price" : 4,
+        "traits" : [ "available", "food", "hot", "savory", "spicy" ]
+      }, {
+        "name" : "Lemonade with Basil Seeds 羅勒籽檸檬汁",
+        "price" : 3,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      }, {
+        "name" : "Hokkaido Milk Tea with Boba 北海道波霸奶茶",
+        "price" : 4,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      }, {
+        "name" : "Herbal Jelly Dessert 奶香嫩仙草",
+        "price" : 4,
+        "traits" : [ "available", "food", "cold", "sweet" ]
+      } ],
+      "name" : "Boiling Point",
+      "userId" : "BfCsuGwOrmb1iXO9Y2SG0S2kWOZ2"
+    },
+    "CrrhMxhRCmWzNH3uUwExCSR0muz1" : {
+      "boothNumber" : 13,
+      "canOrder" : true,
+      "desc" : "Ray's Food is a authentic Jian Bing (Chinese Crepes) Restaurant locate at Kent, and also have more than 20 years food experiences of Outdoor events and Food trucks. Currently, Ray's Food is developing the lunch box and catering services. Our mission is serving the quality, economic and tasty food.",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2FRays.jpg?alt=media&token=bf050dc1-419d-43d5-959d-59f2e81be687",
+      "latitude" : 47.655791,
+      "longitude" : -122.308974,
+      "menu" : [ {
+        "name" : "Chinese Crepe Jian Bing 煎餅果子",
+        "price" : 8,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Tenyaki Chicken Jian Bing 雞肉煎餅",
+        "price" : 10,
+        "traits" : [ "food", "hot", "savory", "available" ]
+      }, {
+        "name" : "Spicy Beef Jian Bing 辣牛肉煎餅",
+        "price" : 11,
+        "traits" : [ "available", "food", "hot", "savory", "spicy" ]
+      }, {
+        "name" : "Takoyaki 章魚燒",
+        "price" : 7,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Curry Chicken Wing 咖喱雞翅",
+        "price" : 8,
+        "traits" : [ "food", "hot", "savory", "available" ]
+      }, {
+        "name" : "Popcorn Chicken 鹽酥雞",
+        "price" : 7,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Elephant Ear 大象耳",
+        "price" : 6,
+        "traits" : [ "available", "food", "hot", "sweet" ]
+      }, {
+        "name" : "Lemonade 檸檬汁",
+        "price" : 4,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      } ],
+      "name" : "Ray's Food",
+      "userId" : "CrrhMxhRCmWzNH3uUwExCSR0muz1"
+    },
+    "JxZeaFc71uTVyXZ8orcv5cQs2ae2" : {
+      "boothNumber" : 18,
+      "canOrder" : true,
+      "desc" : "A popular Taiwanese food truck serving all your favorite Night Market delicacies!",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2Fmunch-boss-logo.jpg?alt=media&token=5a7a54bd-4be8-4bdc-9877-baedfbfacbee",
+      "latitude" : 47.655611,
+      "longitude" : -122.309806,
+      "menu" : [ {
+        "name" : "Scallion Pancake 手工蔥油餅",
+        "price" : 5,
+        "traits" : [ "food", "hot", "savory", "available" ]
+      }, {
+        "name" : "Scallion Pancake with Egg 手工蔥油餅(加蛋)",
+        "price" : 6,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Scallion Pancake with Pork 手工蔥油餅(加豬肉)",
+        "price" : 7,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Chinese Sesame Flatbread with Beef 牛肉燒餅",
+        "price" : 6,
+        "traits" : [ "food", "hot", "savory", "available" ]
+      }, {
+        "name" : "Traditional sticky rice with pork and mushroom, served with special sauce 油飯",
+        "price" : 5,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "desc" : "A sweet tea made with white gourd, served cold",
+        "name" : "Winter Melon Tea 冬瓜茶",
+        "price" : 2,
+        "traits" : [ "beverage", "cold", "sweet", "available" ]
+      }, {
+        "name" : "Traditional Plum Juice 古早味酸梅湯",
+        "price" : 2,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      } ],
+      "name" : "Munch Boss",
+      "userId" : "JxZeaFc71uTVyXZ8orcv5cQs2ae2"
+    },
+    "KTMyK9qaCohmaItfy1W8gpTXOMq2" : {
+      "boothNumber" : 20,
+      "canOrder" : false,
+      "desc" : "Authentic Vietnamese cuisine, come try out spring rolls, chicken satay, and Vietnamese sandwiches!",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2FLemongrass.jpg?alt=media&token=e635da36-81d6-4d46-adb5-f4355cf67518",
+      "latitude" : 47.655844,
+      "longitude" : -122.309975,
+      "menu" : [ {
+        "name" : "Chicken Satay 雞肉沙瓦",
+        "price" : 5,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Pork Sandwich 豬肉三明治",
+        "price" : 7,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Chicken Sandwich 雞肉三明治",
+        "price" : 7,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Spring Rolls 春捲",
+        "price" : 6,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      } ],
+      "name" : "Lemongrass",
+      "userId" : "KTMyK9qaCohmaItfy1W8gpTXOMq2"
+    },
+    "LkIGpZWEoXdWmTaf4L105RLlPYn1" : {
+      "boothNumber" : 19,
+      "canOrder" : true,
+      "desc" : "A favorite on the Eastside & Edmonds that offers bubble tea as well as traditional Taiwanese street food!",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2Ftapioca-express-logo.jpeg?alt=media&token=3672e6e8-4282-4982-8bae-380057f1bef0",
+      "latitude" : 47.655775,
+      "longitude" : -122.309967,
+      "menu" : [ {
+        "name" : "Chicken Steak 香雞排",
+        "price" : 6,
+        "traits" : [ "food", "hot", "savory", "available" ]
+      }, {
+        "name" : "Deep Fried Squid 酥炸魷魚",
+        "price" : 11,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Rice Noodle with Large Intestine 大腸麵線",
+        "price" : 5,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Chinese Spicy Pot 麻辣燙",
+        "price" : 6,
+        "traits" : [ "available", "food", "hot", "savory", "spicy" ]
+      }, {
+        "name" : "Tapioca Milk Tea 珍珠奶茶",
+        "price" : 4,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      }, {
+        "name" : "Taro Milk Tea 芋香奶茶",
+        "price" : 4,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      }, {
+        "name" : "Jasmine Milk Tea 茉香奶茶",
+        "price" : 4,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      }, {
+        "name" : "Thai Tea 泰式奶茶",
+        "price" : 5,
+        "traits" : [ "beverage", "cold", "sweet", "sold out" ]
+      }, {
+        "name" : "Brown Sugar Milk w/ Boba 黑糖珍珠鮮奶",
+        "price" : 5,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      }, {
+        "name" : "Oolong Green Tea 桂花烏龍綠茶",
+        "price" : 4,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      }, {
+        "name" : "冰糖枸杞銀耳湯",
+        "price" : 5,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      }, {
+        "name" : "Taiwanese Meatball 彰化肉圓",
+        "price" : 4,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Candied Fruit with Tomato Cup 蜜餞番茄杯",
+        "price" : 5,
+        "traits" : [ "available", "food", "cold", "sweet" ]
+      }, {
+        "name" : "Golden Taro Ball (x6) 黃金芋丸",
+        "price" : 5,
+        "traits" : [ "available", "food", "hot", "sweet" ]
+      } ],
+      "name" : "Tapioca Express",
+      "userId" : "LkIGpZWEoXdWmTaf4L105RLlPYn1"
+    },
+    "MKxszMpSn7hWVeuixRiwOD2HGcf2" : {
+      "boothNumber" : 25,
+      "canOrder" : false,
+      "desc" : "Seattle's only mobile taiyaki artisans. Each fish-shaped waffle is made the old school way using cast iron, flame, fresh ingredients and homemade batter!",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2FBean%20Fish.png?alt=media&token=6428b754-5ccc-4aa2-b007-b40362b31dde",
+      "latitude" : 47.656442,
+      "longitude" : -122.309742,
+      "menu" : [ {
+        "desc" : "sweetened organic red bean",
+        "name" : "Red Bean 紅豆",
+        "price" : 5,
+        "traits" : [ "available", "food", "hot", "sweet" ]
+      }, {
+        "name" : "Fresh strawberries and Nutella 草莓",
+        "price" : 4,
+        "traits" : [ "available", "food", "hot", "sweet" ]
+      }, {
+        "desc" : "organic matcha blended with vanilla custard",
+        "name" : "Matcha Custard 香草抹茶",
+        "price" : 5,
+        "traits" : [ "available", "food", "hot", "sweet" ]
+      }, {
+        "name" : "Bacon, cheddar cheese, green onion 巧達培根青蔥",
+        "price" : 7,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      } ],
+      "name" : "BeanFish",
+      "userId" : "MKxszMpSn7hWVeuixRiwOD2HGcf2"
+    },
+    "MhqpjGvIkWSYc2sDpGIXpDhQ7l42" : {
+      "boothNumber" : 12,
+      "canOrder" : true,
+      "categories" : [ "Hot Deli 熱炒", "Cold Deli 冷炒", "Bakery Items 麵包點心", "Beverage 飲料" ],
+      "desc" : "From bakery to savory foods Jing Jing has it all! Come try their famous bakery foods and cold deli snacks.",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2Fjing-jing-market.jpg?alt=media&token=35ca1181-a7c7-4bdd-95e3-d23a7976d551",
+      "latitude" : 47.655872,
+      "longitude" : -122.308966,
+      "menu" : [ {
+        "category" : 0,
+        "name" : "Shanghai Sticky Rice Ball (Pickled Radish) 紫米飯糰（蘿蔔乾)",
+        "price" : 5,
+        "traits" : [ "food", "hot", "available", "savory" ]
+      }, {
+        "category" : 0,
+        "name" : "Shanghai Sticky Rice Ball (Pork Floss) 紫米飯糰（肉鬆）",
+        "price" : 5,
+        "traits" : [ "food", "hot", "available", "savory" ]
+      }, {
+        "category" : 0,
+        "name" : "Shanghai Sticky Rice Ball (Braised Egg) 紫米飯糰（滷蛋）",
+        "price" : 5,
+        "traits" : [ "food", "hot", "available", "savory" ]
+      }, {
+        "category" : 0,
+        "name" : "Shanghai Sticky Rice Ball (Chinese Donut) 紫米飯糰（油條）",
+        "price" : 5,
+        "traits" : [ "food", "hot", "available", "savory" ]
+      }, {
+        "category" : 0,
+        "name" : "Shanghai Zong Zi (dried pork) 上海肉粽",
+        "price" : 5,
+        "traits" : [ "food", "hot", "available", "savory" ]
+      }, {
+        "category" : 1,
+        "name" : "Shanghai Marinated Tofu 上海五香蘭花豆干",
+        "price" : 5,
+        "traits" : [ "food", "cold", "available", "savory" ]
+      }, {
+        "category" : 1,
+        "name" : "Spicy Pigs Ear 麻辣猪耳",
+        "price" : 5,
+        "traits" : [ "food", "cold", "available", "savory", "spicy" ]
+      }, {
+        "category" : 1,
+        "name" : "Spicy Duck Feet 麻辣鴨爪",
+        "price" : 5,
+        "traits" : [ "food", "cold", "available", "savory", "spicy" ]
+      }, {
+        "category" : 1,
+        "name" : "Spicy Chicken Feet 麻辣鳳爪",
+        "price" : 5,
+        "traits" : [ "food", "cold", "available", "savory", "spicy" ]
+      }, {
+        "category" : 1,
+        "name" : "Spicy Duck Neck 麻辣鴨脖",
+        "price" : 5,
+        "traits" : [ "food", "cold", "available", "savory", "spicy" ]
+      }, {
+        "category" : 1,
+        "name" : "Shanghai Kaofu 上海四喜烤麩",
+        "price" : 5,
+        "traits" : [ "food", "cold", "available", "savory" ]
+      }, {
+        "category" : 1,
+        "name" : "Spicy Duck Wing 麻辣鴨翅",
+        "price" : 5,
+        "traits" : [ "food", "cold", "available", "savory", "spicy" ]
+      }, {
+        "category" : 1,
+        "name" : "Marinated Chicken Wing 白雲鳳爪",
+        "price" : 5,
+        "traits" : [ "food", "cold", "available", "savory" ]
+      }, {
+        "category" : 1,
+        "name" : "Vegetarian Chicken 上海素雞",
+        "price" : 5,
+        "traits" : [ "food", "cold", "available", "savory" ]
+      }, {
+        "category" : 1,
+        "name" : "Five Spice Beef Slices 五香牛肉",
+        "price" : 5,
+        "traits" : [ "food", "cold", "available", "savory" ]
+      }, {
+        "category" : 2,
+        "name" : "Wife Cake (2 pcs) 老婆餅",
+        "price" : 5,
+        "traits" : [ "food", "cold", "available", "sweet" ]
+      }, {
+        "category" : 2,
+        "name" : "Red Bean / Lotus Cake (2pcs) 豆沙酥 / 蓮蓉稣",
+        "price" : 5,
+        "traits" : [ "food", "cold", "available", "sweet" ]
+      }, {
+        "category" : 2,
+        "name" : "Radish Pastry (2 pcs) 蘿蔔絲餅",
+        "price" : 5,
+        "traits" : [ "food", "cold", "available", "savory" ]
+      }, {
+        "category" : 2,
+        "name" : "Egg Tart 蛋塔",
+        "price" : 2,
+        "traits" : [ "food", "cold", "available", "sweet" ]
+      }, {
+        "category" : 2,
+        "name" : "Chinese Donut 油條",
+        "price" : 2,
+        "traits" : [ "food", "cold", "available", "savory" ]
+      }, {
+        "category" : 3,
+        "name" : "House Bubble Tea 珍珠奶茶",
+        "price" : 3,
+        "traits" : [ "beverage", "cold", "available", "sweet" ]
+      } ],
+      "name" : "Jing Jing Market",
+      "userId" : "MhqpjGvIkWSYc2sDpGIXpDhQ7l42"
+    },
+    "N97Mr4C30gTxRudaaG6uypHM3102" : {
+      "boothNumber" : 8,
+      "canOrder" : false,
+      "desc" : "Offers their most popular ramen, Shio Ramen and other snacks,  whose flavors can be enjoyed by everyone.",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2FHokkaido%20ramen.png?alt=media&token=c02845c1-159b-4a08-b0b3-06f53a062522",
+      "latitude" : 47.656151,
+      "longitude" : -122.309288,
+      "menu" : [ {
+        "name" : "Shio Ramen 塩味拉麵",
+        "price" : 10,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Ramune 汽水",
+        "price" : 3,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      }, {
+        "name" : "Japanese Green Tea 日式綠茶",
+        "price" : 3,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      } ],
+      "name" : "Hokkaido Ramen Santouka",
+      "userId" : "N97Mr4C30gTxRudaaG6uypHM3102"
+    },
+    "ZLIgBuDPuMZ0zgwZImNRhacP4t02" : {
+      "boothNumber" : 23,
+      "canOrder" : true,
+      "desc" : "Authentic Chinese street food with an American twist. Serving a range of sandwiches, called pockets and can be stuffed with anything from pork, chicken, beef, or veggies!",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2FMo%20Pockets.png?alt=media&token=fe42e488-c4ee-4258-b4cc-43942f816b2b",
+      "latitude" : 47.656046,
+      "longitude" : -122.309996,
+      "menu" : [ {
+        "name" : "Popcorn Chicken 鹽酥雞",
+        "price" : 6,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Meatball Skewers 花枝丸",
+        "price" : 6,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Hokkaido Milk Tea 北海道奶茶",
+        "price" : 5,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      }, {
+        "name" : "Pudding Dessert 雙皮奶",
+        "price" : 6,
+        "traits" : [ "available", "food", "cold", "sweet" ]
+      } ],
+      "name" : "BLD Express (Mo Pockets)",
+      "userId" : "ZLIgBuDPuMZ0zgwZImNRhacP4t02"
+    },
+    "bFgLrGH6aiOsCYdZ4gaBc0rwKNM2" : {
+      "boothNumber" : 14,
+      "canOrder" : false,
+      "desc" : "No-frills Pan-Asian outpost for sushi, ramen, deep-fried Japanese fare & Korean bibimbop.",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2FKobe.jpg?alt=media&token=3b2ed6e9-5600-4baf-965c-a76baa5f5e35",
+      "latitude" : 47.655702,
+      "longitude" : -122.308982,
+      "menu" : [ {
+        "name" : "Dduk Boki (Spicy Rice Cake) 辣炒年糕",
+        "price" : 6,
+        "traits" : [ "food", "hot", "savory", "spicy", "available" ]
+      }, {
+        "name" : "Squid Tempura (3pcs) 魷魚天婦羅",
+        "price" : 5,
+        "traits" : [ "food", "hot", "savory", "available" ]
+      }, {
+        "name" : "Pork Dumpling (3pcs) 豬肉水餃",
+        "price" : 2,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Sweet and Spicy Popcorn Chicken 甜辣鹽酥雞",
+        "price" : 6,
+        "traits" : [ "food", "hot", "savory", "spicy", "available" ]
+      }, {
+        "name" : "Soda 汽水",
+        "price" : 1,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      } ],
+      "name" : "Kobe",
+      "userId" : "bFgLrGH6aiOsCYdZ4gaBc0rwKNM2"
+    },
+    "ciKzcVqIV6XRxrVVUc6Hi2IVynF3" : {
+      "boothNumber" : 1,
+      "canOrder" : true,
+      "desc" : "The Taiwanese Student Association's master chefs will be making some delicious treats for you (including our famous Taiwanese sausages & stinky tofu), so come check us out!",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2FTSA%20logo.png?alt=media&token=7fe05fca-0beb-48a9-b3e0-7ad71dffded2",
+      "latitude" : 47.655897,
+      "longitude" : -122.309411,
+      "menu" : [ {
+        "name" : "Fried Buns w/ Condensed Milk 炸小饅頭 + 煉乳 (4 pcs)",
+        "price" : 3,
+        "traits" : [ "food", "hot", "sweet", "available" ]
+      }, {
+        "name" : "Sesame Buns 芝麻包 (2 pcs)",
+        "price" : 3,
+        "traits" : [ "food", "hot", "sweet", "available" ]
+      }, {
+        "name" : "Red Bean Buns 紅豆餡包 (2 pcs)",
+        "price" : 3,
+        "traits" : [ "food", "hot", "sweet", "available" ]
+      }, {
+        "name" : "BBQ Pork Buns 叉燒包",
+        "price" : 2,
+        "traits" : [ "food", "hot", "savory", "available" ]
+      }, {
+        "name" : "Pork Buns 豬肉包",
+        "price" : 2,
+        "traits" : [ "food", "hot", "savory", "available" ]
+      }, {
+        "name" : "Pork Balls 貢丸 (3 pcs)",
+        "price" : 2,
+        "traits" : [ "food", "hot", "savory", "available" ]
+      }, {
+        "name" : "Fish Tofu 黃金魚豆腐串 (3 pcs)",
+        "price" : 2,
+        "traits" : [ "food", "hot", "savory", "available" ]
+      }, {
+        "name" : "Cuttlefish Balls 花枝丸 (3 pcs)",
+        "price" : 2,
+        "traits" : [ "food", "hot", "savory", "available" ]
+      }, {
+        "name" : "Stinky Tofu w/ Kimchi 臭豆腐 + 泡菜 (6 pcs)",
+        "price" : 5,
+        "traits" : [ "food", "hot", "savory", "available" ]
+      }, {
+        "name" : "Taiwanese Sausages 台式香腸 (2 pcs)",
+        "price" : 5,
+        "traits" : [ "food", "hot", "savory", "available" ]
+      }, {
+        "name" : "Lemon Jelly 檸檬愛玉",
+        "price" : 3,
+        "traits" : [ "beverage", "cold", "sweet", "available" ]
+      }, {
+        "name" : "Honey Grass Jelly 仙草蜜",
+        "price" : 3,
+        "traits" : [ "beverage", "cold", "sweet", "available" ]
+      }, {
+        "name" : "Water 水",
+        "price" : 1,
+        "traits" : [ "beverage", "cold", "available" ]
+      }, {
+        "name" : "Taiwanese-style Pork Intestine Rice Noodle 大腸米粉",
+        "price" : 5,
+        "traits" : [ "food", "hot", "savory", "available" ]
+      }, {
+        "name" : "Cotton Candy 棉花糖",
+        "price" : 2,
+        "traits" : [ "food", "cold", "sweet", "available" ]
+      } ],
+      "name" : "TSAUW",
+      "userId" : "ciKzcVqIV6XRxrVVUc6Hi2IVynF3"
+    },
+    "iQKnGZhVffTKmpfTLBPzqOZDbhi2" : {
+      "boothNumber" : 27,
+      "canOrder" : false,
+      "desc" : "Refreshing ice cream for a hot Night Market night!",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2Fpink's%20ice%20cream.png?alt=media&token=82383595-fa99-4392-abc6-c731fe5625d9",
+      "latitude" : 47.65681651349118,
+      "longitude" : -122.30794323313523,
+      "menu" : [ {
+        "desc" : "Flavors: Strawberry, Durian, Coconut (vegan), Mango, Green tea, Thai tea, Vietnamese coffee, Jackfruit, Lychee, Fruity pebbles",
+        "name" : "Ice Cream Push Pops 冰棒",
+        "price" : 3,
+        "traits" : [ "available", "food", "cold", "sweet" ]
+      }, {
+        "desc" : "Flavors: Coconut, Thai tea, Green tea, Vietnamese coffee, Durian, Strawberry, Lychee, Mango, Jackfruit, Fruity pebbles",
+        "name" : "Ice Cream Macarons 馬卡龍冰淇淋",
+        "price" : 5,
+        "traits" : [ "available", "food", "cold", "sweet" ]
+      }, {
+        "name" : "Macaron Cookies 馬卡龍餅乾 (1 pc)",
+        "price" : 2,
+        "traits" : [ "available", "food", "cold", "sweet" ]
+      }, {
+        "name" : "Macaron Cookies 馬卡龍餅乾 (6 pcs)",
+        "price" : 11,
+        "traits" : [ "available", "food", "cold", "sweet" ]
+      }, {
+        "name" : "Macaron Cookies 馬卡龍餅乾 (12 pcs)",
+        "price" : 20,
+        "traits" : [ "available", "food", "cold", "sweet" ]
+      }, {
+        "name" : "Bottled Water 瓶裝水",
+        "price" : 1,
+        "traits" : [ "available", "beverage", "cold" ]
+      } ],
+      "name" : "Pink's Ice Cream",
+      "userId" : "iQKnGZhVffTKmpfTLBPzqOZDbhi2"
+    },
+    "iTik9a5lmPWrdc895PD4eemoxuD2" : {
+      "boothNumber" : 11,
+      "canOrder" : false,
+      "desc" : "Serving authentic Vietnamese food and rated as one of the most popular restaurants in Seattle!​",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2FMeeKong%20Bar.png?alt=media&token=6ccdd50d-4fb5-46af-a5b1-061056d844b1",
+      "latitude" : 47.65593599638386,
+      "longitude" : -122.30896595337299,
+      "menu" : [ {
+        "name" : "Lamb Skewers 羊肉串",
+        "price" : 6,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Chicken Skewers 雞肉串",
+        "price" : 4,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Curry Fish Ball 咖哩魚丸",
+        "price" : 3,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Pork Skewers 烤豬肉串",
+        "price" : 4,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Avocado Fries 酪梨薯條",
+        "price" : 6,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      } ],
+      "name" : "Meekong Bar",
+      "userId" : "iTik9a5lmPWrdc895PD4eemoxuD2"
+    },
+    "iUr0oYxmDxZWru5Ubmsobd1iQG12" : {
+      "boothNumber" : 26,
+      "canOrder" : false,
+      "desc" : "Rustic-chic artisanal ice cream shop offering creative flavors for waffle cones or take-home pints.An Ice Cream shop that is dedicated to producing small batch, organic, and locally sourced ice cream.",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2FSweet%20Alchemy.png?alt=media&token=63a750d0-3bc8-4195-afa3-15d053e1a6a1",
+      "latitude" : 47.656768,
+      "longitude" : -122.30801,
+      "menu" : [ {
+        "name" : "Hot Coco 熱可可",
+        "price" : 5,
+        "traits" : [ "available", "beverage", "hot", "sweet" ]
+      }, {
+        "name" : "Marshmallow 棉花糖",
+        "price" : 4,
+        "traits" : [ "available", "food", "cold", "sweet" ]
+      }, {
+        "name" : "Cookies 餅乾",
+        "price" : 2,
+        "traits" : [ "available", "food", "cold", "sweet" ]
+      }, {
+        "name" : "Brownies 布朗尼",
+        "price" : 5,
+        "traits" : [ "available", "food", "cold", "sweet" ]
+      }, {
+        "name" : "Lavendar Lemonade 薰衣草檸檬汁",
+        "price" : 5,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      }, {
+        "name" : "Pico Scoop (3 oz)",
+        "price" : 4,
+        "traits" : [ "available", "food", "cold", "sweet" ]
+      }, {
+        "name" : "Milli Scoop (6 oz)",
+        "price" : 7,
+        "traits" : [ "available", "food", "cold", "sweet" ]
+      }, {
+        "name" : "Tera Scoop (9 oz)",
+        "price" : 9,
+        "traits" : [ "available", "food", "cold", "sweet" ]
+      }, {
+        "name" : "Cones 甜筒",
+        "price" : 2,
+        "traits" : [ "available", "food", "cold", "sweet" ]
+      } ],
+      "name" : "Sweet Alchemy",
+      "userId" : "iUr0oYxmDxZWru5Ubmsobd1iQG12"
+    },
+    "jEDGSkhIW5NZYTFnm3SWiiL6uz43" : {
+      "boothNumber" : 30,
+      "canOrder" : false,
+      "desc" : "Support the companies that student teams created for UW Foster School of Business's ENTRE 473 class.",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2FENTRE%20logo.png?alt=media&token=bc1c863e-5228-4b8f-bb7d-659fc4bb0173",
+      "latitude" : 47.6569289002414,
+      "longitude" : -122.30767262698362,
+      "menu" : [ {
+        "name" : "Kuma Kuma Inc",
+        "traits" : [ "available" ]
+      }, {
+        "name" : "Totes for Hope",
+        "traits" : [ "available" ]
+      } ],
+      "name" : "ENTRE 473",
+      "userId" : "jEDGSkhIW5NZYTFnm3SWiiL6uz43"
+    },
+    "k3W5yVtaaJfUCIHzudVji2cJ2q83" : {
+      "boothNumber" : 21,
+      "canOrder" : false,
+      "desc" : "Going bananas for bananas! Wide selection of banana desserts and more!",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2Fbanana.png?alt=media&token=6837b298-cddf-4d78-bce0-dc3947ae6863",
+      "latitude" : 47.655911,
+      "longitude" : -122.309985,
+      "menu" : [ {
+        "name" : "Crispy Banana w/ Strawberry Jam or Chocolate Syrup 脆香蕉 + 草莓醬 或 巧克力糖漿",
+        "price" : 5,
+        "traits" : [ "available", "food", "cold", "sweet" ]
+      }, {
+        "name" : "Crispy Corn (American Style: with Mayo and Ketchup) 脆玉蜀黍 (美式風格: 加美乃滋與番茄醬)",
+        "price" : 5,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Crispy Banana w/ Strawberry, Vanilla or Chocolate Ice Cream (1 Scoop) 脆香蕉與草莓,香草,或巧克力冰淇淋 (1球)",
+        "price" : 6,
+        "traits" : [ "available", "food", "cold", "sweet" ]
+      }, {
+        "name" : "Crispy Banana w/ Strawberry, Vanilla or Chocolate Ice Cream (2 Scoops) 脆香蕉與草莓,香草,或巧克力冰淇淋 (2球)",
+        "price" : 7,
+        "traits" : [ "available", "food", "cold", "sweet" ]
+      }, {
+        "name" : "Cinnamon Sugar Crispy Banana 肉桂糖脆香蕉",
+        "price" : 5,
+        "traits" : [ "available", "food", "cold", "sweet" ]
+      }, {
+        "name" : "Color Crispy Corn (Kids Style: with Mayo and Candy) 彩色脆玉蜀黍(兒童風格: 加美乃滋與糖果)",
+        "price" : 5,
+        "traits" : [ "available", "food", "cold", "sweet" ]
+      }, {
+        "name" : "Banana Boat Ice Cream 香蕉船冰淇淋",
+        "price" : 6,
+        "traits" : [ "available", "food", "cold", "sweet" ]
+      }, {
+        "name" : "Banana Roll 香蕉卷",
+        "price" : 7,
+        "traits" : [ "available", "food", "cold", "sweet" ]
+      }, {
+        "name" : "Corn dog 玉米熱狗",
+        "price" : 3,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Fried Monster Hotdog 炸巨大熱狗",
+        "price" : 5,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Lemonade 檸檬汁",
+        "price" : 3,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      }, {
+        "name" : "Strawberry Lemonade 草莓檸檬汁",
+        "price" : 3,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      }, {
+        "name" : "Mango Lemonade 芒果檸檬汁",
+        "price" : 3,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      }, {
+        "name" : "Banana Smoothie 香蕉冰沙",
+        "price" : 5,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      }, {
+        "name" : "Strawberry Banana Smoothie 草莓香蕉冰沙",
+        "price" : 5,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      } ],
+      "name" : "Banana Kingdom",
+      "userId" : "k3W5yVtaaJfUCIHzudVji2cJ2q83"
+    },
+    "p9WrygpapJRSCwUqfegDCwN9IQC2" : {
+      "boothNumber" : 29,
+      "canOrder" : false,
+      "desc" : "Beautique Accessory 輕珠寶 成立於2016年紐約，Passport to Taiwan活動上，創立之初想要推廣台灣的設計和對美好事物的眼光，藉著在紐約Union Square聯合廣場的地利優勢讓紐約人看見來自台灣的設計及選物。2017年選擇在西雅圖成立小型工作室，讓我們的忠誠客戶有更好且舒適的空間挑選商品以及私人搭配/選物的諮詢及線上服務",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2Fbeautique.jpg?alt=media&token=36bd75b3-3916-473b-a802-016597fa3dbe",
+      "latitude" : 47.656956,
+      "longitude" : -122.307737,
+      "menu" : [ {
+        "name" : "Accessories 輕珠寶/私人選物服務",
+        "traits" : [ "available" ]
+      } ],
+      "name" : "Beautique Accessories",
+      "userId" : "p9WrygpapJRSCwUqfegDCwN9IQC2"
+    },
+    "qnXBbAQAPUMTDGDKxmLFgFto29f1" : {
+      "boothNumber" : 7,
+      "canOrder" : true,
+      "desc" : "The best-of-the-best Chinese and Vietnamese cuisine!",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2Fphoha-logo.jpg?alt=media&token=5e679e67-a8fd-4fe9-8366-fb97469376f2",
+      "latitude" : 47.656155,
+      "longitude" : -122.309369,
+      "menu" : [ {
+        "name" : "Grilled Pork Ball 烤肉球",
+        "price" : 4,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Grilled Corn 烤玉米",
+        "price" : 4,
+        "traits" : [ "food", "hot", "savory", "available" ]
+      }, {
+        "name" : "Pot Stickers 鍋貼 (5 pieces)",
+        "price" : 5,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Steam Corn 玉米",
+        "price" : 4,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Green Mango 青芒果",
+        "price" : 5,
+        "traits" : [ "available", "food", "cold", "sweet" ]
+      }, {
+        "name" : "Thai Iced Tea 泰式茶",
+        "price" : 4,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      }, {
+        "name" : "Coconut Juice 椰子汁",
+        "price" : 4,
+        "traits" : [ "available", "beverage", "cold", "sweet" ]
+      } ],
+      "name" : "Pho Ha",
+      "userId" : "qnXBbAQAPUMTDGDKxmLFgFto29f1"
+    },
+    "raHsjaWhKbf0kL63XKzzeIgC7Ov1" : {
+      "boothNumber" : 9,
+      "canOrder" : false,
+      "desc" : "Come try our delicious Honey Walnut Prawn skewers covered in a creamy honey glaze, topped with crushed candies walnuts.",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2Fvong's%20kitchen.png?alt=media&token=b599f6fd-5abc-4f79-b065-f48d8b1e2a70",
+      "latitude" : 47.656143,
+      "longitude" : -122.309187,
+      "menu" : [ {
+        "name" : "2 Skewers (Four Large Prawns) 2串烤蝦串",
+        "price" : 8,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "2 Skewers w/ Rice (Four Large Prawns with Rice) 2串烤蝦串加飯",
+        "price" : 10,
+        "traits" : [ "available", "food", "hot", "savory" ]
+      }, {
+        "name" : "Rice 飯",
+        "price" : 3,
+        "traits" : [ "available", "food", "hot" ]
+      }, {
+        "name" : "Water 水",
+        "price" : 2,
+        "traits" : [ "available", "beverage", "cold" ]
+      } ],
+      "name" : "Honey Walnut Prawns",
+      "userId" : "raHsjaWhKbf0kL63XKzzeIgC7Ov1"
+    },
+    "sSf8cFPlMRYf4FpO0if53q9jH803" : {
+      "boothNumber" : 5,
+      "canOrder" : false,
+      "desc" : "Compact counter-serve spot featuring traditional Thai fare, including desserts & shaved ice.",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2Fwann%20yen.jpg?alt=media&token=a271e28a-98d2-4e5f-81ff-f3334681a917",
+      "latitude" : 47.656166,
+      "longitude" : -122.3095,
+      "menu" : [ {
+        "desc" : "Prices vary by toppings added $5 - $8",
+        "name" : "Thai Ice-cream Rolled 泰式冰淇淋",
+        "price" : 5,
+        "traits" : [ "food", "cold", "sweet", "available" ]
+      }, {
+        "name" : "Thai Shaved Ice 泰式刨冰",
+        "price" : 6,
+        "traits" : [ "food", "cold", "sweet", "available" ]
+      }, {
+        "name" : "Thai Iced Tea 泰式奶茶",
+        "price" : 3,
+        "traits" : [ "beverage", "cold", "sweet", "available" ]
+      }, {
+        "name" : "Thai Iced Coffee 泰式咖啡",
+        "price" : 3,
+        "traits" : [ "beverage", "cold", "sweet", "available" ]
+      }, {
+        "name" : "Thai Desserts (Mango Sticky Rice or Durian Sticky Rice) 泰式甜點",
+        "price" : 5,
+        "traits" : [ "food", "cold", "sweet", "available" ]
+      } ],
+      "name" : "Wann Yen",
+      "userId" : "sSf8cFPlMRYf4FpO0if53q9jH803"
+    },
+    "tvavQrTItCgC4IuggC84tQcWvY03" : {
+      "boothNumber" : 6,
+      "canOrder" : false,
+      "desc" : "Traditional Hawaiian Shave Ice Pop-ups.",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2Fmikes.jpg?alt=media&token=d74b9844-cc94-45f5-b243-6c08e84a98e6",
+      "latitude" : 47.656162,
+      "longitude" : -122.30943,
+      "menu" : [ {
+        "desc" : "Choose up to 3 flavors: Strawberry,  Blue Vanilla, Banana, Passion Fruit, Guava, Pineapple, Orange Dreamsicle, and Melona. Choose up to 2 toppings: Azuki bean, Snow Cap Sweet Cream, Li Hing Mui Powder (Sweet/Salty Plum)",
+        "name" : "Hawaiian Shave Ice (Strawberry/ Blue Vanilla/ Banana) 夏威夷刨冰",
+        "price" : 6,
+        "traits" : [ "food", "cold", "sweet", "available" ]
+      }, {
+        "name" : "Topping: Vanilla Ice Cream 香草冰淇淋",
+        "price" : 1,
+        "traits" : [ "food", "cold", "sweet", "available" ]
+      }, {
+        "name" : "Halo-Halo Shave Ice 夏威夷刨冰",
+        "price" : 7,
+        "traits" : [ "food", "cold", "sweet", "available" ]
+      } ],
+      "name" : "Mike's Shaved Ice",
+      "userId" : "tvavQrTItCgC4IuggC84tQcWvY03"
+    },
+    "uoTd5l56TRXLYW2lThpLszPiZ2K2" : {
+      "boothNumber" : 2,
+      "canOrder" : false,
+      "desc" : "Want a sweet treat? Puffle Up is the place to go! Serving Hong Kong's most popular street snack!",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2Fpuffle-up-logo.png?alt=media&token=744abdd9-13cf-48ff-91ba-33cd4bd3f6ea",
+      "latitude" : 47.656172,
+      "longitude" : -122.309751,
+      "menu" : [ {
+        "desc" : "Puffle w/ whipped cream, strawberry, banana, pocky, chocolate drizzle",
+        "name" : "Sweet Heart 草莓香蕉之邂逅",
+        "price" : 7,
+        "traits" : [ "available", "food", "hot", "sweet" ]
+      }, {
+        "desc" : "Puffle w/ whipped cream, nutella, banana, pocky, nutella drizzle",
+        "name" : "Banana Dream 香蕉巧克力",
+        "price" : 7,
+        "traits" : [ "available", "food", "hot", "sweet" ]
+      }, {
+        "desc" : "Puffle w/ whipped cream, strawberry, pocky, condense milk drizzle",
+        "name" : "Strawberry Supreme 草莓派對",
+        "price" : 7,
+        "traits" : [ "available", "food", "hot", "sweet" ]
+      }, {
+        "desc" : "Puffle w/ whipped cream, strawberry, pocky, condense milk drizzle",
+        "name" : "Berry-O 混合莓果",
+        "price" : 7,
+        "traits" : [ "available", "food", "hot", "sweet" ]
+      }, {
+        "desc" : "Puffle w/ whipped cream, fruity pebbles, oreo, pocky, condense milk drizzle",
+        "name" : "Crunch Time 脆餅",
+        "price" : 7,
+        "traits" : [ "available", "food", "hot", "sweet" ]
+      }, {
+        "desc" : "Peanut Butter & Condense Milk 花生醬 + 濃縮牛奶",
+        "name" : "Puffle Sandwich 三明治",
+        "price" : 5,
+        "traits" : [ "available", "food", "hot", "sweet" ]
+      }, {
+        "desc" : "Nutella & Peanut Butter 巧克力醬 + 花生醬",
+        "name" : "Puffle Sandwich 三明治",
+        "price" : 5,
+        "traits" : [ "available", "food", "hot", "sweet" ]
+      }, {
+        "name" : "Puffle Only 雞蛋仔",
+        "price" : 4,
+        "traits" : [ "available", "food", "hot", "sweet" ]
+      }, {
+        "desc" : "Substitute whipped cream with ice cream",
+        "name" : "Ice Cream 冰淇淋",
+        "price" : 3,
+        "traits" : [ "available", "food", "cold", "sweet" ]
+      }, {
+        "name" : "Water 水",
+        "price" : 2,
+        "traits" : [ "available", "beverage", "cold" ]
+      } ],
+      "name" : "Puffle Up",
+      "userId" : "uoTd5l56TRXLYW2lThpLszPiZ2K2"
+    },
+    "ye3ebGfH90SQzsVox0wLFqf4iQL2" : {
+      "boothNumber" : 28,
+      "canOrder" : false,
+      "desc" : "NANCY M4 specializes in handmade crafts, both functional and fun. Cute plushies, pouches, wallets, lanyards, keychains, earrings, and more...made with high quality and the cutest fabrics! Oh sew creative.",
+      "img" : "https://firebasestorage.googleapis.com/v0/b/uwnightmarket-90946.appspot.com/o/img%2Fnancym4_3.jpg?alt=media&token=8c904464-42cd-4716-939e-f0bfbb729e88",
+      "latitude" : 47.656916,
+      "longitude" : -122.307796,
+      "menu" : [ {
+        "name" : "Plushies, fabric accessories, keychains, earrings, and more 玩偶,耳環,鑰匙圈,還有其他",
+        "traits" : [ "available" ]
+      } ],
+      "name" : "NANCY M4",
+      "userId" : "ye3ebGfH90SQzsVox0wLFqf4iQL2"
+    }
+  }
+}
