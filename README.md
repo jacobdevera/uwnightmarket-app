@@ -12,7 +12,7 @@ The UW Night Market mobile application alleviates long wait line issues that pla
 
 The mobile application was built as the UW Night Market App team's iSchool capstone project for 2018.
 
-[Project website](https://kchen73.github.io/uwnightmarket/) | [Documentation for developers](https://github.com/jacobdevera/uwnightmarket-app/tree/development/documentation)
+[Project website](https://kchen73.github.io/uwnightmarket/) | [Documentation for developers](https://github.com/jacobdevera/uwnightmarket-app/tree/master/documentation)
 
 <a name="app"></a>
 ## Mobile Application
