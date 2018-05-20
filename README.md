@@ -1,10 +1,14 @@
-<img src="./documentation/img/logo.png" width="300">
+<h1 align="center">
+    <img src="./documentation/img/logo.png" width="300"><br>
+    UW Night Market App
+</h1>
 
 ## Table of Contents
 1. [Overview](#overview)
 2. [Mobile Application](#app)
-3. [Technology Stack](#stack)
-4. [The Team](#team)
+3. [Feature Showcase](#features)
+4. [Technology Stack](#stack)
+5. [The Team](#team)
 
 <a name="overview"></a>
 ## Overview
@@ -29,6 +33,18 @@ The mobile application was built as the UW Night Market App team's iSchool capst
         <img alt='Get it on Google Play' src='./documentation/img/play-store-badge.png' width="200"/>
     </a>
 </div>
+
+<a name="features"></a>
+## Feature Showcase
+
+### Searching and Filtering Vendors
+<img src="./documentation/img/attendee-search.gif" width="300">
+
+### Ordering
+<img src="./documentation/img/attendee-ordering.gif" width="300">
+
+### Order Pickup
+<img src="./documentation/img/attendee-pickup.gif" width="300">
 
 <a name="stack"></a>
 ## Technology Stack
