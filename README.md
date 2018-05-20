@@ -1,11 +1,10 @@
-<h1 align="center">
-    <img src="./documentation/img/logo.png" width="300"><br>
-    UW Night Market App
-</h1>
+<div align="center">
+    <img src="./documentation/img/logo.png" width="300">
+</div>
 
 ## Table of Contents
 1. [Overview](#overview)
-2. [Mobile Application](#app)
+2. [Download](#download)
 3. [Feature Showcase](#features)
 4. [Technology Stack](#stack)
 5. [The Team](#team)
@@ -18,9 +17,9 @@ The mobile application was built as the UW Night Market App team's iSchool capst
 
 [Project website](https://kchen73.github.io/uwnightmarket/) | [Documentation for developers](https://github.com/jacobdevera/uwnightmarket-app/tree/master/documentation)
 
-<a name="app"></a>
-## Mobile Application
-<div>
+<a name="Download"></a>
+## Download
+<div align="center">
     <img src="./documentation/img/qr-code.svg" width="15%">
     <br />
     <br />
@@ -38,18 +37,18 @@ The mobile application was built as the UW Night Market App team's iSchool capst
 ## Feature Showcase
 
 ### Searching and Filtering Vendors
-<img src="./documentation/img/attendee-search.gif" width="300">
+<img src="./documentation/img/attendee-search-small.gif" width="300">
 
 ### Ordering
-<img src="./documentation/img/attendee-ordering.gif" width="300">
+<img src="./documentation/img/attendee-ordering-small.gif" width="300">
 
-### Order Pickup
-<img src="./documentation/img/attendee-pickup.gif" width="300">
+### Notifications and Order Pickup
+<img src="./documentation/img/attendee-pickup-small.gif" width="300">
 
 <a name="stack"></a>
 ## Technology Stack
 ### Development Framework: React Native
-**React Native** is a development framework provided by Facebook as a solution to building native apps using JavaScript, utilizing the same patterns found in React. The UW Night Market App makes extensive use of its built-in APIs as well as a number of other libraries that provide additional functionality.
+**React Native** is a development framework provided by Facebook as a solution to building native iOS and Android apps using JavaScript, utilizing the same patterns found in React. The UW Night Market App makes extensive use of its built-in APIs as well as a number of other libraries that provide additional functionality. Extensive testing was done to ensure that the app provided a consistent user experience across both versions while maintaining the design language of their respective platforms.
 - UI Components: [native-base](https://github.com/GeekyAnts/NativeBase)
 - Routing: [react-navigation](https://github.com/react-navigation/react-navigation)
 - Maps: [react-native-maps](https://github.com/react-community/react-native-maps)
@@ -61,10 +60,10 @@ The mobile application was built as the UW Night Market App team's iSchool capst
 <a name="team"></a>
 ## The Team
 ### Kevin Chen
-Project Manager
+Project Manager | [LinkedIn](https://www.linkedin.com/in/kchen73/)
 ### Joyce Deng
-UX Designer
+UX Designer | [LinkedIn](https://www.linkedin.com/in/joycekdeng/)
 ### Jacob Devera
-Software Developer
+Software Developer | [LinkedIn](https://www.linkedin.com/in/jacobdevera/)
 ### Patrick Yi
-Software Developer
+Software Developer | [LinkedIn](https://www.linkedin.com/in/zhaoyang-yi/)
