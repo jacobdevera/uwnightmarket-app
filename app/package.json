@@ -11,6 +11,7 @@
     "axios": "^0.17.1",
     "dayjs": "^1.5.10",
     "firebase": "^4.10.1",
+    "hoek": "^5.0.3",
     "native-base": "^2.3.9",
     "react": "16.2.0",
     "react-native": "^0.53.0",
