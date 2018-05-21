@@ -8,6 +8,7 @@
 3. [Feature Showcase](#features)
 4. [Technology Stack](#stack)
 5. [The Team](#team)
+6. [License](#license)
 
 <a name="overview"></a>
 ## Overview
@@ -65,5 +66,9 @@ Project Manager | [LinkedIn](https://www.linkedin.com/in/kchen73/)
 UX Designer | [LinkedIn](https://www.linkedin.com/in/joycekdeng/)
 ### Jacob Devera
 Software Developer | [LinkedIn](https://www.linkedin.com/in/jacobdevera/)
-### Patrick Yi
+### Zhaoyang Yi
 Software Developer | [LinkedIn](https://www.linkedin.com/in/zhaoyang-yi/)
+
+<a name="license"></a>
+## License
+[MIT](https://github.com/jacobdevera/uwnightmarket-app/blob/master/LICENSE)
