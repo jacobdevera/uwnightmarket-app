@@ -49,25 +49,25 @@ The mobile application was built as the UW Night Market App team's iSchool capst
 <a name="stack"></a>
 ## Technology Stack
 ### Development Framework: React Native
-**React Native** is a development framework provided by Facebook as a solution to building native iOS and Android apps using JavaScript, utilizing the same patterns found in React. The UW Night Market App makes extensive use of its built-in APIs as well as a number of other libraries that provide additional functionality. Extensive testing was done to ensure that the app provided a consistent user experience across both versions while maintaining the design language of their respective platforms.
+**React Native** is a development framework provided by Facebook as a solution to building native iOS and Android apps using JavaScript, utilizing the same patterns found in React. It was chosen to allow for development of the app on both platforms while maintaining a unified codebase. The UW Night Market App makes extensive use of its built-in APIs as well as a number of other libraries that provide additional functionality. Extensive testing was done to ensure that the app provided a consistent user experience across both versions while maintaining the design language of their respective platforms.
 - UI Components: [native-base](https://github.com/GeekyAnts/NativeBase)
 - Routing: [react-navigation](https://github.com/react-navigation/react-navigation)
 - Maps: [react-native-maps](https://github.com/react-community/react-native-maps)
 - Firebase Cloud Messaging: [react-native-fcm](https://github.com/evollu/react-native-fcm)
 
 ### Database and Authentication: Firebase
-**Firebase** is a mobile and web application development platform provided by Google. The UW Night Market App makes use of its **realtime database** to store all orders, vendor information, and event status. **Firebase Cloud Messaging** is also used as a solution to send push notifications to attendees when the status of their order is updated or when an important announcement needs to be made during the event.
+**Firebase** is a mobile and web application development platform provided by Google. It was chosen for its powerful API that is able to handle database, notifications, and backend logic. Firebase can also easily scale to thousands of users, and provides a variety of helpful usage and diagnostic information for the app. The UW Night Market App makes use of its **realtime database** to store all orders, vendor information, and event status. **Firebase Cloud Messaging** is also used as a solution to send push notifications to attendees when the status of their order is updated or when an important announcement needs to be made during the event. **Firebase Cloud Functions** were also utilized to keep track of order queue sizes on the backend without overwhelming the client.
 
 <a name="team"></a>
 ## The Team
 ### Kevin Chen
-Project Manager | [LinkedIn](https://www.linkedin.com/in/kchen73/)
+Project Manager | kchen73@uw.edu | [LinkedIn](https://www.linkedin.com/in/kchen73/)
 ### Joyce Deng
-UX Designer | [LinkedIn](https://www.linkedin.com/in/joycekdeng/)
+UX Designer | dengj3@uw.edu | [LinkedIn](https://www.linkedin.com/in/joycekdeng/)
 ### Jacob Devera
-Software Developer | [LinkedIn](https://www.linkedin.com/in/jacobdevera/)
+Software Developer | gjdevera@uw.edu | [LinkedIn](https://www.linkedin.com/in/jacobdevera/)
 ### Zhaoyang Yi
-Software Developer | [LinkedIn](https://www.linkedin.com/in/zhaoyang-yi/)
+Software Developer | yiz24@uw.edu | [LinkedIn](https://www.linkedin.com/in/zhaoyang-yi/)
 
 <a name="license"></a>
 ## License
